@@ -1,0 +1,18 @@
+title: "Blog Saya"
+description: "Blog sederhana dengan CMS GitHub"
+baseurl: ""
+url: "https://username.github.io"
+
+# CMS Settings
+markdown: kramdown
+permalink: /:title/
+timezone: Asia/Jakarta
+
+# Auto proses file HTML
+markdown_ext: "markdown,mkdown,mkdn,mkd,md,html"
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:title/
