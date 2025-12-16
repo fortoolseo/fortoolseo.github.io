@@ -6,7 +6,7 @@ title: Home
 <h2>Artikel Terbaru</h2>
 
 {% for post in site.posts %}
-<article class="post-preview">
+<article class="post">
     <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
     <small>{{ post.date | date: "%d %B %Y" }}</small>
     <div class="excerpt">
