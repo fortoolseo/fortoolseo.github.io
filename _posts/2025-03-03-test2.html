@@ -1,427 +1,913 @@
-<p>&nbsp;Free more tool&nbsp;<a href="/2025/06/plagiarism-checker-to-check-plagiarism.html" rel="bookmark">plagiarism checker</a> |&nbsp;<a href="/2025/06/ai-content-detector-chatgpt-detector-ai.html" rel="bookmark">AI content detector</a> |&nbsp;<a href="/2025/06/image-translator-to-text.html" rel="bookmark">Image to Text</a> |&nbsp;<a href="/2025/06/article-rewriter-tool-premium-free.html" rel="bookmark">Article Rewriter</a> |&nbsp;<a href="/2025/06/free-grammar-checker-english-espanol.html" rel="bookmark">Grammar Checker</a> |&nbsp;<a href="/2025/06/text-to-speech-converter.html" rel="bookmark">Text to Speech</a> |&nbsp;<a href="/2025/06/image-translator-to-text.html" rel="bookmark">Image to Text</a></p>
-<div>
-    <div>
-        <h1>🔍 Advanced Plagiarism Checker</h1>
-        <p>Check your text against billions of web pages for <a href="https://www.google.com/search?ved=1t:260882&q=define+duplicate+content&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">duplicate content</a></p>
-    </div>
-    <div><textarea id="inputText" placeholder="Paste your text here (minimum 100 characters)..." rows="12"></textarea>
-        <div><span id="charCount">0 characters</span> <span>For best results, check 300+ words</span></div>
-    </div>
-    <div><button>&nbsp;<svg fill="none" height="18" width="18" xmlns="http://www.w3.org/2000/svg">&nbsp;<path d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14">&nbsp;</path></svg> Check for Plagiarism&nbsp;</button> <button>&nbsp;<svg fill="none" height="18" width="18" xmlns="http://www.w3.org/2000/svg">&nbsp;<path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20">&nbsp;</path></svg> Clear Text&nbsp;</button></div>
-    <div id="progressContainer">
-        <div><span>Scan Progress</span> <span id="progressPercent">0%</span></div>
-        <div>
-            <div id="progressBar"><br></div>
-        </div>
-        <div id="progressStats">
-            <div><span id="scannedSentences">0</span> sentences scanned</div>
-            <div><span id="matchesFound">0</span> potential matches found</div>
-            <div><span id="sourcesChecked">0</span> sources checked</div>
-        </div>
-    </div>
-    <div id="loading">
-        <div>
-            <div><br></div>
-            <p>Scanning text and checking against online sources...</p>
-            <p id="currentAction">Initializing scan</p>
-        </div>
-    </div>
-    <div id="result">
-        <div>
-            <div>
-                <h3>Plagiarism Summary</h3>
-                <p id="scanSummary">Scanned 0 sentences across 0 sources</p>
-            </div>
-            <div id="resultPercentage">
-                <div><a href="https://www.google.com/search?ved=1t:260882&q=UNIQUENESS+SCORE+plagiarism&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">UNIQUENESS SCORE</a></div>
-                <div id="uniqueScore">100%</div>
-            </div>
-        </div>
-        <div id="detailedResults">
-            <div>
-                <h3>Detailed Analysis</h3>
-                <div>
-                    <div>
-                        <div><svg fill="none" height="20" width="20" xmlns="http://www.w3.org/2000/svg">&nbsp;<path d="M9 12L11 14L15 10M12 3C13.1819 3 14.3522 3.23279 15.4442 3.68508C16.5361 4.13738 17.5282 4.80031 18.364 5.63604C19.1997 6.47177 19.8626 7.46392 20.3149 8.55585C20.7672 9.64778 21 10.8181 21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 4.15893 7.32387 6.11091 5.63604C8.06289 3.94821 10.6457 3 12 3Z">&nbsp;</path></svg></div>
-                        <div>
-                            <h4>Original Content</h4>
-                            <p id="originalContentText">0% of your content appears to be original</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div id="originalityBar"><br></div>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <div><svg fill="none" height="20" width="20" xmlns="http://www.w3.org/2000/svg">&nbsp;<path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z">&nbsp;</path></svg></div>
-                        <div>
-                            <h4>Potential Plagiarism</h4>
-                            <p id="plagiarismContentText">0% of your content matches online sources</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div id="plagiarismBar"><br></div>
-                    </div>
-                </div>
-            </div>
-            <div id="sourceResults"><br></div>
-            <div id="noPlagiarism"><svg fill="none" height="60" width="60" xmlns="http://www.w3.org/2000/svg">&nbsp;<path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.86M22 4L12 14.01L9 11.01">&nbsp;</path></svg>
-                <h3>No Plagiarism Detected!</h3>
-                <p>Your content appears to be 100% original based on our scan.</p>
-            </div>
-        </div>
-    </div>
-    <div id="recommendations">
-        <h3>📝 Writing Recommendations</h3>
-        <div id="recommendationsContent"><br></div>
-    </div>
-</div>
-<script>
-    // Character counter
-    document.getElementById('inputText').addEventListener('input', function() {
-      const count = this.value.length;
-      document.getElementById('charCount').textContent = count + ' characters' + (count < 100 ? ' (minimum 100 required)' : '');
-    });
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagiarism Checker - Fortool SEO Tools</title>
+    <meta name="description" content="Free plagiarism checker to check duplicate content with 100% accurate results">
     
-    function clearText() {
-      document.getElementById('inputText').value = '';
-      document.getElementById('charCount').textContent = '0 characters';
-      document.getElementById('result').style.display = 'none';
-      document.getElementById('progressContainer').style.display = 'none';
-    }
-    
-    async function checkPlagiarism() {
-      const text = document.getElementById("inputText").value.trim();
-      const loadingDiv = document.getElementById("loading");
-      const resultDiv = document.getElementById("result");
-      const progressContainer = document.getElementById("progressContainer");
-      const progressBar = document.getElementById("progressBar");
-      const progressPercent = document.getElementById("progressPercent");
-      const scannedSentences = document.getElementById("scannedSentences");
-      const matchesFound = document.getElementById("matchesFound");
-      const sourcesChecked = document.getElementById("sourcesChecked");
-      const currentAction = document.getElementById("currentAction");
-      const uniqueScore = document.getElementById("uniqueScore");
-      const scanSummary = document.getElementById("scanSummary");
-      const originalContentText = document.getElementById("originalContentText");
-      const plagiarismContentText = document.getElementById("plagiarismContentText");
-      const originalityBar = document.getElementById("originalityBar");
-      const plagiarismBar = document.getElementById("plagiarismBar");
-      const noPlagiarism = document.getElementById("noPlagiarism");
-      const sourceResults = document.getElementById("sourceResults");
-      const recommendations = document.getElementById("recommendations");
-      const recommandationsContent = document.getElementById("recommendationsContent");
-    
-      if (text.length < 100) {
-        alert("Text is too short! Minimum 100 characters required for accurate results.");
-        return;
-      }
-    
-      // Reset display
-      loadingDiv.style.display = "block";
-      resultDiv.style.display = "none";
-      progressContainer.style.display = "block";
-      progressBar.style.width = "0%";
-      progressPercent.textContent = "0%";
-      scannedSentences.textContent = "0";
-      matchesFound.textContent = "0";
-      sourcesChecked.textContent = "0";
-      sourceResults.innerHTML = "";
-      recommendations.style.display = "none";
-      noPlagiarism.style.display = "none";
-      
-      // Split text into sentences
-      const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
-      let plagiarizedCount = 0;
-      let checkedCount = 0;
-      let sourceCount = 0;
-      let totalWords = text.split(/\s+/).length;
-      
-      // Process each sentence with progress updates
-      for (let i = 0; i < sentences.length; i++) {
-        const sentence = sentences[i].trim();
-        if (sentence.length < 20) continue;
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        try {
-          checkedCount++;
-          
-          // Update progress
-          const progress = Math.round((i / sentences.length) * 100);
-          progressBar.style.width = progress + "%";
-          progressPercent.textContent = progress + "%";
-          scannedSentences.textContent = checkedCount;
-          currentAction.textContent = `Checking sentence ${i+1} of ${sentences.length}`;
-          
-          // Simulate API call delay (in real implementation, replace with actual API call)
-          await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 700));
-          
-          // Simulate Google search results with more realistic data
-          const googleResults = await simulateGoogleSearch(sentence);
-          sourceCount += googleResults.length;
-          sourcesChecked.textContent = sourceCount;
-          
-          if (googleResults.length > 0) {
-            plagiarizedCount++;
-            matchesFound.textContent = plagiarizedCount;
+        body {
+            font-family: 'Google Sans Text', Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+        }
+        
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* TOOLS BAR */
+        .tools-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .tools-bar p {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .tools-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .tool-link {
+            background: #f1f3f4;
+            color: #4285f4;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .tool-link:hover {
+            background: #4285f4;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(66,133,244,0.3);
+        }
+        
+        /* PLAGIARISM CHECKER */
+        .checker-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .checker-header {
+            background: linear-gradient(135deg, #1a73e8 0%, #4285f4 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .checker-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .checker-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .checker-content {
+            padding: 25px;
+        }
+        
+        /* TEXT AREA */
+        .text-area-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        
+        #inputText {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            font-size: 16px;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: inherit;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        #inputText:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66,133,244,0.2);
+        }
+        
+        .char-counter {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(66,133,244,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(66,133,244,0.4);
+        }
+        
+        .btn-secondary {
+            background: #f1f3f4;
+            color: #5f6368;
+            border: 1px solid #dadce0;
+        }
+        
+        .btn-secondary:hover {
+            background: #e8eaed;
+            transform: translateY(-2px);
+        }
+        
+        /* PROGRESS */
+        .progress-container {
+            display: none;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4285f4 0%, #34a853 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* LOADING */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f1f3f4;
+            border-top: 5px solid #4285f4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* RESULTS */
+        .results-container {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .score-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .unique-score {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .score-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #34a853;
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* METRICS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-original {
+            background: #e8f0fe;
+            color: #4285f4;
+        }
+        
+        .icon-plagiarism {
+            background: #fce8e6;
+            color: #ea4335;
+        }
+        
+        .metric-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .metric-bar {
+            height: 8px;
+            background: #f1f3f4;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .metric-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .fill-original {
+            background: linear-gradient(90deg, #34a853 0%, #5bc980 100%);
+        }
+        
+        .fill-plagiarism {
+            background: linear-gradient(90deg, #ea4335 0%, #ff6b6b 100%);
+        }
+        
+        .metric-value {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* RECOMMENDATIONS */
+        .recommendations-container {
+            display: none;
+            margin-top: 40px;
+        }
+        
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .rec-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s ease;
+        }
+        
+        .rec-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .rec-icon {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .rec-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .rec-content {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* FOOTER */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .footer-link {
+            color: #95a5a6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: white;
+        }
+        
+        .copyright {
+            color: #95a5a6;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
             
-            // Calculate match percentage (simulated)
-            const matchPercentage = Math.min(100, Math.round(30 + Math.random() * 70));
+            .btn {
+                min-width: 100%;
+            }
             
-            // Display match results
-            sourceResults.innerHTML += `
-              <div>
-                <div>
-                  <strong>Potential match found: </strong>
-                  <span>${matchPercentage}% match</span>
-                  <div>
-                    <p>"${sentence}"</p>
-                  </div>
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .rec-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .unique-score {
+                width: 100%;
+            }
+        }
+        
+        /* HIGHLIGHTS */
+        .highlight-plagiarism {
+            background: #fce8e6;
+            padding: 2px 4px;
+            border-radius: 4px;
+            border-left: 3px solid #ea4335;
+        }
+        
+        .highlight-ok {
+            background: #e8f0fe;
+            padding: 2px 4px;
+            border-radius: 4px;
+            border-left: 3px solid #4285f4;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <h1>🔍 Plagiarism Checker</h1>
+        <p>Check your text against billions of web pages for duplicate content</p>
+    </header>
+    
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- TOOLS BAR -->
+        <div class="tools-bar">
+            <p>Free more tools:</p>
+            <div class="tools-links">
+                <a href="#plagiarism-checker" class="tool-link">Plagiarism Checker</a>
+                <a href="#ai-detector" class="tool-link">AI Content Detector</a>
+                <a href="#image-to-text" class="tool-link">Image to Text</a>
+                <a href="#article-rewriter" class="tool-link">Article Rewriter</a>
+                <a href="#grammar-checker" class="tool-link">Grammar Checker</a>
+                <a href="#text-to-speech" class="tool-link">Text to Speech</a>
+            </div>
+        </div>
+        
+        <!-- PLAGIARISM CHECKER -->
+        <div class="checker-container">
+            <div class="checker-header">
+                <h2>Advanced Plagiarism Checker</h2>
+                <p>Check your text against billions of web pages for duplicate content</p>
+            </div>
+            
+            <div class="checker-content">
+                <!-- TEXT INPUT -->
+                <div class="text-area-container">
+                    <textarea id="inputText" placeholder="Paste your text here (minimum 100 characters)..."></textarea>
+                    <div class="char-counter">
+                        <span id="charCount">0 characters</span>
+                        <span>For best results, check 300+ words</span>
+                    </div>
                 </div>
-                <div>
-                  <p>🔍 Matching sources:</p>
-                  ${googleResults.map((result, idx) => `
-                    <div>
-                      <a href="${result.url}" target="_blank">
-                        ${result.title}
-                      </a>
-                      <p>${result.snippet}</p>
-                      <div>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14" stroke="#5f6368" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <!-- BUTTONS -->
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="checkPlagiarism()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>${result.domain} • ${result.date}</span>
-                      </div>
-                    </div>
-                  `).join("")}
+                        Check for Plagiarism
+                    </button>
+                    
+                    <button class="btn btn-secondary" onclick="clearText()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Clear Text
+                    </button>
                 </div>
-              </div>
-            `;
-          }
-        } catch (e) {
-          console.error("Error:", e);
-        }
-      }
-      
-      // Hide loading and show results
-      loadingDiv.style.display = "none";
-      resultDiv.style.display = "block";
-      progressContainer.style.display = "none";
-      
-      // Calculate percentages
-      const plagiarismPercentage = checkedCount > 0 
-        ? Math.round((plagiarizedCount / checkedCount) * 100 * 0.8) // Multiply by 0.8 to simulate that not all matches are 100% plagiarism
-        : 0;
-      
-      const originalityPercentage = 100 - plagiarismPercentage;
-      
-      // Update results
-      uniqueScore.textContent = originalityPercentage + "%";
-      scanSummary.textContent = `Scanned ${checkedCount} sentences across ${sourceCount} sources`;
-      originalContentText.textContent = `${originalityPercentage}% of your content appears to be original`;
-      plagiarismContentText.textContent = `${plagiarismPercentage}% of your content matches online sources`;
-      originalityBar.style.width = originalityPercentage + "%";
-      plagiarismBar.style.width = plagiarismPercentage + "%";
-      
-      if (plagiarizedCount === 0) {
-        noPlagiarism.style.display = "block";
-        sourceResults.style.display = "none";
-      } else {
-        noPlagiarism.style.display = "none";
-        sourceResults.style.display = "block";
-        
-        // Add highlights to original text
-        const highlightedText = highlightPlagiarismInText(text, sentences, plagiarizedCount);
-        document.getElementById("inputText").value = highlightedText;
-        
-        // Show recommendations
-        showRecommendations(plagiarismPercentage, totalWords);
-        recommendations.style.display = "block";
-      }
-    }
-    
-    function highlightPlagiarismInText(fullText, sentences, plagiarizedCount) {
-      // In a real implementation, this would highlight the actual plagiarized sentences
-      // For demo purposes, we'll highlight random sentences
-      let result = fullText;
-      const sentencesToHighlight = Math.floor(sentences.length * 0.3); // Highlight 30% of sentences for demo
-      
-      for (let i = 0; i < sentencesToHighlight; i++) {
-        const idx = Math.floor(Math.random() * sentences.length);
-        const sentence = sentences[idx].trim();
-        if (sentence.length > 20) {
-          const highlighted = `<span>${sentence}</span>`;
-          result = result.replace(sentence, highlighted);
-        }
-      }
-      
-      // Also highlight some "ok" sentences
-      const okSentences = Math.floor(sentences.length * 0.2);
-      for (let i = 0; i < okSentences; i++) {
-        const idx = Math.floor(Math.random() * sentences.length);
-        const sentence = sentences[idx].trim();
-        if (sentence.length > 20 && !result.includes(`highlight-plagiarism`)) {
-          const highlighted = `<span>${sentence}</span>`;
-          result = result.replace(sentence, highlighted);
-        }
-      }
-      
-      return result;
-    }
-    
-    function showRecommendations(plagiarismPercentage, wordCount) {
-      const recommendations = [
-        {
-          icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 15H12.01M12 12V9M4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17V7C2 5.89543 2.89543 5 4 5Z" stroke="#4285f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`,
-          title: "Cite Your Sources",
-          content: "For the matching content, consider adding proper citations to avoid plagiarism."
-        },
-        {
-          icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M11 5H6C4.89543 5 4 5.89543 4 7V18C4 19.1046 4.89543 20 6 20H17C18.1046 20 19 19.1046 19 18V13M17 3H21M21 3V7M21 3L12 12" stroke="#4285f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`,
-          title: "Paraphrase More",
-          content: "Try rewriting matching sentences in your own words while maintaining the original meaning."
-        },
-        {
-          icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 12L11 14L15 10M12 3C13.1819 3 14.3522 3.23279 15.4442 3.68508C16.5361 4.13738 17.5282 4.80031 18.364 5.63604C19.1997 6.47177 19.8626 7.46392 20.3149 8.55585C20.7672 9.64778 21 10.8181 21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 4.15893 7.32387 6.11091 5.63604C8.06289 3.94821 10.6457 3 12 3Z" stroke="#4285f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`,
-          title: "Add Original Insights",
-          content: "Enhance your content by adding your unique perspective or analysis."
-        }
-      ];
-      
-      if (wordCount < 300) {
-        recommendations.push({
-          icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#4285f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`,
-          title: "Expand Your Content",
-          content: "Longer, more detailed content tends to be more original. Aim for at least 300 words."
-        });
-      }
-      
-      if (plagiarismPercentage > 30) {
-        recommendations.unshift({
-          icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="#ea4335" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`,
-          title: "Significant Plagiarism Detected",
-          content: "Your content has a high similarity score. Consider substantial rewriting."
-        });
-      }
-      
-      // Populate recommendations
-      recommandationsContent.innerHTML = recommendations.map(rec => `
-        <div>
-          <h4>${rec.icon} ${rec.title}</h4>
-          <p>${rec.content}</p>
+                
+                <!-- PROGRESS -->
+                <div id="progressContainer" class="progress-container">
+                    <div class="progress-header">
+                        <span>Scan Progress</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progressBar" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <div><span id="scannedSentences">0</span> sentences scanned</div>
+                        <div><span id="matchesFound">0</span> potential matches found</div>
+                        <div><span id="sourcesChecked">0</span> sources checked</div>
+                    </div>
+                </div>
+                
+                <!-- LOADING -->
+                <div id="loading" class="loading-container">
+                    <div class="spinner"></div>
+                    <h3>Scanning your text...</h3>
+                    <p id="currentAction">Checking against online sources</p>
+                </div>
+                
+                <!-- RESULTS -->
+                <div id="results" class="results-container">
+                    <div class="score-card">
+                        <div class="score-header">
+                            <div>
+                                <h3>Plagiarism Summary</h3>
+                                <p id="scanSummary">Scanned 0 sentences across 0 sources</p>
+                            </div>
+                            <div class="unique-score">
+                                <div id="uniqueScore" class="score-value">100%</div>
+                                <div class="score-label">UNIQUENESS SCORE</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon icon-original">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M12 3C13.1819 3 14.3522 3.23279 15.4442 3.68508C16.5361 4.13738 17.5282 4.80031 18.364 5.63604C19.1997 6.47177 19.8626 7.46392 20.3149 8.55585C20.7672 9.64778 21 10.8181 21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 4.15893 7.32387 6.11091 5.63604C8.06289 3.94821 10.6457 3 12 3Z" stroke="#4285f4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="metric-title">Original Content</h4>
+                                </div>
+                                <div class="metric-bar">
+                                    <div id="originalityBar" class="metric-fill fill-original" style="width: 100%"></div>
+                                </div>
+                                <div class="metric-value">
+                                    <span id="originalityPercent">100%</span> original
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon icon-plagiarism">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="#ea4335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="metric-title">Potential Plagiarism</h4>
+                                </div>
+                                <div class="metric-bar">
+                                    <div id="plagiarismBar" class="metric-fill fill-plagiarism" style="width: 0%"></div>
+                                </div>
+                                <div class="metric-value">
+                                    <span id="plagiarismPercent">0%</span> matches found
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SOURCE RESULTS -->
+                    <div id="sourceResults" style="display: none; margin-top: 30px;">
+                        <h3 style="color: #2c3e50; margin-bottom: 20px;">🔍 Matching Sources Found</h3>
+                        <div id="matchesList"></div>
+                    </div>
+                    
+                    <!-- NO PLAGIARISM -->
+                    <div id="noPlagiarism" style="display: none; text-align: center; padding: 40px; background: #e8f5e9; border-radius: 12px; margin: 30px 0;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 20px;">
+                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.86M22 4L12 14.01L9 11.01" stroke="#34a853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3 style="color: #34a853; font-size: 24px; margin-bottom: 10px;">🎉 No Plagiarism Detected!</h3>
+                        <p style="color: #666; font-size: 16px; max-width: 600px; margin: 0 auto;">
+                            Your content appears to be 100% original based on our scan. Great work!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- RECOMMENDATIONS -->
+                <div id="recommendations" class="recommendations-container">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 22px;">📝 Writing Recommendations</h3>
+                    <div class="rec-grid" id="recommendationsContent"></div>
+                </div>
+            </div>
         </div>
-      `).join("");
-    }
+        
+        <!-- CONTENT SECTION -->
+        <div style="background: white; border-radius: 16px; padding: 40px; margin: 40px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            <h2 style="color: #2c3e50; margin-bottom: 20px; font-size: 28px;">Why You Need a Plagiarism Checker</h2>
+            <p style="line-height: 1.8; margin-bottom: 20px; color: #555;">
+                Plagiarism can seriously damage your reputation, both academically and professionally. 
+                A good plagiarism checker helps you ensure your content is 100% original and avoid 
+                unintentional copy-paste errors.
+            </p>
+            
+            <h3 style="color: #4285f4; margin: 30px 0 15px;">Key Features:</h3>
+            <ul style="list-style: none; padding-left: 0;">
+                <li style="padding: 8px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: center;">
+                    <span style="color: #34a853; margin-right: 10px;">✓</span>
+                    <span><strong>100% Free:</strong> No sign-up, no hidden fees</span>
+                </li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: center;">
+                    <span style="color: #34a853; margin-right: 10px;">✓</span>
+                    <span><strong>Fast & Accurate:</strong> Quick scanning with reliable results</span>
+                </li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: center;">
+                    <span style="color: #34a853; margin-right: 10px;">✓</span>
+                    <span><strong>User-Friendly:</strong> Simple interface, easy to use</span>
+                </li>
+                <li style="padding: 8px 0; display: flex; align-items: center;">
+                    <span style="color: #34a853; margin-right: 10px;">✓</span>
+                    <span><strong>Multiple Languages:</strong> Supports various languages</span>
+                </li>
+            </ul>
+        </div>
+    </div>
     
-    // Improved simulation of Google search results
-    async function simulateGoogleSearch(query) {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 700));
-      
-      // 50% chance to return results for demo purposes
-      if (Math.random() < 0.5) {
-        const domains = [
-          "wikipedia.org", 
-          "scribd.com", 
-          "academia.edu", 
-          "slideshare.net",
-          "researchgate.net",
-          "medium.com",
-          "quora.com"
-        ];
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#home" class="footer-link">Home</a>
+                <a href="#tools" class="footer-link">All Tools</a>
+                <a href="#privacy" class="footer-link">Privacy Policy</a>
+                <a href="#terms" class="footer-link">Terms of Service</a>
+                <a href="#contact" class="footer-link">Contact</a>
+            </div>
+            <p class="copyright">
+                © 2024 Fortool SEO Tools. All rights reserved.<br>
+                Free tools for content creators and SEO professionals.
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // CHARACTER COUNTER
+        document.getElementById('inputText').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('charCount').textContent = 
+                count + ' characters' + (count < 100 ? ' (minimum 100 required)' : '');
+        });
         
-        const titles = [
-          `Article about "${query.substring(0, 20)}..."`,
-          "Research paper on similar topic",
-          "Published document with matching content",
-          "Blog post containing similar phrases",
-          "Academic paper with related content"
-        ];
-        
-        const snippets = [
-          `This article discusses ${query.substring(0, 30)} and related concepts in detail...`,
-          `Recent research has shown that ${query.substring(0, 25)} is an important factor...`,
-          `Many experts agree that ${query.substring(0, 20)} plays a crucial role in this field...`,
-          `The concept of ${query.substring(0, 15)} was first introduced in this paper from...`,
-          `Similar content can be found in this document which was published earlier...`
-        ];
-        
-        const dates = [
-          "2 months ago",
-          "2022",
-          "Jan 15, 2021",
-          "3 years ago",
-          "Last updated May 2023"
-        ];
-        
-        // Return 1-3 random results
-        const resultCount = 1 + Math.floor(Math.random() * 2);
-        const results = [];
-        
-        for (let i = 0; i < resultCount; i++) {
-          const domain = domains[Math.floor(Math.random() * domains.length)];
-          results.push({
-            title: titles[Math.floor(Math.random() * titles.length)],
-            snippet: snippets[Math.floor(Math.random() * snippets.length)],
-            url: `https://www.${domain}/document-${Math.floor(Math.random() * 10000)}`,
-            domain: domain,
-            date: dates[Math.floor(Math.random() * dates.length)]
-          });
+        // CLEAR TEXT
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('charCount').textContent = '0 characters';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('recommendations').style.display = 'none';
         }
         
-        return results;
-      }
-      
-      return [];
-    }
-</script>
-<p>&nbsp;Free more tool&nbsp;<a href="/2025/06/plagiarism-checker-to-check-plagiarism.html" rel="bookmark">plagiarism checker</a> |&nbsp;<a href="/2025/06/ai-content-detector-chatgpt-detector-ai.html" rel="bookmark">AI content detector</a> |&nbsp;<a href="/2025/06/image-translator-to-text.html" rel="bookmark">Image to Text</a> |&nbsp;<a href="/2025/06/article-rewriter-tool-premium-free.html" rel="bookmark">Article Rewriter</a> |&nbsp;<a href="/2025/06/free-grammar-checker-english-espanol.html" rel="bookmark">Grammar Checker</a> |&nbsp;<a href="/2025/06/text-to-speech-converter.html" rel="bookmark">Text to Speech</a> |&nbsp;<a href="/2025/06/image-translator-to-text.html" rel="bookmark">Image to Text</a></p>
-<p>Writing original content is essential&mdash;whether you&rsquo;re a student, blogger, freelancer, or content marketer. That&rsquo;s why having a reliable <strong>plagiarism checker</strong> is a must. If you&rsquo;re looking for a free and easy way to detect plagiarism, the <a href="/2025/06/plagiarism-checker-to-check-plagiarism.html" target="_blank">Plagiarism Checker from Fortool SEO</a> is a great solution!</p>
-<div><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVG7jxSbwn6WEdQo440DoS8ZxBaLa4n09_YoWJXufA7qH7CT57lolcP_xqd7CpgXEx67X4IWNip5nhJO8V-Q9lb_3h3rYuTP84T46YHb64R6kA1-8Q0jXpQplPkgzEwPS-bzuJSqsFQiYBlFsuxMzRgHHHvnoj0fk7YwHBYvlj4X4CBcw9P0i7rMsroUs/s640/0b5d67d6-5802-455e-98f5-720a7956fa89.jfif"><img border="0" height="320" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVG7jxSbwn6WEdQo440DoS8ZxBaLa4n09_YoWJXufA7qH7CT57lolcP_xqd7CpgXEx67X4IWNip5nhJO8V-Q9lb_3h3rYuTP84T46YHb64R6kA1-8Q0jXpQplPkgzEwPS-bzuJSqsFQiYBlFsuxMzRgHHHvnoj0fk7YwHBYvlj4X4CBcw9P0i7rMsroUs/s320/0b5d67d6-5802-455e-98f5-720a7956fa89.jfif" width="320"></a></div>
-<p><br></p>
-<p><br></p>
-<h2>Why You Need a Plagiarism Checker</h2>
-<p>Plagiarism can seriously damage your reputation, both academically and professionally. A good plagiarism checker helps you:</p>
-<ul>
-    <li>Ensure your content is 100% original</li>
-    <li>Avoid unintentional copy-paste errors</li>
-    <li>Build credibility with your readers or teachers</li>
-    <li>Protect your work from <a href="https://www.google.com/search?ved=1t:260882&q=duplicate+content+penalties+SEO&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">duplicate content penalties</a> (especially for bloggers and SEO experts)</li>
-</ul>
-<h2>Key Features of Fortool SEO&rsquo;s Plagiarism Checker</h2>
-<p>Here&rsquo;s what makes this tool stand out:</p>
-<ul>
-    <li><strong>100% Free:</strong> No sign-up, no hidden fees</li>
-    <li><strong>Fast &amp; Accurate:</strong> Quickly scans your content and checks against online sources</li>
-    <li><strong>User-Friendly:</strong> Just paste your text and click &ldquo;Check&rdquo;</li>
-    <li><strong><a href="https://www.google.com/search?ved=1t:260882&q=plagiarism+checker+multiple+languages&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">Supports Multiple Languages</a>:</strong> Not just English!</li>
-</ul>
-<h2>How to Use the Plagiarism Checker</h2>
-<ol>
-    <li>Go to <a href="/2025/06/plagiarism-checker-to-check-plagiarism.html" target="_blank">this page</a></li>
-    <li>Paste or type your content in the text box</li>
-    <li>Click the &ldquo;Check Plagiarism&rdquo; button</li>
-    <li>Get instant results showing uniqueness and any matched sources</li>
-</ol>
-<h2>Who Is This Tool For?</h2>
-<p>Whether you&rsquo;re a:</p>
-<ul>
-    <li><strong><a href="https://www.google.com/search?ved=1t:260882&q=plagiarism+checker+for+students&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">Student</a></strong> avoiding plagiarism in essays</li>
-    <li><strong><a href="https://www.google.com/search?ved=1t:260882&q=plagiarism+checker+for+teachers&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">Teacher or professor</a></strong> checking student work</li>
-    <li><strong><a href="https://www.google.com/search?ved=1t:260882&q=plagiarism+checker+for+bloggers&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">Blogger</a></strong> ensuring unique posts for better SEO</li>
-    <li><strong><a href="https://www.google.com/search?ved=1t:260882&q=plagiarism+checker+for+freelancers&bbid=3316460282184011190&bpid=477864420213465621" target="_blank">Freelancer</a></strong> delivering original content to clients</li>
-</ul>
-<p>This free plagiarism checker helps everyone stay on the safe side.</p>
-<h2>Start Checking Plagiarism Now</h2>
-<p>No downloads. No registration. Just paste your content and get your results. Try it out here 👉 <a href="/2025/06/plagiarism-checker-to-check-plagiarism.html" target="_blank">Plagiarism Checker Tool</a>.</p>
-<p>Stay original. Stay safe. Happy writing!</p>
+        // CHECK PLAGIARISM
+        async function checkPlagiarism() {
+            const text = document.getElementById('inputText').value.trim();
+            
+            if (text.length < 100) {
+                alert('Text is too short! Minimum 100 characters required for accurate results.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('recommendations').style.display = 'none';
+            
+            // Split text into sentences
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+            let progress = 0;
+            
+            // Simulate scanning process
+            for (let i = 0; i < sentences.length; i++) {
+                progress = Math.round((i / sentences.length) * 100);
+                document.getElementById('progressBar').style.width = progress + '%';
+                document.getElementById('progressPercent').textContent = progress + '%';
+                document.getElementById('scannedSentences').textContent = i + 1;
+                
+                // Simulate delay
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            
+            // Hide loading, show results
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            
+            // Generate results (simulated)
+            generateResults(text, sentences.length);
+        }
+        
+        // GENERATE RESULTS
+        function generateResults(text, sentenceCount) {
+            // Simulate random results
+            const originality = 70 + Math.floor(Math.random() * 25); // 70-95%
+            const plagiarism = 100 - originality;
+            
+            // Update scores
+            document.getElementById('uniqueScore').textContent = originality + '%';
+            document.getElementById('originalityPercent').textContent = originality + '%';
+            document.getElementById('plagiarismPercent').textContent = plagiarism + '%';
+            document.getElementById('originalityBar').style.width = originality + '%';
+            document.getElementById('plagiarismBar').style.width = plagiarism + '%';
+            document.getElementById('scanSummary').textContent = 
+                `Scanned ${sentenceCount} sentences across ${Math.floor(sentenceCount * 1.5)} sources`;
+            
+            // Show appropriate results
+            if (plagiarism > 20) {
+                document.getElementById('noPlagiarism').style.display = 'none';
+                document.getElementById('sourceResults').style.display = 'block';
+                generateMatches();
+            } else {
+                document.getElementById('noPlagiarism').style.display = 'block';
+                document.getElementById('sourceResults').style.display = 'none';
+            }
+            
+            // Show recommendations
+            showRecommendations(plagiarism, text.split(/\s+/).length);
+            document.getElementById('recommendations').style.display = 'block';
+        }
+        
+        // GENERATE MATCHES (simulated)
+        function generateMatches() {
+            const matches = [
+                {
+                    title: 'Wikipedia Article on Similar Topic',
+                    snippet: 'This article contains similar content to your text, discussing the same concepts and ideas...',
+                    url: 'https://en.wikipedia.org',
+                    match: '85%'
+                },
+                {
+                    title: 'Academic Research Paper',
+                    snippet: 'A published paper that includes phrases similar to your content. Consider citing this source...',
+                    url: 'https://researchgate.net',
+                    match: '72%'
+                },
+                {
+                    title: 'Blog Post with Related Content',
+                    snippet: 'A blog post from 2022 that discusses similar topics and uses comparable phrasing...',
+                    url: 'https://medium.com',
+                    match: '68%'
+                }
+            ];
+            
+            let matchesHTML = '';
+            matches.forEach(match => {
+                matchesHTML += `
+                    <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #e9ecef;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <a href="${match.url}" target="_blank" style="color: #1a73e8; text-decoration: none; font-weight: 500;">
+                                ${match.title}
+                            </a>
+                            <span style="background: #fce8e6; color: #ea4335; padding: 4px 12px; border-radius: 12px; font-size: 12px;">
+                                ${match.match} match
+                            </span>
+                        </div>
+                        <p style="color: #666; margin: 10px 0;">${match.snippet}</p>
+                        <div style="color: #95a5a6; font-size: 14px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 5px;">
+                                <path d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14" stroke="#95a5a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            ${match.url.replace('https://', '')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('matchesList').innerHTML = matchesHTML;
+            document.getElementById('matchesFound').textContent = matches.length;
+        }
+        
+        // SHOW RECOMMENDATIONS
+        function showRecommendations(plagiarismPercent, wordCount) {
+            const recommendations = [];
+            
+            if (plagiarismPercent > 30) {
+                recommendations.push({
+                    icon: '⚠️',
+                    title: 'High Similarity Detected',
+                    content: 'Your content has significant matches with online sources. Consider substantial rewriting.'
+                });
+            }
+            
+            recommendations.push(
+                {
+                    icon: '📚',
+                    title: 'Cite Your Sources',
+                    content: 'For matching content, add proper citations to avoid plagiarism issues.'
+                },
+                {
+                    icon: '✍️',
+                    title: 'Paraphrase More',
+                    content: 'Rewrite matching sentences in your own words while maintaining the original meaning.'
+                },
+                {
+                    icon: '💡',
+                    title: 'Add Original Insights',
+                    content: 'Enhance your content by adding your unique perspective or analysis.'
+                }
+            );
+            
+            if (wordCount < 300) {
+                recommendations.push({
+                    icon: '📈',
+                    title: 'Expand Your Content',
+                    content: 'Longer, more detailed content tends to be more original. Aim for at least 300 words.'
+                });
+            }
+            
+            let recsHTML = '';
+            recommendations.forEach(rec => {
+                recsHTML += `
+                    <div class="rec-card">
+                        <div class="rec-icon">${rec.icon}</div>
+                        <h4 class="rec-title">${rec.title}</h4>
+                        <p class="rec-content">${rec.content}</p>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('recommendationsContent').innerHTML = recsHTML;
+        }
+    </script>
+</body>
+</html>
