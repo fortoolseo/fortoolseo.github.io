@@ -1,0 +1,17 @@
+---
+layout: default
+title: Home
+---
+
+<h2>Artikel Terbaru</h2>
+
+{% for post in site.posts %}
+<article class="post-preview">
+    <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+    <small>{{ post.date | date: "%d %B %Y" }}</small>
+    <div class="excerpt">
+        {{ post.excerpt | truncatewords: 50 }}
+    </div>
+    <a href="{{ post.url }}">Baca selengkapnya →</a>
+</article>
+{% endfor %}
