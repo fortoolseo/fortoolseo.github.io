@@ -5,160 +5,448 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} | {{ site.title }}</title>
     <style>
-        /* STYLE UTAMA */
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f8f9fa; }
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        .wrapper {
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        /* HEADER */
+        .site-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-title h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .site-title a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* MOBILE MENU TOGGLE */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        /* MAIN LAYOUT */
+        .main-wrapper {
             display: flex;
             min-height: 100vh;
         }
         
-        /* SIDEBAR */
+        /* SIDEBAR - DESKTOP */
         .sidebar {
             width: 280px;
             background: white;
             border-right: 1px solid #eaeaea;
-            padding: 30px 20px;
+            padding: 2rem 1.5rem;
             position: fixed;
-            height: 100vh;
+            height: calc(100vh - 70px);
+            top: 70px;
             overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+            z-index: 900;
         }
         
-        .site-title {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+        /* SIDEBAR - MOBILE (Hidden by default) */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 300px;
+                height: 100vh;
+                top: 0;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.15);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
         }
         
-        .site-title h1 {
-            margin: 0;
-            font-size: 24px;
+        /* SIDEBAR CONTENT */
+        .sidebar-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sidebar-section:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar-section h3 {
             color: #2c3e50;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
-        .site-title p {
-            color: #7f8c8d;
-            margin: 5px 0 0;
-        }
-        
-        /* MENU & KATEGORI */
         .nav-menu {
-            margin-bottom: 30px;
+            list-style: none;
         }
         
         .nav-menu a {
             display: block;
-            padding: 10px 15px;
-            color: #333;
+            padding: 0.8rem 1rem;
+            color: #444;
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
             transition: all 0.3s;
         }
         
-        .nav-menu a:hover, .nav-menu a.active {
+        .nav-menu a:hover,
+        .nav-menu a.active {
             background: #4285f4;
             color: white;
         }
         
-        /* KATEGORI SIDEBAR */
         .category-list {
-            margin-bottom: 30px;
-        }
-        
-        .category-list h3 {
-            font-size: 16px;
-            color: #5f6368;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .category-list ul {
             list-style: none;
-            padding: 0;
-            margin: 0;
         }
         
         .category-list li {
-            margin-bottom: 8px;
+            margin-bottom: 0.8rem;
         }
         
         .category-list a {
             display: flex;
             justify-content: space-between;
-            color: #333;
+            align-items: center;
+            color: #555;
             text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 0.7rem 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
             transition: all 0.3s;
         }
         
         .category-list a:hover {
-            background: #f1f3f4;
-            color: #4285f4;
+            background: #e8f0fe;
+            color: #1a73e8;
+            transform: translateX(5px);
         }
         
         .category-count {
-            background: #e8f0fe;
-            color: #4285f4;
-            padding: 2px 8px;
+            background: #4285f4;
+            color: white;
+            padding: 0.2rem 0.6rem;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 0.8rem;
+            min-width: 30px;
+            text-align: center;
         }
         
-        /* KONTEN UTAMA */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            background: #f1f3f4;
+            color: #5f6368;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .tag:hover {
+            background: #4285f4;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* MAIN CONTENT - FULL WIDTH */
         .main-content {
             flex: 1;
-            margin-left: 280px;
-            padding: 40px;
+            margin-left: 280px; /* Space for sidebar */
+            padding: 0; /* No padding for full width */
+            max-width: none; /* Remove max-width restriction */
+            width: calc(100% - 280px);
         }
         
-        /* RESPONSIVE */
+        /* CONTENT AREA - ARTICLE SPACE */
+        .article-container {
+            max-width: 100%;
+            padding: 2rem;
+        }
+        
+        /* ARTICLE STYLES - FULL WIDTH */
+        article {
+            background: white;
+            padding: 3rem;
+            border-radius: 0; /* No border radius for full width */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: none;
+            margin: 0; /* Remove margins */
+        }
+        
+        article h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        article .meta {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        article .content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        
+        article .content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        article .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        /* HOMEPAGE STYLES */
+        .homepage-articles {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .post-preview {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .post-preview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* FOOTER */
+        .site-footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 5px solid #4285f4;
+        }
+        
+        .footer-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding: 2rem;
+            background: #1a252f;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        
+        /* RESPONSIVE STYLES */
         @media (max-width: 768px) {
-            .wrapper {
+            .main-wrapper {
                 flex-direction: column;
             }
+            
             .sidebar {
+                transform: translateX(-100%);
                 width: 100%;
-                height: auto;
-                position: relative;
-                padding: 20px;
+                max-width: 320px;
             }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
             .main-content {
                 margin-left: 0;
-                padding: 20px;
+                width: 100%;
+            }
+            
+            .article-container {
+                padding: 1rem;
+            }
+            
+            article {
+                padding: 1.5rem;
+                border-radius: 0;
+                margin: 0;
+            }
+            
+            article h1 {
+                font-size: 2rem;
+            }
+            
+            .homepage-articles {
+                padding: 1rem;
+            }
+            
+            .post-preview {
+                padding: 1.5rem;
+            }
+            
+            /* Overlay when sidebar is open */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 800;
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+            
+            .article-container {
+                padding: 0.5rem;
+            }
+            
+            article {
+                padding: 1rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-container">
             <div class="site-title">
-                <h1><a href="/" style="color:inherit; text-decoration:none;">{{ site.title }}</a></h1>
-                <p>{{ site.description }}</p>
+                <h1><a href="/">{{ site.title | default: "Blog FortoolSEO" }}</a></h1>
             </div>
             
-            <nav class="nav-menu">
-                <a href="/">🏠 Home</a>
-                <a href="/about.html">📖 About</a>
-                <a href="/archive.html">📚 Archive</a>
-                <a href="/categories.html">📂 Categories</a>
-            </nav>
+            <!-- MOBILE MENU TOGGLE -->
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                ☰
+            </button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR OVERLAY (Mobile only) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Navigation Menu -->
+            <div class="sidebar-section">
+                <h3>📱 Menu</h3>
+                <nav class="nav-menu">
+                    <a href="/" {% if page.url == "/" %}class="active"{% endif %}>🏠 Home</a>
+                    <a href="/categories.html" {% if page.url contains "/categories" %}class="active"{% endif %}>📂 Categories</a>
+                    <a href="/tags.html" {% if page.url contains "/tags" %}class="active"{% endif %}>🏷️ Tags</a>
+                    <a href="/archive.html" {% if page.url contains "/archive" %}class="active"{% endif %}>📚 Archive</a>
+                    <a href="/about.html" {% if page.url contains "/about" %}class="active"{% endif %}>📖 About</a>
+                </nav>
+            </div>
             
-            <!-- KATEGORI -->
-            <div class="category-list">
-                <h3>📂 Kategori</h3>
-                <ul>
-                    {% for category in site.categories %}
+            <!-- Categories -->
+            <div class="sidebar-section">
+                <h3>📂 Categories</h3>
+                <ul class="category-list">
+                    {% assign categories = site.categories | sort %}
+                    {% for category in categories %}
                     {% capture category_name %}{{ category[0] }}{% endcapture %}
                     <li>
-                        <a href="/categories/{{ category_name | slugify }}">
-                            {{ category_name }}
+                        <a href="/categories/{{ category_name | slugify }}/">
+                            {{ category_name | capitalize }}
                             <span class="category-count">{{ category[1].size }}</span>
                         </a>
                     </li>
@@ -166,24 +454,119 @@
                 </ul>
             </div>
             
-            <!-- TAGS -->
-            <div class="category-list">
-                <h3>🏷️ Tags</h3>
-                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    {% for tag in site.tags limit:15 %}
-                    <a href="/tags/{{ tag[0] | slugify }}" 
-                       style="background:#f1f3f4; padding:4px 10px; border-radius:12px; font-size:13px; text-decoration:none; color:#5f6368;">
+            <!-- Tags -->
+            <div class="sidebar-section">
+                <h3>🏷️ Popular Tags</h3>
+                <div class="tags-container">
+                    {% assign tags = site.tags | sort %}
+                    {% for tag in tags limit:20 %}
+                    <a href="/tags/{{ tag[0] | slugify }}/" class="tag">
                         {{ tag[0] }}
                     </a>
                     {% endfor %}
                 </div>
             </div>
+            
+            <!-- Recent Posts -->
+            <div class="sidebar-section">
+                <h3>🔥 Recent Posts</h3>
+                <ul class="nav-menu">
+                    {% for post in site.posts limit:8 %}
+                    <li><a href="{{ post.url }}">{{ post.title | truncate: 40 }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </aside>
-        
-        <!-- KONTEN UTAMA -->
+
+        <!-- MAIN CONTENT - FULL WIDTH -->
         <main class="main-content">
-            {{ content }}
+            {% if page.url == "/" %}
+                <!-- HOMEPAGE LAYOUT -->
+                <div class="homepage-articles">
+                    {{ content }}
+                </div>
+            {% else %}
+                <!-- ARTICLE LAYOUT - FULL WIDTH -->
+                <div class="article-container">
+                    {{ content }}
+                </div>
+            {% endif %}
         </main>
     </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>Blog sederhana menggunakan Jekyll dan GitHub Pages untuk berbagi informasi tentang SEO, tools, dan teknologi.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/categories.html">Categories</a></li>
+                    <li><a href="/tags.html">Tags</a></li>
+                    <li><a href="/archive.html">Archive</a></li>
+                    <li><a href="/about.html">About</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/fortoolseo">GitHub</a></li>
+                    <li><a href="mailto:hello@example.com">Email</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; {{ site.time | date: "%Y" }} {{ site.title | default: "Blog FortoolSEO" }}. Dibuat dengan ❤️ menggunakan Jekyll & GitHub Pages.</p>
+            <p>Terakhir update: {{ site.time | date: "%d %B %Y" }}</p>
+        </div>
+    </footer>
+
+    <!-- MOBILE MENU SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            
+            // Toggle sidebar on mobile
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+                menuToggle.textContent = sidebar.classList.contains('active') ? '✕' : '☰';
+            });
+            
+            // Close sidebar when clicking overlay
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                menuToggle.textContent = '☰';
+            });
+            
+            // Close sidebar when clicking a link (mobile)
+            sidebar.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A' && window.innerWidth <= 768) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    menuToggle.textContent = '☰';
+                }
+            });
+            
+            // Close sidebar on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    menuToggle.textContent = '☰';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
