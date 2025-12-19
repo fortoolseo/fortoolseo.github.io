@@ -1,0 +1,36 @@
+name: Auto Generate Articles
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Setiap jam 8 pagi UTC
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install requests
+        
+    - name: Run AI Generator
+      env:
+        UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_KEY }}
+      run: |
+        cd ai-generator
+        python generate.py --auto --count 1
+        
+    - name: Commit and Push
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git add .
+        git commit -m "Auto: AI Generated Article $(date '+%Y-%m-%d')" || echo "No changes"
+        git push
