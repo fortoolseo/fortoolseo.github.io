@@ -3,753 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | {{ site.title }}</title>
-    <style>
-        /* RESET & VARIABLES */
-        :root {
-            --primary: #4285f4;
-            --secondary: #34a853;
-            --dark: #2c3e50;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-            --border: #eaeaea;
-            --shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #fafafa;
-        }
-        
-        /* HEADER */
-        .site-header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 3px solid var(--primary);
-        }
-        
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .site-title h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-        
-        .site-title a {
-            color: inherit;
-            text-decoration: none;
-        }
-        
-        .site-description {
-            color: var(--gray);
-            font-size: 0.95rem;
-            margin-top: 0.3rem;
-        }
-        
-        /* MAIN LAYOUT CONTAINER */
-        .main-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-        
-        /* SIDEBAR */
-        .sidebar {
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-            padding-bottom: 2rem;
-        }
-        
-        .sidebar-section {
-            background: white;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-        
-        .sidebar-section h3 {
-            color: var(--dark);
-            font-size: 1.1rem;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 2px solid var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-        }
-        
-        .nav-menu {
-            list-style: none;
-        }
-        
-        .nav-menu li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .nav-menu a {
-            display: block;
-            padding: 0.8rem 1rem;
-            color: #444;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            background: var(--primary);
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .category-list {
-            list-style: none;
-        }
-        
-        .category-list li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .category-list a {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.7rem 1rem;
-            background: var(--light);
-            border-radius: 8px;
-            text-decoration: none;
-            color: #555;
-            transition: all 0.3s;
-        }
-        
-        .category-list a:hover {
-            background: #e8f0fe;
-            color: var(--primary);
-            transform: translateX(5px);
-        }
-        
-        .category-count {
-            background: var(--primary);
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            min-width: 32px;
-            text-align: center;
-        }
-        
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-        }
-        
-        .tag {
-            background: #f1f3f4;
-            color: #5f6368;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .tag:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        /* MAIN CONTENT - FIXED WIDTH */
-        .main-content {
-            background: white;
-            padding: 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        /* ARTICLE HEADER */
-        .article-header {
-            padding: 3rem 3rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .article-header h1 {
-            font-size: 2.5rem;
-            line-height: 1.3;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .post-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            align-items: center;
-            color: var(--gray);
-            font-size: 0.95rem;
-            margin-top: 1.5rem;
-        }
-        
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .post-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .category-badge {
-            background: #e8f0fe;
-            color: var(--primary);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-        }
-        
-        .category-badge:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* ARTICLE CONTENT */
-        .article-content {
-            padding: 2.5rem 3rem;
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: #444;
-        }
-        
-        .article-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin: 2rem 0;
-        }
-        
-        /* HOMEPAGE ARTICLES GRID */
-        .homepage-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-        }
-        
-        .post-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .post-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-        }
-        
-        .post-thumbnail {
-            height: 200px;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .post-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .post-card:hover .post-thumbnail img {
-            transform: scale(1.05);
-        }
-        
-        .thumbnail-placeholder {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            font-size: 2rem;
-        }
-        
-        .post-card-content {
-            padding: 1.8rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .post-card-title {
-            font-size: 1.4rem;
-            line-height: 1.4;
-            margin-bottom: 1rem;
-        }
-        
-        .post-card-title a {
-            color: var(--dark);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .post-card-title a:hover {
-            color: var(--primary);
-        }
-        
-        .post-card-excerpt {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-            line-height: 1.6;
-        }
-        
-        .post-card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1.2rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.9rem;
-            color: #888;
-        }
-        
-        .post-card-author {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .post-card-category {
-            background: #f0f7ff;
-            color: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-        }
-        
-        /* FOOTER */
-        .site-footer {
-            background: var(--dark);
-            color: white;
-            margin-top: 4rem;
-            padding-top: 3rem;
-        }
-        
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-        
-        .footer-section h3 {
-            color: white;
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 2px solid var(--primary);
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .footer-links a {
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: color 0.3s;
-            display: inline-block;
-            padding: 0.2rem 0;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding: 1.5rem;
-            background: #1a252f;
-            color: #95a5a6;
-            font-size: 0.9rem;
-            margin-top: 3rem;
-        }
-        
-        /* RESPONSIVE */
-        @media (max-width: 992px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .sidebar {
-                position: static;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-            }
-            
-            .sidebar-section {
-                margin-bottom: 0;
-            }
-            
-            .main-content {
-                max-width: 100%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 0 1rem;
-                margin: 1rem auto;
-            }
-            
-            .header-container {
-                padding: 1rem;
-            }
-            
-            .homepage-grid {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-                gap: 1.5rem;
-            }
-            
-            .article-header {
-                padding: 2rem 1.5rem 1rem;
-            }
-            
-            .article-header h1 {
-                font-size: 2rem;
-            }
-            
-            .article-content {
-                padding: 1.5rem;
-            }
-            
-            .post-meta {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.8rem;
-            }
-            
-            .footer-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 0 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .site-title h1 {
-                font-size: 1.5rem;
-            }
-            
-            .article-header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .post-card-content {
-                padding: 1.2rem;
-            }
-            
-            .post-card-title {
-                font-size: 1.2rem;
-            }
-        }
-        
-        /* UTILITY CLASSES */
-        .text-primary { color: var(--primary); }
-        .text-secondary { color: var(--secondary); }
-        .text-gray { color: var(--gray); }
-        .font-bold { font-weight: 700; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .gap-2 { gap: 0.5rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-3 { margin-bottom: 1rem; }
-        .mb-4 { margin-bottom: 1.5rem; }
-    </style>
+    <title>
+        {% if page.title %}
+            {{ page.title }} | {{ site.title | default: "FortoolSEO Blog" }}
+        {% else %}
+            {{ site.title | default: "FortoolSEO Blog" }} | {{ site.description | default: "SEO Tools & Tutorials" }}
+        {% endif %}
+    </title>
+    <meta name="description" content="{{ page.description | default: site.description | default: 'Blog tentang SEO, Tools Gratis, dan tips digital marketing.' }}">
+    
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    {% if site.logo %}
+    <meta property="og:image" content="{{ site.url }}/{{ site.logo }}">
+    {% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    
+    <!-- Google Fonts (Inter + Fira Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    
+    <!-- AdSense Auto Ads -->
+    {% if site.adsense_id %}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_id }}" crossorigin="anonymous"></script>
+    {% endif %}
+    
+    <!-- Google Analytics -->
+    {% if site.google_analytics %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ site.google_analytics }}');
+    </script>
+    {% endif %}
 </head>
 <body>
+    <!-- Skip to Content (Accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <!-- HEADER -->
     <header class="site-header">
-        <div class="header-container">
-            <div class="site-title">
-                <h1><a href="/">{{ site.title | default: "Blog FortoolSEO" }}</a></h1>
-                <p class="site-description">{{ site.description | default: "Blog tentang SEO dan tools gratis" }}</p>
+        <div class="container header-container">
+            <div class="header-brand">
+                <!-- Logo atau Nama Situs -->
+                <div class="site-logo">
+                    {% if site.logo %}
+                        <a href="/" class="logo-link">
+                            <img src="{{ site.logo }}" alt="{{ site.title | default: 'FortoolSEO' }} Logo" width="40" height="40">
+                            <span class="site-name">{{ site.title | default: "FortoolSEO" }}</span>
+                        </a>
+                    {% else %}
+                        <a href="/" class="logo-text">
+                            <span class="site-name">{{ site.title | default: "FortoolSEO" }}</span>
+                        </a>
+                    {% endif %}
+                </div>
+                <p class="site-tagline">{{ site.description | default: "Blog tentang SEO dan tools gratis" }}</p>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul class="nav-list">
+                    <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
+                    <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
+                    <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
+                    <li><a href="/archive/" {% if page.url contains "/archive" %}class="active"{% endif %}>Archive</a></li>
+                    <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
+                    <li class="nav-search">
+                        <button class="search-toggle" aria-label="Toggle Search">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" aria-label="Mobile Navigation">
+            <ul class="mobile-nav-list">
+                <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>🏠 Home</a></li>
+                <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>📂 Categories</a></li>
+                <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>🏷️ Tags</a></li>
+                <li><a href="/archive/" {% if page.url contains "/archive" %}class="active"{% endif %}>📚 Archive</a></li>
+                <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>📖 About</a></li>
+                <li><a href="/search/">🔍 Search</a></li>
+            </ul>
+        </nav>
+
+        <!-- Search Overlay -->
+        <div class="search-overlay">
+            <div class="search-container">
+                <form action="/search/" method="get" class="search-form" role="search">
+                    <input type="search" name="q" placeholder="Cari artikel atau topik..." class="search-input" aria-label="Search blog">
+                    <button type="submit" class="search-submit">Cari</button>
+                </form>
+                <button class="search-close" aria-label="Close Search">×</button>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <!-- Navigation -->
-            <div class="sidebar-section">
-                <h3>📱 Menu</h3>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>🏠 Home</a></li>
-                        <li><a href="/categories.html" {% if page.url contains "/categories" %}class="active"{% endif %}>📂 Categories</a></li>
-                        <li><a href="/tags.html" {% if page.url contains "/tags" %}class="active"{% endif %}>🏷️ Tags</a></li>
-                        <li><a href="/archive.html" {% if page.url contains "/archive" %}class="active"{% endif %}>📚 Archive</a></li>
-                        <li><a href="/about.html" {% if page.url contains "/about" %}class="active"{% endif %}>📖 About</a></li>
-                    </ul>
-                </nav>
+    <!-- ADVERTISEMENT TOP -->
+    <div class="ad-section ad-top container">
+        <div class="ad-label">Iklan</div>
+        <div class="ad-container">
+            <!-- Placeholder for AdSense Ad Unit (e.g., Responsive) -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <!-- Fallback/Placeholder -->
+            <div class="ad-placeholder">
+                <p>Advertisement Space (728x90)</p>
             </div>
-            
-            <!-- Categories -->
-            <div class="sidebar-section">
-                <h3>📂 Categories</h3>
-                <ul class="category-list">
-                    {% assign categories = site.categories | sort %}
-                    {% for category in categories %}
-                    {% capture category_name %}{{ category[0] }}{% endcapture %}
-                    <li>
-                        <a href="/categories/{{ category_name | slugify }}/">
-                            {{ category_name }}
-                            <span class="category-count">{{ category[1].size }}</span>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            
-            <!-- Popular Tags -->
-            <div class="sidebar-section">
-                <h3>🏷️ Popular Tags</h3>
-                <div class="tags-container">
-                    {% assign tags = site.tags | sort %}
-                    {% for tag in tags limit:15 %}
-                    <a href="/tags/{{ tag[0] | slugify }}/" class="tag">
-                        {{ tag[0] }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-        </aside>
+        </div>
+    </div>
 
-        <!-- MAIN CONTENT AREA -->
-        <main class="main-content">
-            {% if page.url == "/" %}
-                <!-- HOMEPAGE - ARTICLES GRID -->
-                <div class="homepage-grid">
-                    {% for post in site.posts %}
-                    <article class="post-card">
-                        <!-- Thumbnail -->
-                        <div class="post-thumbnail">
-                            {% if post.thumbnail %}
-                            <img src="{{ post.thumbnail }}" alt="{{ post.title }}" loading="lazy">
-                            {% else %}
-                            <div class="thumbnail-placeholder">
-                                📝
-                            </div>
-                            {% endif %}
+    <!-- MAIN CONTENT WRAPPER -->
+    <main id="main-content" class="main-wrapper container">
+        <div class="content-layout">
+            <!-- MAIN CONTENT AREA -->
+            <div class="primary-content">
+                {% if page.url == "/" %}
+                <!-- HOMEPAGE - HERO & ARTICLES GRID -->
+                <section class="hero-section">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Panduan & Tools SEO Terbaru</h1>
+                        <p class="hero-description">Temukan tutorial mendalam, analisis tools gratis, dan strategi untuk meningkatkan ranking website Anda.</p>
+                        <div class="hero-actions">
+                            <a href="/categories/tutorial/" class="btn btn-primary">Mulai Belajar</a>
+                            <a href="/tools/" class="btn btn-secondary">Lihat Tools</a>
                         </div>
-                        
-                        <!-- Card Content -->
-                        <div class="post-card-content">
-                            <h2 class="post-card-title">
-                                <a href="{{ post.url }}">{{ post.title }}</a>
-                            </h2>
-                            
-                            <p class="post-card-excerpt">
-                                {{ post.excerpt | strip_html | truncatewords: 25 }}
-                            </p>
-                            
-                            <div class="post-card-meta">
-                                <div class="post-card-author">
-                                    <span>👤 {{ post.author | default: "Admin" }}</span>
-                                    <span class="text-gray">•</span>
-                                    <time datetime="{{ post.date | date_to_xmlschema }}">
-                                        {{ post.date | date: "%d %b %Y" }}
-                                    </time>
-                                </div>
-                                
-                                {% if post.categories.first %}
-                                <div class="post-card-category">
-                                    {{ post.categories.first }}
+                    </div>
+                </section>
+
+                <!-- Featured Posts -->
+                <section class="featured-posts">
+                    <h2 class="section-title"><span>🔥 Artikel Unggulan</span></h2>
+                    <div class="featured-grid">
+                        {% assign featured = site.posts | where: "featured", true | limit: 3 %}
+                        {% for post in featured %}
+                        <article class="featured-card">
+                            <div class="featured-card-image">
+                                {% if post.image %}
+                                <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy">
+                                {% else %}
+                                <div class="image-placeholder">
+                                    <span class="placeholder-icon">📈</span>
                                 </div>
                                 {% endif %}
                             </div>
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-                
-            {% else %}
-                <!-- ARTICLE PAGE -->
-                <article>
-                    <!-- Article Header with Meta -->
-                    <div class="article-header">
-                        <h1>{{ page.title }}</h1>
-                        
+                            <div class="featured-card-content">
+                                <div class="post-meta">
+                                    <span class="post-category">{{ post.categories.first | default: "SEO" }}</span>
+                                    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+                                </div>
+                                <h3 class="featured-card-title">
+                                    <a href="{{ post.url }}">{{ post.title }}</a>
+                                </h3>
+                                <p class="featured-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+                                <a href="{{ post.url }}" class="read-more">Baca Selengkapnya →</a>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <!-- All Posts Grid -->
+                <section class="all-posts">
+                    <h2 class="section-title"><span>📚 Artikel Terbaru</span></h2>
+                    <div class="posts-grid">
+                        {% for post in paginator.posts %}
+                        <article class="post-card">
+                            <div class="post-card-image">
+                                {% if post.thumbnail %}
+                                <img src="{{ post.thumbnail }}" alt="{{ post.title }}" loading="lazy">
+                                {% else %}
+                                <div class="thumbnail-placeholder">
+                                    <span class="placeholder-icon">📝</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="post-card-content">
+                                <div class="post-card-meta">
+                                    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d %b %Y" }}</time>
+                                    <span class="meta-separator">•</span>
+                                    <span class="reading-time">{{ post.content | reading_time | default: 3 }} min baca</span>
+                                </div>
+                                <h3 class="post-card-title">
+                                    <a href="{{ post.url }}">{{ post.title }}</a>
+                                </h3>
+                                <p class="post-card-excerpt">
+                                    {{ post.excerpt | strip_html | truncatewords: 20 }}
+                                </p>
+                                <div class="post-card-footer">
+                                    <div class="post-card-categories">
+                                        {% for category in post.categories limit:2 %}
+                                        <a href="/categories/{{ category | slugify }}/" class="category-tag">{{ category }}</a>
+                                        {% endfor %}
+                                    </div>
+                                    <a href="{{ post.url }}" class="post-card-link">→</a>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if paginator.total_pages > 1 %}
+                    <nav class="pagination" role="navigation" aria-label="Pagination Navigation">
+                        {% if paginator.previous_page %}
+                        <a href="{{ paginator.previous_page_path }}" class="pagination-prev">← Sebelumnya</a>
+                        {% endif %}
+                        <span class="pagination-current">Halaman {{ paginator.page }} dari {{ paginator.total_pages }}</span>
+                        {% if paginator.next_page %}
+                        <a href="{{ paginator.next_page_path }}" class="pagination-next">Selanjutnya →</a>
+                        {% endif %}
+                    </nav>
+                    {% endif %}
+                </section>
+
+                {% else %}
+                <!-- INDIVIDUAL PAGE/POST CONTENT -->
+                <article class="single-post">
+                    <header class="post-header">
                         <div class="post-meta">
-                            <div class="meta-item">
-                                <span>📅</span>
-                                <time datetime="{{ page.date | date_to_xmlschema }}">
-                                    {{ page.date | date: "%d %B %Y" }}
-                                </time>
-                            </div>
-                            
-                            <div class="meta-item">
-                                <span>👤</span>
-                                <span>{{ page.author | default: "Admin" }}</span>
-                            </div>
-                            
-                            <div class="meta-item">
-                                <span>⏱️</span>
-                                <span>{{ page.content | reading_time }} min read</span>
-                            </div>
-                            
-                            {% if page.tags.size > 0 %}
-                            <div class="meta-item">
-                                <span>🏷️</span>
-                                <span>{{ page.tags | join: ", " }}</span>
-                            </div>
+                            <time datetime="{{ page.date | date_to_xmlschema }}" class="post-date">{{ page.date | date: "%d %B %Y" }}</time>
+                            <span class="meta-separator">•</span>
+                            <span class="reading-time">{{ content | reading_time | default: 5 }} min baca</span>
+                            {% if page.author %}
+                            <span class="meta-separator">•</span>
+                            <span class="post-author">👤 {{ page.author }}</span>
                             {% endif %}
                         </div>
-                        
-                        <!-- Categories -->
+                        <h1 class="post-title">{{ page.title }}</h1>
+                        {% if page.subtitle %}
+                        <p class="post-subtitle">{{ page.subtitle }}</p>
+                        {% endif %}
                         {% if page.categories.size > 0 %}
                         <div class="post-categories">
                             {% for category in page.categories %}
-                            <a href="/categories/{{ category | slugify }}/" class="category-badge">
-                                {{ category }}
-                            </a>
+                            <a href="/categories/{{ category | slugify }}/" class="category-badge">{{ category }}</a>
                             {% endfor %}
                         </div>
                         {% endif %}
+                    </header>
+
+                    <!-- In-Article Ad -->
+                    <div class="ad-section ad-in-article">
+                        <div class="ad-label">Sponsor</div>
+                        <div class="ad-container">
+                            <!-- Placeholder for In-Article Ad -->
+                            <div class="ad-placeholder">
+                                <p>In-Article Ad (300x250)</p>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- Article Content -->
-                    <div class="article-content">
+
+                    <div class="post-content">
                         {{ content }}
                     </div>
+
+                    <!-- Post Tags -->
+                    {% if page.tags.size > 0 %}
+                    <footer class="post-footer">
+                        <div class="post-tags">
+                            <strong>Tags:</strong>
+                            {% for tag in page.tags %}
+                            <a href="/tags/{{ tag | slugify }}/" class="post-tag">{{ tag }}</a>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Share Buttons -->
+                        <div class="post-share">
+                            <strong>Bagikan:</strong>
+                            <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn twitter">Twitter</a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn facebook">Facebook</a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn linkedin">LinkedIn</a>
+                        </div>
+                    </footer>
+                    {% endif %}
+
+                    <!-- Related Posts -->
+                    {% if page.related_posts %}
+                    <section class="related-posts">
+                        <h3>Artikel Terkait</h3>
+                        <div class="related-grid">
+                            {% for related in page.related_posts limit:3 %}
+                            <div class="related-card">
+                                <h4><a href="{{ related.url }}">{{ related.title }}</a></h4>
+                                <p>{{ related.excerpt | truncate: 80 }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    {% endif %}
                 </article>
-            {% endif %}
-        </main>
+                {% endif %}
+            </div><!-- .primary-content -->
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <!-- About Widget -->
+                <div class="sidebar-widget widget-about">
+                    <div class="widget-header">
+                        <h3 class="widget-title">👋 Tentang Blog</h3>
+                    </div>
+                    <div class="widget-content">
+                        <p>Blog ini membahas tools SEO gratis, tutorial, dan strategi untuk meningkatkan performa website. Dibuat untuk membantu pemula dan profesional.</p>
+                        <a href="/about/" class="widget-link">Selengkapnya →</a>
+                    </div>
+                </div>
+
+                <!-- Search Widget -->
+                <div class="sidebar-widget widget-search">
+                    <div class="widget-header">
+                        <h3 class="widget-title">🔍 Cari Artikel</h3>
+                    </div>
+                    <div class="widget-content">
+                        <form action="/search/" method="get" class="sidebar-search-form">
+                            <input type="search" name="q" placeholder="Kata kunci..." class="sidebar-search-input">
+                            <button type="submit" class="sidebar-search-btn">Cari</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Newsletter Widget -->
+                <div class="sidebar-widget widget-newsletter">
+                    <div class="widget-header">
+                        <h3 class="widget-title">📧 Newsletter</h3>
+                    </div>
+                    <div class="widget-content">
+                        <p>Dapatkan update artikel terbaru langsung ke email Anda.</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Alamat email Anda" required class="newsletter-input">
+                            <button type="submit" class="newsletter-btn">Berlangganan</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Ad Unit Sidebar -->
+                <div class="sidebar-widget widget-ad">
+                    <div class="ad-label">Iklan</div>
+                    <div class="ad-container ad-sidebar">
+                        <!-- Placeholder for Sidebar Ad (300x600) -->
+                        <div class="ad-placeholder">
+                            <p>Sidebar Ad (300x600)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="sidebar-widget widget-categories">
+                    <div class="widget-header">
+                        <h3 class="widget-title">📂 Kategori</h3>
+                    </div>
+                    <div class="widget-content">
+                        <ul class="category-list">
+                            {% assign categories = site.categories | sort %}
+                            {% for category in categories limit:8 %}
+                            <li>
+                                <a href="/categories/{{ category[0] | slugify }}/">
+                                    {{ category[0] }}
+                                    <span class="category-count">({{ category[1].size }})</span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Popular Tags Widget -->
+                <div class="sidebar-widget widget-tags">
+                    <div class="widget-header">
+                        <h3 class="widget-title">🏷️ Tag Populer</h3>
+                    </div>
+                    <div class="widget-content">
+                        <div class="tags-cloud">
+                            {% assign tags = site.tags | sort %}
+                            {% for tag in tags limit:15 %}
+                            <a href="/tags/{{ tag[0] | slugify }}/" class="tag">{{ tag[0] }} ({{ tag[1].size }})</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Posts Widget -->
+                <div class="sidebar-widget widget-recent">
+                    <div class="widget-header">
+                        <h3 class="widget-title">🕐 Terbaru</h3>
+                    </div>
+                    <div class="widget-content">
+                        <ul class="recent-posts-list">
+                            {% for post in site.posts limit:5 %}
+                            <li>
+                                <a href="{{ post.url }}" class="recent-post-title">{{ post.title }}</a>
+                                <span class="recent-post-date">{{ post.date | date: "%d %b" }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </aside><!-- .sidebar -->
+        </div><!-- .content-layout -->
+    </main><!-- .main-wrapper -->
+
+    <!-- ADVERTISEMENT BOTTOM -->
+    <div class="ad-section ad-bottom container">
+        <div class="ad-label">Iklan</div>
+        <div class="ad-container">
+            <!-- Placeholder for Bottom Ad -->
+            <div class="ad-placeholder">
+                <p>Bottom Ad (728x90 or 970x90)</p>
+            </div>
+        </div>
     </div>
 
     <!-- FOOTER -->
     <footer class="site-footer">
-        <div class="footer-container">
-            <!-- About Section -->
-            <div class="footer-section">
-                <h3>Tentang Blog</h3>
-                <p>Blog sederhana yang dibuat dengan Jekyll dan GitHub Pages. Berbagi informasi tentang SEO, tools gratis, dan teknologi terbaru.</p>
-                <div class="mt-4">
-                    <p><strong>📍</strong> Update terakhir: {{ site.time | date: "%d %B %Y" }}</p>
+        <div class="footer-container container">
+            <div class="footer-grid">
+                <!-- About Column -->
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        {% if site.logo %}
+                        <img src="{{ site.logo }}" alt="{{ site.title }} Logo" width="40">
+                        {% endif %}
+                        <span class="footer-site-name">{{ site.title | default: "FortoolSEO" }}</span>
+                    </div>
+                    <p class="footer-about">
+                        {{ site.description | default: "Sumber terpercaya untuk tutorial SEO, review tools, dan tips digital marketing." }}
+                    </p>
+                    <div class="footer-social">
+                        {% if site.social.twitter %}
+                        <a href="{{ site.social.twitter }}" target="_blank" rel="noopener" aria-label="Twitter">𝕏</a>
+                        {% endif %}
+                        {% if site.social.github %}
+                        <a href="{{ site.social.github }}" target="_blank" rel="noopener" aria-label="GitHub">🐙</a>
+                        {% endif %}
+                        {% if site.social.linkedin %}
+                        <a href="{{ site.social.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                        {% endif %}
+                        {% if site.social.youtube %}
+                        <a href="{{ site.social.youtube }}" target="_blank" rel="noopener" aria-label="YouTube">▶️</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-column">
+                    <h4 class="footer-title">Tautan Cepat</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">🏠 Home</a></li>
+                        <li><a href="/categories/">📂 Categories</a></li>
+                        <li><a href="/tags/">🏷️ Tags</a></li>
+                        <li><a href="/archive/">📚 Archive</a></li>
+                        <li><a href="/privacy/">🔒 Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Top Categories -->
+                <div class="footer-column">
+                    <h4 class="footer-title">Kategori Top</h4>
+                    <ul class="footer-links">
+                        {% assign top_cats = site.categories | sort | limit: 6 %}
+                        {% for category in top_cats %}
+                        <li>
+                            <a href="/categories/{{ category[0] | slugify }}/">
+                                {{ category[0] }}
+                                <span class="footer-count">({{ category[1].size }})</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Contact/Newsletter -->
+                <div class="footer-column">
+                    <h4 class="footer-title">Tetap Terhubung</h4>
+                    <p>Berlangganan untuk update mingguan.</p>
+                    <form class="footer-newsletter">
+                        <input type="email" placeholder="Email Anda" required class="footer-email-input">
+                        <button type="submit" class="footer-email-btn">→</button>
+                    </form>
+                    <div class="footer-contact">
+                        <p><strong>✉️ Email:</strong> <a href="mailto:hello@example.com">hello@example.com</a></p>
+                        <p class="footer-update"><strong>🔄 Update:</strong> {{ site.time | date: "%d %b %Y" }}</p>
+                    </div>
+                </div>
+            </div><!-- .footer-grid -->
+
+            <!-- Copyright & Credits -->
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    &copy; {{ site.time | date: "%Y" }} {{ site.title | default: "FortoolSEO Blog" }}. All rights reserved.
+                </div>
+                <div class="footer-credits">
+                    Dibuat dengan ❤️ menggunakan <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a> & <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+                    <span class="footer-stats">
+                        📊 {{ site.posts | size }} Artikel | 🏷️ {{ site.tags | size }} Tags
+                    </span>
                 </div>
             </div>
-            
-            <!-- Quick Links -->
-            <div class="footer-section">
-                <h3>Tautan Cepat</h3>
-                <ul class="footer-links">
-                    <li><a href="/">🏠 Beranda</a></li>
-                    <li><a href="/categories.html">📂 Kategori</a></li>
-                    <li><a href="/tags.html">🏷️ Tags</a></li>
-                    <li><a href="/archive.html">📚 Arsip</a></li>
-                    <li><a href="/about.html">📖 Tentang</a></li>
-                </ul>
-            </div>
-            
-            <!-- Popular Categories -->
-            <div class="footer-section">
-                <h3>Kategori Populer</h3>
-                <ul class="footer-links">
-                    {% assign popular_categories = site.categories | sort | limit: 6 %}
-                    {% for category in popular_categories %}
-                    <li>
-                        <a href="/categories/{{ category[0] | slugify }}/">
-                            {{ category[0] }} ({{ category[1].size }})
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        
-        <!-- Copyright -->
-        <div class="copyright">
-            <p>&copy; {{ site.time | date: "%Y" }} {{ site.title | default: "Blog FortoolSEO" }}. All rights reserved.</p>
-            <p class="mt-2">Dibuat dengan ❤️ menggunakan Jekyll & GitHub Pages</p>
-        </div>
+        </div><!-- .footer-container -->
     </footer>
 
-    <!-- SCRIPTS -->
+    <!-- JavaScript -->
+    <script src="/assets/js/main.js" defer></script>
+    
+    <!-- Search & Mobile Menu Script -->
     <script>
-        // Reading time estimation
-        function estimateReadingTime(text) {
-            const wordsPerMinute = 200;
-            const words = text.split(/\s+/).length;
-            return Math.ceil(words / wordsPerMinute);
-        }
-        
-        // Apply reading time to all articles
         document.addEventListener('DOMContentLoaded', function() {
-            const articleContents = document.querySelectorAll('.article-content');
-            articleContents.forEach(content => {
-                const text = content.textContent;
-                const readingTime = estimateReadingTime(text);
-                const readingTimeElements = document.querySelectorAll('.reading-time');
-                readingTimeElements.forEach(el => {
-                    el.textContent = readingTime;
+            // Mobile Menu Toggle
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileNav = document.querySelector('.mobile-nav');
+            
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', function() {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    mobileNav.classList.toggle('is-active');
                 });
+            }
+            
+            // Search Overlay Toggle
+            const searchToggle = document.querySelector('.search-toggle');
+            const searchOverlay = document.querySelector('.search-overlay');
+            const searchClose = document.querySelector('.search-close');
+            
+            if (searchToggle) {
+                searchToggle.addEventListener('click', () => {
+                    searchOverlay.classList.add('is-active');
+                });
+            }
+            
+            if (searchClose) {
+                searchClose.addEventListener('click', () => {
+                    searchOverlay.classList.remove('is-active');
+                });
+            }
+            
+            // Close overlay on ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    searchOverlay.classList.remove('is-active');
+                }
             });
+            
+            // Estimate reading time for posts
+            function estimateReadingTime(text) {
+                const wordsPerMinute = 200;
+                const wordCount = text.trim().split(/\s+/).length;
+                return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
+            }
+            
+            // Apply reading time to single posts
+            const postContent = document.querySelector('.post-content');
+            if (postContent) {
+                const text = postContent.textContent || "";
+                const readingTime = estimateReadingTime(text);
+                const timeElement = document.querySelector('.reading-time');
+                if (timeElement) {
+                    timeElement.textContent = `${readingTime} min baca`;
+                }
+            }
         });
     </script>
 </body>
