@@ -17,7 +17,8 @@ const AUTO_COMMIT = args.commit !== 'false';
 // API Keys (free tiers)
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''; // Get free at console.groq.com
 const PEXELS_API_KEY = process.env.PEXELS_API_KEY || ''; // Get free at pexels.com/api
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || ''; // Get free at openrouter.ai (alternative)
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || ''; // optional
+const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY || ''; // optional fallback
 
 // ==================== UTILITY FUNCTIONS ====================
 
@@ -72,15 +73,21 @@ function makeRequest(url, method = 'GET', headers = {}, body = null) {
 
 // Generate artikel dengan Groq API (free) atau fallback
 async function generateArticleWithGroq(topic, category) {
-  // Try OpenRouter first (more reliable)
-  if (OPENROUTER_API_KEY) {
-    const result = await tryOpenRouterAPI(topic, category);
+  // Try Groq first
+  if (GROQ_API_KEY) {
+    const result = await tryGroqAPI(topic, category);
     if (result) return result;
   }
 
-  // Try Groq API
-  if (GROQ_API_KEY) {
-    const result = await tryGroqAPI(topic, category);
+  // Try Hugging Face as fallback
+  if (HUGGINGFACE_API_KEY) {
+    const result = await tryHuggingFaceAPI(topic, category);
+    if (result) return result;
+  }
+
+  // Optional: try OpenRouter if configured
+  if (OPENROUTER_API_KEY) {
+    const result = await tryOpenRouterAPI(topic, category);
     if (result) return result;
   }
 
@@ -135,22 +142,22 @@ Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
 // Try Groq API dengan model fallback
 async function tryGroqAPI(topic, category) {
   try {
-    const prompt = `Buatkan artikel SEO blog yang berkualitas tinggi tentang: "${topic}"
-    
-Kategori: ${category}
-Bahasa: Indonesian
-Format: Gunakan struktur HTML dengan heading h2 yang jelas dan h3 untuk subseksi.
+    const prompt = `Create a high-quality SEO blog article about: "${topic}".
 
-Struktur yang diinginkan:
-1. Pengenalan (h2 id="pengenalan")
-2. Manfaat (h2 id="manfaat") - minimal 4 poin
-3. Langkah-langkah Implementasi (h2 id="langkah") - minimal 5 langkah dengan h3
-4. Tools Gratis Rekomendasi (h2 id="tools") - minimal 3 tools
-5. Tips & Trik Praktis (h2 id="tips") - minimal 4 tips
-6. Kesimpulan (h2 id="kesimpulan")
+Requirements:
+- Language: English
+- Tone: Informative, original, human-like
+- Length: between 700 and 1500 words (choose a random length in this range)
+- SEO: include the main keyword in the first 100 words, use semantic headings, and natural keyword variations
+- Anti-duplicate: write unique content, avoid copying known sources
+- Anti-AI-detector: vary sentence length, use idiomatic phrases and human-like structure
+- Include sections in HTML with h2/h3 IDs: #introduction (#pengenalan), #benefits (#manfaat), #how-to (#langkah), #tools (#tools), #tips (#tips), #conclusion (#kesimpulan)
+- Add suggested categories/tags such as: tips, tricks, how-to, life-hack, online-business, airdrop, crypto, gaming, android, ios
+- Where relevant, include 1-2 external links (e.g., official app store links or reputable sources) and at least one link back to the blog homepage (https://fortoolseo.github.io)
+- For apps mention platform and provide Play Store or App Store link if available
+- Output: only the article HTML starting from the first h2 tag; do NOT include YAML frontmatter.
 
-Pastikan: Konten informatif, 1500+ kata, natural Indonesian.
-Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
+Ensure the structure is clear and headings use ids exactly: pengenalan, manfaat, langkah, tools, tips, kesimpulan.`;
 
     const models = [
       'mixtral-8x7b-32768',
@@ -183,6 +190,37 @@ Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
     }
   } catch (error) {
     // Silent fail
+  }
+  return null;
+}
+
+// Try Hugging Face Inference API as fallback
+async function tryHuggingFaceAPI(topic, category) {
+  try {
+    const prompt = `Create a high-quality SEO blog article about: "${topic}".\n\nRequirements:\n- Language: English\n- Tone: Informative, original, human-like\n- Length: between 700 and 1500 words (choose a random length in this range)\n- SEO: include the main keyword in the first 100 words, use semantic headings, and natural keyword variations\n- Anti-duplicate: write unique content, avoid copying known sources\n- Anti-AI-detector: vary sentence length, use idiomatic phrases and human-like structure\n- Include sections in HTML with h2/h3 IDs: pengenalan, manfaat, langkah, tools, tips, kesimpulan\n- Add suggested categories/tags such as: tips, tricks, how-to, life-hack, online-business, airdrop, crypto, gaming, android, ios\n- Where relevant, include 1-2 external links (e.g., official app store links or reputable sources) and at least one link back to the blog homepage (https://fortoolseo.github.io)\n- For apps mention platform and provide Play Store or App Store link if available\n- Output: only the article HTML starting from the first h2 tag; do NOT include YAML frontmatter.`;
+
+    const hfUrl = 'https://api-inference.huggingface.co/models/gpt2';
+    const response = await makeRequest(hfUrl, 'POST', {
+      'Authorization': `Bearer ${HUGGINGFACE_API_KEY}`,
+      'Content-Type': 'application/json'
+    }, {
+      inputs: prompt,
+      parameters: {
+        max_new_tokens: 1200,
+        temperature: 0.7,
+        return_full_text: false
+      }
+    });
+
+    if (response.status === 200 && response.data && (response.data.generated_text || Array.isArray(response.data))) {
+      console.log('✅ Using Hugging Face API');
+      if (response.data.generated_text) return response.data.generated_text;
+      if (Array.isArray(response.data) && response.data.length > 0 && response.data[0].generated_text) return response.data[0].generated_text;
+      // Some models return plain text
+      if (typeof response.data === 'string') return response.data;
+    }
+  } catch (e) {
+    // fail silently
   }
   return null;
 }
@@ -525,6 +563,13 @@ async function main() {
   // Auto commit & push
   if (createdFiles.length > 0) {
     console.log('\n' + '━'.repeat(30));
+    // Generate category & tag pages so /categories/{slug}/ and /tags/{slug}/ exist
+    try {
+      generateTaxonomyPages();
+    } catch (e) {
+      console.log('⚠️  Failed to generate taxonomy pages:', e.message);
+    }
+
     commitAndPush(createdFiles);
   }
 
@@ -536,6 +581,89 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('❌ Error:', reason);
   process.exit(1);
 });
+
+// Run
+// ================= TAXONOMY PAGES GENERATOR =================
+
+function slugify(text) {
+  return text.toString().toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
+}
+
+function parseFrontMatter(content) {
+  const fm = {};
+  const match = content.match(/---([\s\S]*?)---/);
+  if (!match) return fm;
+  const body = match[1];
+  const lines = body.split(/\r?\n/);
+  for (const line of lines) {
+    const m = line.match(/^\s*(\w+):\s*(.*)$/);
+    if (m) {
+      const key = m[1].trim();
+      let val = m[2].trim();
+      if (val.startsWith('[') && val.endsWith(']')) {
+        try {
+          val = JSON.parse(val.replace(/'/g, '"'));
+        } catch (e) {
+          val = val.slice(1, -1).split(',').map(s => s.replace(/"|'/g, '').trim());
+        }
+      } else {
+        val = val.replace(/^"|"$/g, '').replace(/^'|'$/g, '');
+      }
+      fm[key] = val;
+    }
+  }
+  return fm;
+}
+
+function generateTaxonomyPages() {
+  const postsDir = path.join(process.cwd(), '_posts');
+  if (!fs.existsSync(postsDir)) return;
+
+  const categoriesSet = new Set();
+  const tagsSet = new Set();
+
+  const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.html') || f.endsWith('.md'));
+  for (const file of files) {
+    const content = fs.readFileSync(path.join(postsDir, file), 'utf8');
+    const fm = parseFrontMatter(content);
+    if (fm.categories) {
+      if (Array.isArray(fm.categories)) fm.categories.forEach(c => categoriesSet.add(c));
+      else categoriesSet.add(fm.categories);
+    }
+    if (fm.tags) {
+      if (Array.isArray(fm.tags)) fm.tags.forEach(t => tagsSet.add(t));
+      else tagsSet.add(fm.tags);
+    }
+  }
+
+  // Ensure directories
+  const categoriesDir = path.join(process.cwd(), 'categories');
+  const tagsDir = path.join(process.cwd(), 'tags');
+  if (!fs.existsSync(categoriesDir)) fs.mkdirSync(categoriesDir, { recursive: true });
+  if (!fs.existsSync(tagsDir)) fs.mkdirSync(tagsDir, { recursive: true });
+
+  // Write category pages
+  categoriesSet.forEach(cat => {
+    const slug = slugify(cat);
+    const dir = path.join(categoriesDir, slug);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const filePath = path.join(dir, 'index.html');
+    const content = `---\nlayout: default\ntitle: "${cat}"\n---\n\n<section class="category-page">\n  <h1>Category: ${cat}</h1>\n  <div class="posts-grid">\n    {% raw %}{% assign posts = site.categories['${cat}'] %}{% endraw %}\n    {% raw %}{% if posts %}{% endraw %}\n    {% raw %}{% for post in posts %}{% endraw %}\n      <article class="post-card">\n        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>\n        <small>{{ post.date | date: "%b %d, %Y" }}</small>\n      </article>\n    {% raw %}{% endfor %}{% endraw %}\n    {% raw %}{% else %}{% endraw %}\n    <p>No articles in this category yet.</p>\n    {% raw %}{% endif %}{% endraw %}\n  </div>\n</section>\n`;
+    fs.writeFileSync(filePath, content, 'utf8');
+  });
+
+  // Write tag pages
+  tagsSet.forEach(tag => {
+    const slug = slugify(tag);
+    const dir = path.join(tagsDir, slug);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const filePath = path.join(dir, 'index.html');
+    const content = `---\nlayout: default\ntitle: "${tag}"\n---\n\n<section class="tag-page">\n  <h1>Tag: ${tag}</h1>\n  <div class="posts-grid">\n    {% raw %}{% assign posts = site.tags['${tag}'] %}{% endraw %}\n    {% raw %}{% if posts %}{% endraw %}\n    {% raw %}{% for post in posts %}{% endraw %}\n      <article class="post-card">\n        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>\n        <small>{{ post.date | date: "%b %d, %Y" }}</small>\n      </article>\n    {% raw %}{% endfor %}{% endraw %}\n    {% raw %}{% else %}{% endraw %}\n    <p>No articles with this tag yet.</p>\n    {% raw %}{% endif %}{% endraw %}\n  </div>\n</section>\n`;
+    fs.writeFileSync(filePath, content, 'utf8');
+  });
+
+  console.log(`✅ Generated ${categoriesSet.size} category pages and ${tagsSet.size} tag pages.`);
+}
 
 // Run
 main();
