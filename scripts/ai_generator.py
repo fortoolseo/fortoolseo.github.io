@@ -13,57 +13,57 @@ class SimpleGenerator:
         
         self.templates = {
             "SEO": [
-                ("5 Tips SEO Terbaru 2024", """
-## Kenapa SEO Penting?
-SEO membantu website muncul di halaman pertama Google.
+                ("5 Latest SEO Tips 2024", """
+## Why SEO Matters?
+SEO helps your website appear on the first page of Google.
 
-## Tools Gratis:
+## Free Tools:
 1. Google Search Console
 2. Google Analytics
 3. PageSpeed Insights
 
-## Tips Praktis:
-- Riset keyword dengan Google Trends
-- Optimasi kecepatan loading
-- Buat konten berkualitas"""),
+## Practical Tips:
+- Research keywords with Google Trends
+- Optimize page load speed
+- Create high-quality content"""),
                 
-                ("Cara Optimasi Website untuk Pemula", """
-## Langkah 1: Technical SEO
-- Pastikan website mobile friendly
-- Gunakan SSL certificate
-- Optimasi gambar
+                ("Website Optimization Guide for Beginners", """
+## Step 1: Technical SEO
+- Ensure the website is mobile-friendly
+- Use an SSL certificate
+- Optimize images
 
-## Langkah 2: Konten
-- Buat artikel panjang (1000+ kata)
-- Gunakan heading H2, H3
-- Tambah gambar dan video""")
+## Step 2: Content
+- Write long-form articles (1000+ words)
+- Use H2 and H3 headings
+- Add images and videos""")
             ],
             "Digital Marketing": [
-                ("Strategi Social Media 2024", """
-## Platform Populer:
-1. Instagram untuk visual
-2. TikTok untuk gen Z  
-3. LinkedIn untuk B2B
+                ("Social Media Strategy 2024", """
+## Popular Platforms:
+1. Instagram for visual content
+2. TikTok for Gen Z
+3. LinkedIn for B2B
 
 ## Content Ideas:
-- Tutorial singkat
-- Testimoni customer
-- Behind the scenes""")
-            ]
+- Short tutorials
+- Customer testimonials
+- Behind the scenes"""),
+            ],
         }
     
     def generate(self):
-        """Generate satu artikel"""
-        
-        # Pilih kategori random
+        """Generate one article"""
+
+        # Choose a random category
         category = random.choice(self.categories)
         
         # Pilih template
         if category in self.templates:
             title, content = random.choice(self.templates[category])
         else:
-            title = f"Panduan {category} 2024"
-            content = f"Artikel tentang {category} dan implementasinya."
+            title = f"{category} Guide 2024"
+            content = f"Article about {category} and practical implementation."
         
         # Buat konten lengkap
         full_content = self.create_article(title, category, content)
@@ -71,38 +71,34 @@ SEO membantu website muncul di halaman pertama Google.
         # Simpan file
         filename = self.save_to_file(title, full_content, category)
         
-        print(f"✅ Artikel berhasil dibuat: {filename}")
+        print(f"✅ Article created: {filename}")
         return filename
     
     def create_article(self, title, category, body):
-        """Buat artikel dengan front matter"""
-        
-        # Front matter untuk Jekyll
-        front_matter = f"""---
-layout: post
-title: "{title}"
-date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} +0700
-categories: [{category}]
-tags: [{category.lower()}, tips, tutorial]
-author: AI Generator
-image: https://picsum.photos/1200/630?random={random.randint(1, 1000)}
-description: "{title}. Pelajari cara implementasi dengan mudah."
----
+        """Create article content with Jekyll front matter."""
+        front_matter = (
+            f"---\n"
+            f"layout: post\n"
+            f"title: \"{title}\"\n"
+            f"date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} +0700\n"
+            f"categories: [{category}]\n"
+            f"tags: [{category.lower()}, tips, tutorial]\n"
+            f"author: AI Generator\n"
+            f"image: https://picsum.photos/1200/630?random={random.randint(1, 1000)}\n"
+            f"description: \"{title}. Learn how to implement the strategies easily.\"\n"
+            f"---\n\n"
+        )
 
-"""
-        
-        # Body artikel
-        article_body = f"""# {title}
+        article_body = (
+            f"# {title}\n\n"
+            f"{body}\n\n"
+            "## Conclusion\n"
+            f"By applying the strategies above, you can improve your {category.lower()} performance.\n\n"
+            "---\n"
+            f"*Article generated automatically in GitHub Codespace*\n"
+            f"*Date: {datetime.now().strftime('%d %B %Y %H:%M')}*"
+        )
 
-{body}
-
-## Kesimpulan
-Dengan menerapkan strategi di atas, Anda bisa meningkatkan performa {category.lower()}.
-
----
-*Artikel dibuat otomatis di GitHub Codespace*
-*Tanggal: {datetime.now().strftime('%d %B %Y %H:%M')}*"""
-        
         return front_matter + article_body
     
     def save_to_file(self, title, content, category):
@@ -130,16 +126,16 @@ Dengan menerapkan strategi di atas, Anda bisa meningkatkan performa {category.lo
 
 # Test langsung di Codespace
 if __name__ == "__main__":
-    print("🚀 AI Generator di Codespace")
+    print("🚀 AI Generator in Codespace")
     print("=" * 50)
     
     generator = SimpleGenerator()
     
     # Generate beberapa artikel
     for i in range(3):
-        print(f"\n📝 Membuat artikel {i+1}/3...")
+        print(f"\n📝 Creating article {i+1}/3...")
         generator.generate()
     
     print("\n" + "=" * 50)
-    print("✅ Semua artikel berhasil dibuat!")
-    print("📁 Cek folder _posts/ untuk hasilnya")
+    print("✅ All articles generated successfully!")
+    print("📁 Check the _posts/ folder for results")
