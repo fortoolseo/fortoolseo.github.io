@@ -1,0 +1,22 @@
+{
+    "SEO": {
+        "keywords": ["optimasi", "google", "ranking", "backlink", "keyword"],
+        "subtopics": ["Technical SEO", "On-Page SEO", "Off-Page SEO", "Local SEO"]
+    },
+    "Digital Marketing": {
+        "keywords": ["pemasaran", "sosial media", "iklan", "konversi", "lead"],
+        "subtopics": ["Social Media Marketing", "Email Marketing", "Content Marketing", "PPC"]
+    },
+    "Website Development": {
+        "keywords": ["web", "coding", "programming", "responsive", "hosting"],
+        "subtopics": ["Frontend", "Backend", "WordPress", "E-commerce"]
+    },
+    "Content Writing": {
+        "keywords": ["artikel", "blog", "copywriting", "konten", "menulis"],
+        "subtopics": ["Blog Writing", "Copywriting", "Technical Writing", "SEO Writing"]
+    },
+    "Analytics": {
+        "keywords": ["data", "tracking", "report", "metric", "analisis"],
+        "subtopics": ["Google Analytics", "Data Visualization", "Reporting", "KPI"]
+    }
+}
