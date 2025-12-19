@@ -286,25 +286,16 @@
                         </div>
                         <div class="widget-content">
                             <ul class="category-list">
-                                {% comment %} Dynamically gather categories from posts {% endcomment %}
-                                {% assign all_categories = "" | split: "|" %}
-                                {% for post in site.posts %}
-                                    {% if post.categories %}
-                                        {% for cat in post.categories %}
-                                            {% unless all_categories contains cat %}
-                                                {% assign all_categories = all_categories | push: cat %}
-                                            {% endunless %}
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endfor %}
-
-                                {% if all_categories.size > 0 %}
-                                    {% for cat in all_categories | sort %}
-                                        {% assign cat_count = site.categories[cat] | size %}
+                                {% comment %} Use site.categories map which is available in Jekyll/GitHub Pages {% endcomment %}
+                                {% assign categories_array = site.categories | sort %}
+                                {% if categories_array and categories_array.size > 0 %}
+                                    {% for cat_pair in categories_array %}
+                                        {% assign cat_name = cat_pair[0] %}
+                                        {% assign cat_posts = cat_pair[1] %}
                                         <li>
-                                            <a href="/categories/{{ cat | slugify }}/">
-                                                {{ cat }}
-                                                <span class="category-count">({{ cat_count }})</span>
+                                            <a href="/categories/{{ cat_name | slugify }}/">
+                                                {{ cat_name }}
+                                                <span class="category-count">({{ cat_posts | size }})</span>
                                             </a>
                                         </li>
                                     {% endfor %}
