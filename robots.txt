@@ -1,0 +1,20 @@
+# Robots.txt untuk FortoolSEO Blog
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: {{ site.url }}/sitemap.xml
+
+# Block private folders
+Disallow: /_layouts/
+Disallow: /_includes/
+Disallow: /_sass/
+Disallow: /assets/js/
+Disallow: /node_modules/
+
+# Allow CSS and images
+Allow: /assets/css/
+Allow: /assets/images/
+
+# Crawl delay (optional)
+Crawl-delay: 2
