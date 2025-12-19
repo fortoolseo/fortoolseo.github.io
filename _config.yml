@@ -1,7 +1,12 @@
-title: "Blog Saya"
-description: "Blog sederhana dengan CMS GitHub"
+
+# SEO Settings
+url: "https://fortoolseo.github.io"
 baseurl: ""
-url: "https://username.github.io"
+title: "FortoolSEO Blog"
+description: "Blog tentang SEO, Tools Gratis, dan tips digital marketing"
+author: "Admin FortoolSEO"
+language: "id"
+locale: "id_ID"
 
 # CMS Settings
 markdown: kramdown
@@ -24,6 +29,8 @@ paginate_path: "/blog/page:num/"
 # Plugin untuk pagination
 plugins:
   - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-seo-tag
 
 # Atau jika menggunakan gems:
 gems:
@@ -49,3 +56,14 @@ defaults:
       type: "posts"
     values:
       layout: "default"
+
+# Sitemap settings
+sitemap:
+  file: "/sitemap.xml"
+  exclude:
+    - "/feed.xml"
+    - "/404.html"
+  include_posts: true
+  include_pages: true
+  change_freq: "weekly"
+  priority: 0.7
