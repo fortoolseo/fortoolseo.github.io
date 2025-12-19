@@ -199,25 +199,31 @@ async function tryHuggingFaceAPI(topic, category) {
   try {
     const prompt = `Create a high-quality SEO blog article about: "${topic}".\n\nRequirements:\n- Language: English\n- Tone: Informative, original, human-like\n- Length: between 700 and 1500 words (choose a random length in this range)\n- SEO: include the main keyword in the first 100 words, use semantic headings, and natural keyword variations\n- Anti-duplicate: write unique content, avoid copying known sources\n- Anti-AI-detector: vary sentence length, use idiomatic phrases and human-like structure\n- Include sections in HTML with h2/h3 IDs: pengenalan, manfaat, langkah, tools, tips, kesimpulan\n- Add suggested categories/tags such as: tips, tricks, how-to, life-hack, online-business, airdrop, crypto, gaming, android, ios\n- Where relevant, include 1-2 external links (e.g., official app store links or reputable sources) and at least one link back to the blog homepage (https://fortoolseo.github.io)\n- For apps mention platform and provide Play Store or App Store link if available\n- Output: only the article HTML starting from the first h2 tag; do NOT include YAML frontmatter.`;
 
-    const hfUrl = 'https://api-inference.huggingface.co/models/gpt2';
+    // Try a larger, more capable model (Mistral or similar)
+    const hfUrl = 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1';
     const response = await makeRequest(hfUrl, 'POST', {
       'Authorization': `Bearer ${HUGGINGFACE_API_KEY}`,
       'Content-Type': 'application/json'
     }, {
       inputs: prompt,
       parameters: {
-        max_new_tokens: 1200,
+        max_new_tokens: 1500,
         temperature: 0.7,
         return_full_text: false
       }
     });
 
-    if (response.status === 200 && response.data && (response.data.generated_text || Array.isArray(response.data))) {
+    if (response.status === 200 && response.data && (response.data.generated_text || (Array.isArray(response.data) && response.data.length > 0))) {
       console.log('✅ Using Hugging Face API');
       if (response.data.generated_text) return response.data.generated_text;
-      if (Array.isArray(response.data) && response.data.length > 0 && response.data[0].generated_text) return response.data[0].generated_text;
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        if (response.data[0].generated_text) return response.data[0].generated_text;
+      }
       // Some models return plain text
-      if (typeof response.data === 'string') return response.data;
+      if (typeof response.data === 'string' && response.data.length > 100) return response.data;
+    } else {
+      console.log('⚠️  Hugging Face API returned:', response.status, response.data ? Object.keys(response.data)[0] : 'no data');
+    }
     }
   } catch (e) {
     // fail silently
@@ -227,26 +233,101 @@ async function tryHuggingFaceAPI(topic, category) {
 
 // Fallback: Generate default article dari template
 function generateDefaultArticle(topic, category) {
-  return `<h2 id="pengenalan">📖 Apa Itu ${topic}?</h2>
-<p>${topic} adalah topik penting dalam dunia ${category}. Pelajari secara mendalam bagaimana implementasinya dapat meningkatkan performa website Anda.</p>
+// Fallback: Generate default article in English
+function generateDefaultArticle(topic, category) {
+  return `<h2 id="pengenalan">📖 What is ${topic}?</h2>
+<p>${topic} is a crucial topic in the world of ${category}. Learn in-depth how implementing these strategies can improve your website performance and boost your online presence.</p>
 
-<h2 id="manfaat">🎯 Manfaat dan Keuntungan</h2>
+<h2 id="manfaat">🎯 Benefits and Advantages</h2>
 <ul>
-  <li><strong>Meningkatkan Performa:</strong> Optimasi yang tepat memberikan hasil signifikan</li>
-  <li><strong>User Experience Lebih Baik:</strong> Pengunjung mendapat nilai tambah</li>
-  <li><strong>Conversion Rate Lebih Tinggi:</strong> Efisiensi marketing meningkat</li>
-  <li><strong>Authority Building:</strong> Brand menjadi lebih dipercaya di industri</li>
+  <li><strong>Improved Performance:</strong> Proper optimization delivers significant results and measurable improvements.</li>
+  <li><strong>Better User Experience:</strong> Visitors receive genuine value and stay longer on your site.</li>
+  <li><strong>Higher Conversion Rates:</strong> Efficient marketing strategies lead to more conversions and sales.</li>
+  <li><strong>Authority Building:</strong> Your brand becomes more trusted and recognized in the industry.</li>
 </ul>
 
-<h2 id="langkah">🛠️ Langkah-langkah Implementasi</h2>
-<h3>1. Analisis dan Audit Awal</h3>
-<p>Mulai dengan pemahaman mendalam tentang kondisi saat ini dan area yang perlu improvement.</p>
+<h2 id="langkah">🛠️ Implementation Steps</h2>
+<h3>1. Initial Analysis and Audit</h3>
+<p>Start with a deep understanding of your current situation and identify areas that need improvement.</p>
 
-<h3>2. Perencanaan Strategis</h3>
-<p>Buat roadmap jangka panjang dengan KPI yang terukur dan realistis.</p>
+<h3>2. Strategic Planning</h3>
+<p>Create a long-term roadmap with measurable KPIs and realistic goals.</p>
 
-<h3>3. Implementasi Bertahap</h3>
-<p>Jalankan perubahan secara sistematis, test dan monitor hasilnya.</p>
+<h3>3. Phased Implementation</h3>
+<p>Execute changes systematically, test thoroughly, and monitor results consistently.</p>
+
+<h3>4. Continuous Optimization</h3>
+<p>Make refinements based on data insights and feedback from your audience.</p>
+
+<h3>5. Documentation and Knowledge Sharing</h3>
+<p>Record your learnings for future reference and share best practices with your team.</p>
+
+<h2 id="tools">🔧 Recommended Free Tools</h2>
+<div class="tools-grid">
+  <div class="tool-card">
+    <h4>Google Analytics 4</h4>
+    <p>Track visitor traffic and behavior in real-time with comprehensive analytics.</p>
+  </div>
+  <div class="tool-card">
+    <h4>Google Search Console</h4>
+    <p>Monitor your search performance and identify issues affecting your rankings.</p>
+  </div>
+  <div class="tool-card">
+    <h4>Google PageSpeed Insights</h4>
+    <p>Audit your website performance and receive actionable improvement recommendations.</p>
+  </div>
+</div>
+
+<h2 id="tips">💡 Practical Tips and Tricks</h2>
+<div class="tips-container">
+  <div class="tip">
+    <span class="tip-icon">✅</span>
+    <div>
+      <h4>Focus on Value</h4>
+      <p>Provide high-quality content that genuinely helps your audience solve real problems.</p>
+    </div>
+  </div>
+  <div class="tip">
+    <span class="tip-icon">✅</span>
+    <div>
+      <h4>Consistency is Key</h4>
+      <p>The best results come from consistent effort over a long period of time.</p>
+    </div>
+  </div>
+  <div class="tip">
+    <span class="tip-icon">✅</span>
+    <div>
+      <h4>Data-Driven Decisions</h4>
+      <p>Use analytics and data to make informed decisions and avoid guesswork.</p>
+    </div>
+  </div>
+  <div class="tip">
+    <span class="tip-icon">✅</span>
+    <div>
+      <h4>Stay Updated</h4>
+      <p>Follow industry trends and updates to remain competitive and relevant.</p>
+    </div>
+  </div>
+</div>
+
+<h2 id="kesimpulan">🎓 Conclusion</h2>
+<p>${topic} requires thorough understanding and proper execution. Start today with the first step, and continuously learn from your experiences to achieve maximum results. Visit our blog at <a href="https://fortoolseo.github.io">FortoolSEO</a> for more insights.</p>
+
+<h2>❓ Frequently Asked Questions</h2>
+<div class="faq-container">
+  <div class="faq-item">
+    <h3>1. How long until I see results?</h3>
+    <p>Results vary based on competition and strategy, but most see initial improvements within 1-3 months of consistent implementation.</p>
+  </div>
+  <div class="faq-item">
+    <h3>2. Do I need a large budget?</h3>
+    <p>No, many excellent free tools are available to get started without significant investment.</p>
+  </div>
+  <div class="faq-item">
+    <h3>3. How do I begin?</h3>
+    <p>Start with a basic audit, identify your opportunities, and implement your strategy step by step.</p>
+  </div>
+</div>`;
 
 <h3>4. Optimasi Berkelanjutan</h3>
 <p>Lakukan refinement berdasarkan data dan feedback dari audience.</p>
