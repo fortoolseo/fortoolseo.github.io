@@ -1,0 +1,12 @@
+---
+layout: default
+title: "Tag: gratis"
+---
+
+<h1>Tag: gratis</h1>
+<p>Articles with this tag:</p>
+<ul>
+  {% for post in site.tags['gratis'] %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>

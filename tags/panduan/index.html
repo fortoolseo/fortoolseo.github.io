@@ -1,0 +1,12 @@
+---
+layout: default
+title: "Tag: panduan"
+---
+
+<h1>Tag: panduan</h1>
+<p>Articles with this tag:</p>
+<ul>
+  {% for post in site.tags['panduan'] %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>

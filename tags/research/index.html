@@ -1,0 +1,12 @@
+---
+layout: default
+title: "Tag: research"
+---
+
+<h1>Tag: research</h1>
+<p>Articles with this tag:</p>
+<ul>
+  {% for post in site.tags['research'] %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
