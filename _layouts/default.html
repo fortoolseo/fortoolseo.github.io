@@ -231,25 +231,47 @@
                     </div>
                 </div>
 
-                <!-- Categories Widget -->
-                <div class="sidebar-widget">
-                    <div class="widget-header">
-                        <h3 class="widget-title">📂 Kategori</h3>
-                    </div>
-                    <div class="widget-content">
-                        <ul class="category-list">
-                            {% assign categories = site.categories | sort %}
-                            {% for category in categories %}
-                            <li>
-                                <a href="/categories/{{ category[0] | slugify }}/">
-                                    {{ category[0] }}
-                                    <span class="category-count">({{ category[1].size }})</span>
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+            <!-- Categories Widget -->
+<div class="sidebar-widget">
+    <div class="widget-header">
+        <h3 class="widget-title">📂 Kategori</h3>
+    </div>
+    <div class="widget-content">
+        <ul class="category-list">
+            <!-- Kategori Test -->
+            {% assign test_posts = site.posts | where_exp: "post", "post.categories contains 'Test'" %}
+            <li>
+                <a href="/categories/test/">
+                    Test
+                    <span class="category-count">({{ test_posts | size }})</span>
+                </a>
+            </li>
+            
+            <!-- Kategori Demo -->
+            {% assign demo_posts = site.posts | where_exp: "post", "post.categories contains 'Demo'" %}
+            <li>
+                <a href="/categories/demo/">
+                    Demo
+                    <span class="category-count">({{ demo_posts | size }})</span>
+                </a>
+            </li>
+            
+            <!-- Tambah kategori lain nanti -->
+            {% comment %}
+            <!-- Contoh untuk kategori baru -->
+            {% assign seo_posts = site.posts | where_exp: "post", "post.categories contains 'SEO'" %}
+            {% if seo_posts.size > 0 %}
+            <li>
+                <a href="/categories/seo/">
+                    SEO
+                    <span class="category-count">({{ seo_posts | size }})</span>
+                </a>
+            </li>
+            {% endif %}
+            {% endcomment %}
+        </ul>
+    </div>
+</div>
 
                 <!-- Recent Posts Widget -->
                 <div class="sidebar-widget">
