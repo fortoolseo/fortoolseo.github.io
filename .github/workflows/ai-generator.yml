@@ -1,132 +1,70 @@
-name: 🤖 AI Article Generator
-on:
-  workflow_dispatch:  # Untuk run manual
-  schedule:
-    - cron: '0 8 * * *'  # Run setiap hari jam 8 pagi UTC (3 sore WIB)
+name: Generate AI Article
 
-permissions:
-  contents: write
+on: [workflow_dispatch]
 
 jobs:
-  generate-article:
+  generate:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    
-    - name: Install Dependencies
+    - name: Create article
       run: |
-        pip install requests beautifulsoup4
-    
-    - name: Create Generator Script
-      run: |
-        mkdir -p scripts
-        cat > scripts/generator.py << 'EOF'
-        #!/usr/bin/env python3
-        import os, json, random, datetime
+        mkdir -p _posts
         
-        class ArticleGenerator:
-            def __init__(self):
-                self.categories = ["SEO", "Digital Marketing", "Website", "Content", "Analytics"]
-                self.templates = {
-                    "SEO": [
-                        "5 Tips {category} Terbaru 2024 yang Wajib Dicoba",
-                        "Cara {category} Website untuk Pemula",
-                        "Rahasia {category} yang Jarang Diketahui",
-                        "Tools {category} Gratis Terbaik"
-                    ],
-                    "Digital Marketing": [
-                        "Strategi {category} di Media Sosial",
-                        "{category} untuk UMKM dengan Budget Minim",
-                        "Trend {category} di Indonesia 2024"
-                    ]
-                }
-            
-            def generate_title(self, category):
-                templates = self.templates.get(category, self.templates["SEO"])
-                template = random.choice(templates)
-                return template.format(category=category)
-            
-            def generate_content(self, title, category):
-                sections = [
-                    f"# {title}\n\n",
-                    f"**{category}** merupakan salah satu aspek penting dalam dunia digital. ",
-                    "Pada artikel ini, kita akan membahas secara mendalam.\n\n",
-                    "## Mengapa {category} Penting?\n".format(category=category),
-                    f"Dengan menguasai {category}, Anda dapat meningkatkan performa online secara signifikan. ",
-                    "Banyak pebisnis di Indonesia sudah membuktikan manfaatnya.\n\n",
-                    "## Langkah-Langkah Implementasi\n",
-                    "1. **Pelajari dasar-dasarnya** - Pahami konsep fundamental\n",
-                    "2. **Analisis kompetitor** - Lihat apa yang dilakukan pesaing\n",
-                    "3. **Buat rencana eksekusi** - Susun strategi yang terstruktur\n",
-                    "4. **Monitor hasil** - Pantau perkembangan secara berkala\n\n",
-                    "## Tools yang Direkomendasikan\n",
-                    "- Google Analytics\n",
-                    "- Google Search Console\n",
-                    "- SEMrush (free trial)\n",
-                    "- Canva untuk desain\n\n",
-                    "## Tips Sukses\n",
-                    "- Konsistensi adalah kunci\n",
-                    "- Selalu update dengan trend terbaru\n",
-                    "- Bergabung dengan komunitas\n\n",
-                    "## Kesimpulan\n",
-                    f"Penguasaan {category} akan membuka banyak peluang. ",
-                    "Mulai dari sekarang dan praktikkan langsung!\n\n",
-                    "---\n*Artikel ini dibuat secara otomatis oleh AI Generator*"
-                ]
-                return "".join(sections)
-            
-            def save_article(self):
-                category = random.choice(self.categories)
-                title = self.generate_title(category)
-                content = self.generate_content(title, category)
-                
-                # Format filename
-                date = datetime.datetime.now().strftime("%Y-%m-%d")
-                slug = title.lower().replace(" ", "-").replace(",", "").replace(".", "").replace(":", "")
-                filename = f"_posts/{date}-{slug[:40]}.md"
-                
-                # Front matter Jekyll
-                front_matter = f'''---
-layout: post
-title: "{title}"
-date: {date}
-categories: [{category}]
-tags: [{category.lower()}, indonesia, tutorial, tips]
-image: https://picsum.photos/1200/630?random={random.randint(1, 1000)}
-author: AI Generator
-description: "{title}. Pelajari teknik dan strategi implementasinya."
----
-'''
-                # Create directory if not exists
-                os.makedirs("_posts", exist_ok=True)
-                
-                # Write file
-                with open(filename, 'w', encoding='utf-8') as f:
-                    f.write(front_matter + content)
-                
-                print(f"✅ Artikel berhasil dibuat: {filename}")
-                return filename
+        # Variabel
+        DATE=$(date +%Y-%m-%d)
+        TITLE="Artikel AI Generator $(date +%d-%m-%Y)"
+        FILENAME="_posts/${DATE}-artikel-ai.md"
         
-        # Run generator
-        if __name__ == "__main__":
-            generator = ArticleGenerator()
-            generator.save_article()
-        EOF
+        # Mulai tulis file
+        echo "---" > "$FILENAME"
+        echo "layout: post" >> "$FILENAME"
+        echo "title: \"$TITLE\"" >> "$FILENAME"
+        echo "date: $DATE" >> "$FILENAME"
+        echo "categories: [SEO]" >> "$FILENAME"
+        echo "tags: [ai, generator, github, free]" >> "$FILENAME"
+        echo "author: AI Bot" >> "$FILENAME"
+        echo "image: https://picsum.photos/1200/630?random=$RANDOM" >> "$FILENAME"
+        echo "---" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "# Artikel Dibuat Otomatis oleh AI" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "Ini adalah artikel yang dibuat secara otomatis menggunakan GitHub Actions." >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "## Keuntungan AI Generator" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "1. **100% Gratis** - Tidak perlu bayar API" >> "$FILENAME"
+        echo "2. **Auto Publish** - Langsung ke GitHub Pages" >> "$FILENAME"
+        echo "3. **SEO Friendly** - Struktur artikel optimal" >> "$FILENAME"
+        echo "4. **Teratur** - Bisa dijadwalkan tiap hari" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "## Cara Kerja" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "1. GitHub Actions menjalankan script" >> "$FILENAME"
+        echo "2. Artikel dibuat dengan template" >> "$FILENAME"
+        echo "3. File disimpan di folder _posts" >> "$FILENAME"
+        echo "4. GitHub Pages otomatis rebuild" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "## Tips SEO" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "- Gunakan keyword yang relevan" >> "$FILENAME"
+        echo "- Optimasi kecepatan loading" >> "$FILENAME"
+        echo "- Buat konten berkualitas" >> "$FILENAME"
+        echo "- Update secara konsisten" >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "> **Kesimpulan**: AI Generator membantu membuat konten secara otomatis dan gratis." >> "$FILENAME"
+        echo "" >> "$FILENAME"
+        echo "---" >> "$FILENAME"
+        echo "*Dibuat otomatis pada: $(date)*" >> "$FILENAME"
+        
+        echo "✅ File created: $FILENAME"
     
-    - name: Run AI Generator
-      run: python scripts/generator.py
-    
-    - name: Commit and Push Changes
+    - name: Commit
       run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
         git add .
-        git commit -m "🤖 Auto: Artikel AI $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
+        git commit -m "Add AI article $(date +%Y-%m-%d)" || exit 0
         git push
