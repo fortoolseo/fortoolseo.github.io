@@ -224,7 +224,6 @@ async function tryHuggingFaceAPI(topic, category) {
     } else {
       console.log('⚠️  Hugging Face API returned:', response.status, response.data ? Object.keys(response.data)[0] : 'no data');
     }
-    }
   } catch (e) {
     // fail silently
   }
@@ -328,127 +327,7 @@ function generateDefaultArticle(topic, category) {
     <p>Start with a basic audit, identify your opportunities, and implement your strategy step by step.</p>
   </div>
 </div>`;
-
-<h3>4. Optimasi Berkelanjutan</h3>
-<p>Lakukan refinement berdasarkan data dan feedback dari audience.</p>
-
-<h3>5. Dokumentasi dan Knowledge Sharing</h3>
-<p>Catat setiap pembelajaran untuk referensi di masa depan.</p>
-
-<h2 id="tools">🔧 Tools Gratis yang Direkomendasikan</h2>
-<div class="tools-grid">
-  <div class="tool-card">
-    <h4>Google Analytics 4</h4>
-    <p>Analisis traffic dan behavior pengunjung secara real-time</p>
-  </div>
-  <div class="tool-card">
-    <h4>Google Search Console</h4>
-    <p>Monitor performa di Google Search dan debug issues</p>
-  </div>
-  <div class="tool-card">
-    <h4>Google PageSpeed Insights</h4>
-    <p>Audit performa website dan rekomendasi perbaikan</p>
-  </div>
-</div>
-
-<h2 id="tips">💡 Tips & Trik Praktis</h2>
-<div class="tips-container">
-  <div class="tip">
-    <span class="tip-icon">✅</span>
-    <div>
-      <h4>Fokus pada Value</h4>
-      <p>Berikan konten berkualitas yang benar-benar membantu audience Anda.</p>
-    </div>
-  </div>
-  <div class="tip">
-    <span class="tip-icon">✅</span>
-    <div>
-      <h4>Konsisten adalah Kunci</h4>
-      <p>Hasil terbaik datang dari usaha konsisten dalam jangka panjang.</p>
-    </div>
-  </div>
-  <div class="tip">
-    <span class="tip-icon">✅</span>
-    <div>
-      <h4>Data-Driven Decisions</h4>
-      <p>Gunakan analytics untuk membuat keputusan yang informed.</p>
-    </div>
-  </div>
-  <div class="tip">
-    <span class="tip-icon">✅</span>
-    <div>
-      <h4>Stay Updated</h4>
-      <p>Ikuti perkembangan terbaru di industri untuk tetap relevan.</p>
-    </div>
-  </div>
-</div>
-
-<h2 id="kesimpulan">🎓 Kesimpulan</h2>
-<p>${topic} memerlukan pemahaman menyeluruh dan eksekusi yang tepat. Mulai hari ini dengan langkah pertama, dan terus belajar dari setiap pengalaman untuk hasil maksimal.</p>
-
-<h2>❓ FAQ</h2>
-<div class="faq-container">
-  <div class="faq-item">
-    <h3>1. Berapa lama hasil terlihat?</h3>
-    <p>Tergantung pada kompetisi dan strategi yang dijalankan, umumnya 1-3 bulan untuk hasil awal.</p>
-  </div>
-  <div class="faq-item">
-    <h3>2. Apakah perlu budget besar?</h3>
-    <p>Tidak, banyak tools gratis yang dapat digunakan untuk memulai.</p>
-  </div>
-  <div class="faq-item">
-    <h3>3. Bagaimana cara memulai?</h3>
-    <p>Mulai dari audit dasar, identifikasi opportunity, dan implementasi strategi.</p>
-  </div>
-</div>`;
-}
-
-// ==================== IMAGE GENERATION ====================
-
-// Get gambar dari Pexels (free unlimited)
-async function getImageFromPexels(query) {
-  if (!PEXELS_API_KEY) {
-    console.log('⚠️  No PEXELS_API_KEY, image skipped');
-    return null;
-  }
-
-  try {
-    const searchQuery = query.split(' ').slice(0, 3).join(' ');
-    const response = await makeRequest(
-      `https://api.pexels.com/v1/search?query=${encodeURIComponent(searchQuery)}&per_page=1`,
-      'GET',
-      { 'Authorization': PEXELS_API_KEY }
-    );
-
-    if (response.status === 200 && response.data.photos && response.data.photos.length > 0) {
-      return response.data.photos[0].src.medium;
-    }
-  } catch (error) {
-    console.log('⚠️  Pexels API error:', error.message);
-  }
-
-  return null;
-}
-
-// Fallback placeholder image
-function getPlaceholderImage() {
-  return 'https://via.placeholder.com/800x400?text=FortoolSEO+Article';
-}
-
-// ==================== ARTICLE GENERATION ====================
-
-async function generateArticleWithAI(title, category, tags) {
-  console.log(`🤖 Generating content dengan AI untuk: "${title}"`);
-  
-  const content = await generateArticleWithGroq(title, category);
-  
-  return content;
-}
-
-// Generate judul dari topic/keyword
-async function generateTitleFromTopic(topic, category) {
-  // Jika ada AI, bisa generate title yang lebih creative
-  // Fallback: Generate dari topic
+} // Fallback: Generate dari topic
   const subtopics = [
     'Panduan Lengkap',
     'Cara Optimasi',
