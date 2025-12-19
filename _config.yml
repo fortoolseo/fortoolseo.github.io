@@ -31,3 +31,21 @@ gems:
 paginate: 8
 paginate_path: "/blog/page:num/"
 include: ["_posts/*.html"]
+
+# _config.yml
+include:
+  - "_posts/*.html"
+  - "_posts/*.md"
+  - "categories"           # INI PENTING!
+  - "_includes"
+
+# Permalink untuk posts
+permalink: /:categories/:title/
+
+# Default layout
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"
