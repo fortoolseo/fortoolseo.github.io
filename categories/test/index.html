@@ -1,0 +1,20 @@
+---
+layout: default
+title: "Kategori: Test"
+permalink: /categories/test/
+---
+
+{% assign category_posts = site.posts | where_exp: "post", "post.categories contains 'Demo'" %}
+<!-- GANTI "Test" jadi "Demo" di atas -->
+
+<section class="page-header">
+    <div class="page-header-content">
+        <h1 class="page-title">📂 Kategori: test</h1> <!-- GANTI -->
+        <p class="page-description">Artikel dalam kategori test</p> <!-- GANTI -->
+        <div class="page-stats">
+            <span class="stat-item">📊 Total Artikel: {{ category_posts | size }}</span>
+        </div>
+    </div>
+</section>
+
+<!-- Sisanya sama... -->
