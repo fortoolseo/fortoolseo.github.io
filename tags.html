@@ -1,0 +1,23 @@
+---
+layout: default
+title: Tags
+permalink: /tags/
+---
+
+<section class="page-header">
+    <div class="page-header-content">
+        <h1 class="page-title">🏷️ Semua Tags</h1>
+        <p class="page-description">Jelajahi artikel berdasarkan tag</p>
+    </div>
+</section>
+
+<section class="tags-page">
+    <div class="tags-cloud">
+        {% assign tags = site.tags | sort %}
+        {% for tag in tags %}
+        <a href="/tags/{{ tag[0] | slugify }}/" class="tag-link" style="font-size: {{ tag[1].size | times: 0.8 | plus: 0.8 }}rem;">
+            {{ tag[0] }} ({{ tag[1].size }})
+        </a>
+        {% endfor %}
+    </div>
+</section>
