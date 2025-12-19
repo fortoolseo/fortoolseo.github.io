@@ -4,17 +4,123 @@ title: "Kategori: Test"
 permalink: /categories/test/
 ---
 
-{% assign category_posts = site.posts | where_exp: "post", "post.categories contains 'Demo'" %}
-<!-- GANTI "Test" jadi "Demo" di atas -->
+{% comment %} CARA YANG BENAR UNTUK ARTIKEL HTML {% endcomment %}
+{% assign category_posts = "" | split: "," %}
+
+{% for post in site.posts %}
+  {% comment %} Cek kategori di Front Matter {% endcomment %}
+  {% if post.categories %}
+    {% if post.categories contains "Test" %}
+      {% assign category_posts = category_posts | push: post %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
 
 <section class="page-header">
     <div class="page-header-content">
-        <h1 class="page-title">📂 Kategori: test</h1> <!-- GANTI -->
-        <p class="page-description">Artikel dalam kategori test</p> <!-- GANTI -->
+        <h1 class="page-title">📂 Kategori: Test</h1>
+        <p class="page-description">Artikel dalam kategori Test</p>
         <div class="page-stats">
             <span class="stat-item">📊 Total Artikel: {{ category_posts | size }}</span>
         </div>
     </div>
 </section>
 
-<!-- Sisanya sama... -->
+<section class="all-posts">
+    {% if category_posts.size > 0 %}
+    <div class="posts-grid">
+        {% for post in category_posts %}
+        <article class="post-card">
+            <div class="post-card-image">
+                {% comment %} Cari gambar pertama {% endcomment %}
+                {% assign first_image = "" %}
+                {% assign content_text = post.content %}
+                
+                {% if content_text contains '<img' %}
+                    {% assign img_start = content_text | split: '<img' %}
+                    {% if img_start[1] %}
+                        {% assign img_tag = img_start[1] | split: '>' | first %}
+                        {% assign src_start = img_tag | split: 'src="' %}
+                        {% if src_start[1] %}
+                            {% assign first_image = src_start[1] | split: '"' | first %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                
+                {% if first_image != "" %}
+                    <img src="{{ first_image }}" alt="{{ post.title }}" loading="lazy">
+                {% else %}
+                    <div class="thumbnail-placeholder">
+                        <span class="placeholder-icon">📝</span>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="post-card-content">
+                <div class="post-card-meta">
+                    <time datetime="{{ post.date | date_to_xmlschema }}">
+                        {{ post.date | date: "%d %b %Y" }}
+                    </time>
+                    {% if post.categories.first %}
+                    <span class="meta-separator">•</span>
+                    <span class="post-category">{{ post.categories.first }}</span>
+                    {% endif %}
+                </div>
+                
+                <h3 class="post-card-title">
+                    <a href="{{ post.url }}">{{ post.title }}</a>
+                </h3>
+                
+                <p class="post-card-excerpt">
+                    {% if post.excerpt %}
+                        {{ post.excerpt | strip_html | truncatewords: 20 }}
+                    {% else %}
+                        {% assign excerpt_content = post.content | strip_html %}
+                        {{ excerpt_content | truncatewords: 20 }}
+                    {% endif %}
+                </p>
+                
+                <div class="post-card-footer">
+                    {% if post.categories.size > 0 %}
+                    <div class="post-card-categories">
+                        {% for category in post.categories limit:2 %}
+                        <a href="/categories/{{ category | slugify }}/" class="category-tag">
+                            {{ category }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <a href="{{ post.url }}" class="post-card-link">→</a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-posts-message">
+        <div class="empty-state">
+            <span class="empty-icon">📭</span>
+            <h3>Tidak ada artikel ditemukan</h3>
+            <p>Belum ada artikel dalam kategori Test.</p>
+            
+            {% comment %} DEBUG: Tampilkan semua artikel dan kategori mereka {% endcomment %}
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px; font-size: 0.9rem;">
+                <p><strong>Debug Info:</strong></p>
+                <p>Total semua artikel: {{ site.posts | size }}</p>
+                <ul>
+                {% for post in site.posts %}
+                    <li>{{ post.title }} - Kategori: {{ post.categories | join: ", " | default: "Tidak ada" }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            
+            <a href="/" class="btn btn-primary" style="margin-top: 20px;">Kembali ke Beranda</a>
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<div class="navigation-links">
+    <a href="/categories/" class="nav-back">← Kembali ke Semua Kategori</a>
+</div>
