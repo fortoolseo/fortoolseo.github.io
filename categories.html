@@ -1,0 +1,39 @@
+---
+layout: default
+title: Kategori
+permalink: /categories/
+---
+
+<section class="page-header">
+    <div class="page-header-content">
+        <h1 class="page-title">📂 Semua Kategori</h1>
+        <p class="page-description">Jelajahi artikel berdasarkan kategori</p>
+    </div>
+</section>
+
+<section class="categories-grid">
+    <div class="categories-container">
+        {% assign categories = site.categories | sort %}
+        {% for category in categories %}
+        <div class="category-card">
+            <div class="category-card-header">
+                <h3>{{ category[0] }}</h3>
+                <span class="category-count">{{ category[1].size }} artikel</span>
+            </div>
+            <div class="category-card-body">
+                <p>Artikel terbaru dalam kategori ini:</p>
+                <ul class="category-recent-posts">
+                    {% for post in category[1] limit:3 %}
+                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="category-card-footer">
+                <a href="/categories/{{ category[0] | slugify }}/" class="btn-view-all">
+                    Lihat Semua Artikel →
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
