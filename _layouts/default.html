@@ -272,57 +272,56 @@
                         </div>
                         {% endif %}
                     </header>
-
-                    <!-- In-Article Ad -->
-                    <div class="ad-section ad-in-article">
-                        <div class="ad-label">Sponsor</div>
-                        <div class="ad-container">
-                            <!-- Placeholder for In-Article Ad -->
-                            <div class="ad-placeholder">
-                                <p>In-Article Ad (300x250)</p>
+                        <!-- In-Article Ad -->
+                        <div class="ad-section ad-in-article">
+                            <div class="ad-label">Sponsor</div>
+                            <div class="ad-container">
+                                <!-- Placeholder for In-Article Ad -->
+                                <div class="ad-placeholder">
+                                    <p>In-Article Ad (300x250)</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="post-content">
-                        {{ content }}
-                    </div>
-
-                    <!-- Post Tags -->
-                    {% if page.tags.size > 0 %}
-                    <footer class="post-footer">
-                        <div class="post-tags">
-                            <strong>Tags:</strong>
-                            {% for tag in page.tags %}
-                            <a href="/tags/{{ tag | slugify }}/" class="post-tag">{{ tag }}</a>
-                            {% endfor %}
+                        <div class="post-content">
+                            {{ content }}
                         </div>
-                        
-                        <!-- Share Buttons -->
-                        <div class="post-share">
-                            <strong>Bagikan:</strong>
-                            <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn twitter">Twitter</a>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn facebook">Facebook</a>
-                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn linkedin">LinkedIn</a>
-                        </div>
-                    </footer>
-                    {% endif %}
 
-                    <!-- Related Posts -->
-                    {% if page.related_posts %}
-                    <section class="related-posts">
-                        <h3>Artikel Terkait</h3>
-                        <div class="related-grid">
-                            {% for related in page.related_posts limit:3 %}
-                            <div class="related-card">
-                                <h4><a href="{{ related.url }}">{{ related.title }}</a></h4>
-                                <p>{{ related.excerpt | truncate: 80 }}</p>
+                        <!-- Post Tags -->
+                        {% if page.tags.size > 0 %}
+                        <footer class="post-footer">
+                            <div class="post-tags">
+                                <strong>Tags:</strong>
+                                {% for tag in page.tags %}
+                                <a href="/tags/{{ tag | slugify }}/" class="post-tag">{{ tag }}</a>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
-                        </div>
-                    </section>
-                    {% endif %}
-                </article>
+                            
+                            <!-- Share Buttons -->
+                            <div class="post-share">
+                                <strong>Bagikan:</strong>
+                                <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn twitter">Twitter</a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn facebook">Facebook</a>
+                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn linkedin">LinkedIn</a>
+                            </div>
+                        </footer>
+                        {% endif %}
+
+                        <!-- Related Posts -->
+                        {% if page.related_posts %}
+                        <section class="related-posts">
+                            <h3>Artikel Terkait</h3>
+                            <div class="related-grid">
+                                {% for related in page.related_posts limit:3 %}
+                                <div class="related-card">
+                                    <h4><a href="{{ related.url }}">{{ related.title }}</a></h4>
+                                    <p>{{ related.excerpt | truncate: 80 }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </section>
+                        {% endif %}
+                    </article>
                 {% endif %}
             </div><!-- .primary-content -->
 
