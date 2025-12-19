@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en"> <!-- Ubah dari 'id' ke 'en' -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
             {{ site.title | default: "FortoolSEO Blog" }} | {{ site.description | default: "SEO Tools & Tutorials" }}
         {% endif %}
     </title>
-    <meta name="description" content="{{ page.description | default: site.description | default: 'Blog tentang SEO, Tools Gratis, dan tips digital marketing.' }}">
+    <meta name="description" content="{{ page.description | default: site.description | default: 'Blog about SEO, Free Tools, and digital marketing tips.' }}">
     
     <!-- SEO Meta Tags -->
     <meta property="og:title" content="{{ page.title | default: site.title }}">
@@ -57,7 +57,7 @@
     <header class="site-header">
         <div class="container header-container">
             <div class="header-brand">
-                <!-- Logo atau Nama Situs -->
+                <!-- Logo or Site Name -->
                 <div class="site-logo">
                     {% if site.logo %}
                         <a href="/" class="logo-link">
@@ -70,7 +70,7 @@
                         </a>
                     {% endif %}
                 </div>
-                <p class="site-tagline">{{ site.description | default: "Blog tentang SEO dan tools gratis" }}</p>
+                <p class="site-tagline">{{ site.description | default: "Blog about SEO and free tools" }}</p>
             </div>
 
             <!-- Desktop Navigation -->
@@ -114,8 +114,8 @@
         <div class="search-overlay">
             <div class="search-container">
                 <form action="/search/" method="get" class="search-form" role="search">
-                    <input type="search" name="q" placeholder="Cari artikel atau topik..." class="search-input" aria-label="Search blog">
-                    <button type="submit" class="search-submit">Cari</button>
+                    <input type="search" name="q" placeholder="Search articles or topics..." class="search-input" aria-label="Search blog">
+                    <button type="submit" class="search-submit">Search</button>
                 </form>
                 <button class="search-close" aria-label="Close Search">×</button>
             </div>
@@ -124,9 +124,8 @@
 
     <!-- ADVERTISEMENT TOP -->
     <div class="ad-section ad-top container">
-        <div class="ad-label">Iklan</div>
+        <div class="ad-label">Advertisement</div>
         <div class="ad-container">
-            <!-- Placeholder for AdSense Ad Unit (e.g., Responsive) -->
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
@@ -136,7 +135,6 @@
             <script>
                  (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
-            <!-- Fallback/Placeholder -->
             <div class="ad-placeholder">
                 <p>Advertisement Space (728x90)</p>
             </div>
@@ -152,21 +150,20 @@
                 <!-- HOMEPAGE - HERO & ARTICLES GRID -->
                 <section class="hero-section">
                     <div class="hero-content">
-                        <h1 class="hero-title">Panduan & Tools SEO Terbaru</h1>
-                        <p class="hero-description">Temukan tutorial mendalam, analisis tools gratis, dan strategi untuk meningkatkan ranking website Anda.</p>
+                        <h1 class="hero-title">Latest SEO Guides & Tools</h1>
+                        <p class="hero-description">Discover in-depth tutorials, free tool analyses, and strategies to improve your website ranking.</p>
                         <div class="hero-actions">
-                            <a href="/categories/tutorial/" class="btn btn-primary">Mulai Belajar</a>
-                            <a href="/tools/" class="btn btn-secondary">Lihat Tools</a>
+                            <a href="/categories/tutorial/" class="btn btn-primary">Start Learning</a>
+                            <a href="/tools/" class="btn btn-secondary">View Tools</a>
                         </div>
                     </div>
                 </section>
 
-                <!-- Featured Posts -->
+                <!-- Featured Posts - REMOVED FILTER FOR NOW -->
                 <section class="featured-posts">
-                    <h2 class="section-title"><span>🔥 Artikel Unggulan</span></h2>
+                    <h2 class="section-title"><span>🔥 Featured Articles</span></h2>
                     <div class="featured-grid">
-                        {% assign featured = site.posts | where: "featured", true | limit: 3 %}
-                        {% for post in featured %}
+                        {% for post in site.posts limit:3 %} <!-- CHANGED: Using ALL posts with limit -->
                         <article class="featured-card">
                             <div class="featured-card-image">
                                 {% if post.image %}
@@ -186,18 +183,18 @@
                                     <a href="{{ post.url }}">{{ post.title }}</a>
                                 </h3>
                                 <p class="featured-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-                                <a href="{{ post.url }}" class="read-more">Baca Selengkapnya →</a>
+                                <a href="{{ post.url }}" class="read-more">Read More →</a>
                             </div>
                         </article>
                         {% endfor %}
                     </div>
                 </section>
 
-                <!-- All Posts Grid -->
+                <!-- All Posts Grid - FIXED THE LOOP -->
                 <section class="all-posts">
-                    <h2 class="section-title"><span>📚 Artikel Terbaru</span></h2>
+                    <h2 class="section-title"><span>📚 Latest Articles</span></h2>
                     <div class="posts-grid">
-                        {% for post in paginator.posts %}
+                        {% for post in site.posts %} <!-- CHANGED: Fixed from paginator.posts -->
                         <article class="post-card">
                             <div class="post-card-image">
                                 {% if post.thumbnail %}
@@ -212,7 +209,10 @@
                                 <div class="post-card-meta">
                                     <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d %b %Y" }}</time>
                                     <span class="meta-separator">•</span>
-                                    <span class="reading-time">{{ post.content | reading_time | default: 3 }} min baca</span>
+                                    <span class="reading-time">
+                                        {% assign words = post.content | number_of_words %}
+                                        {% if words < 360 %}1 min{% else %}{{ words | divided_by:180 }} min{% endif %} read
+                                    </span>
                                 </div>
                                 <h3 class="post-card-title">
                                     <a href="{{ post.url }}">{{ post.title }}</a>
@@ -232,19 +232,6 @@
                         </article>
                         {% endfor %}
                     </div>
-
-                    <!-- Pagination -->
-                    {% if paginator.total_pages > 1 %}
-                    <nav class="pagination" role="navigation" aria-label="Pagination Navigation">
-                        {% if paginator.previous_page %}
-                        <a href="{{ paginator.previous_page_path }}" class="pagination-prev">← Sebelumnya</a>
-                        {% endif %}
-                        <span class="pagination-current">Halaman {{ paginator.page }} dari {{ paginator.total_pages }}</span>
-                        {% if paginator.next_page %}
-                        <a href="{{ paginator.next_page_path }}" class="pagination-next">Selanjutnya →</a>
-                        {% endif %}
-                    </nav>
-                    {% endif %}
                 </section>
 
                 {% else %}
@@ -254,16 +241,17 @@
                         <div class="post-meta">
                             <time datetime="{{ page.date | date_to_xmlschema }}" class="post-date">{{ page.date | date: "%d %B %Y" }}</time>
                             <span class="meta-separator">•</span>
-                            <span class="reading-time">{{ content | reading_time | default: 5 }} min baca</span>
+                            <span class="reading-time">
+                                {% assign words = content | number_of_words %}
+                                {% if words < 360 %}1 min{% else %}{{ words | divided_by:180 }} min{% endif %} read
+                            </span>
                             {% if page.author %}
                             <span class="meta-separator">•</span>
                             <span class="post-author">👤 {{ page.author }}</span>
                             {% endif %}
                         </div>
                         <h1 class="post-title">{{ page.title }}</h1>
-                        {% if page.subtitle %}
-                        <p class="post-subtitle">{{ page.subtitle }}</p>
-                        {% endif %}
+                        
                         {% if page.categories.size > 0 %}
                         <div class="post-categories">
                             {% for category in page.categories %}
@@ -272,56 +260,41 @@
                         </div>
                         {% endif %}
                     </header>
-                        <!-- In-Article Ad -->
-                        <div class="ad-section ad-in-article">
-                            <div class="ad-label">Sponsor</div>
-                            <div class="ad-container">
-                                <!-- Placeholder for In-Article Ad -->
-                                <div class="ad-placeholder">
-                                    <p>In-Article Ad (300x250)</p>
-                                </div>
+
+                    <!-- In-Article Ad -->
+                    <div class="ad-section ad-in-article">
+                        <div class="ad-label">Sponsored</div>
+                        <div class="ad-container">
+                            <div class="ad-placeholder">
+                                <p>In-Article Ad (300x250)</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="post-content">
-                            {{ content }}
+                    <div class="post-content">
+                        {{ content }}
+                    </div>
+
+                    <!-- Post Tags -->
+                    {% if page.tags.size > 0 %}
+                    <footer class="post-footer">
+                        <div class="post-tags">
+                            <strong>Tags:</strong>
+                            {% for tag in page.tags %}
+                            <a href="/tags/{{ tag | slugify }}/" class="post-tag">{{ tag }}</a>
+                            {% endfor %}
                         </div>
-
-                        <!-- Post Tags -->
-                        {% if page.tags.size > 0 %}
-                        <footer class="post-footer">
-                            <div class="post-tags">
-                                <strong>Tags:</strong>
-                                {% for tag in page.tags %}
-                                <a href="/tags/{{ tag | slugify }}/" class="post-tag">{{ tag }}</a>
-                                {% endfor %}
-                            </div>
-                            
-                            <!-- Share Buttons -->
-                            <div class="post-share">
-                                <strong>Bagikan:</strong>
-                                <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn twitter">Twitter</a>
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn facebook">Facebook</a>
-                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn linkedin">LinkedIn</a>
-                            </div>
-                        </footer>
-                        {% endif %}
-
-                        <!-- Related Posts -->
-                        {% if page.related_posts %}
-                        <section class="related-posts">
-                            <h3>Artikel Terkait</h3>
-                            <div class="related-grid">
-                                {% for related in page.related_posts limit:3 %}
-                                <div class="related-card">
-                                    <h4><a href="{{ related.url }}">{{ related.title }}</a></h4>
-                                    <p>{{ related.excerpt | truncate: 80 }}</p>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </section>
-                        {% endif %}
-                    </article>
+                        
+                        <!-- Share Buttons -->
+                        <div class="post-share">
+                            <strong>Share:</strong>
+                            <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn twitter">Twitter</a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn facebook">Facebook</a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener" class="share-btn linkedin">LinkedIn</a>
+                        </div>
+                    </footer>
+                    {% endif %}
+                </article>
                 {% endif %}
             </div><!-- .primary-content -->
 
@@ -330,23 +303,23 @@
                 <!-- About Widget -->
                 <div class="sidebar-widget widget-about">
                     <div class="widget-header">
-                        <h3 class="widget-title">👋 Tentang Blog</h3>
+                        <h3 class="widget-title">👋 About This Blog</h3>
                     </div>
                     <div class="widget-content">
-                        <p>Blog ini membahas tools SEO gratis, tutorial, dan strategi untuk meningkatkan performa website. Dibuat untuk membantu pemula dan profesional.</p>
-                        <a href="/about/" class="widget-link">Selengkapnya →</a>
+                        <p>This blog discusses free SEO tools, tutorials, and strategies to improve website performance. Created to help beginners and professionals.</p>
+                        <a href="/about/" class="widget-link">Learn More →</a>
                     </div>
                 </div>
 
                 <!-- Search Widget -->
                 <div class="sidebar-widget widget-search">
                     <div class="widget-header">
-                        <h3 class="widget-title">🔍 Cari Artikel</h3>
+                        <h3 class="widget-title">🔍 Search Articles</h3>
                     </div>
                     <div class="widget-content">
                         <form action="/search/" method="get" class="sidebar-search-form">
-                            <input type="search" name="q" placeholder="Kata kunci..." class="sidebar-search-input">
-                            <button type="submit" class="sidebar-search-btn">Cari</button>
+                            <input type="search" name="q" placeholder="Keywords..." class="sidebar-search-input">
+                            <button type="submit" class="sidebar-search-btn">Search</button>
                         </form>
                     </div>
                 </div>
@@ -357,19 +330,18 @@
                         <h3 class="widget-title">📧 Newsletter</h3>
                     </div>
                     <div class="widget-content">
-                        <p>Dapatkan update artikel terbaru langsung ke email Anda.</p>
+                        <p>Get the latest articles delivered directly to your email.</p>
                         <form class="newsletter-form">
-                            <input type="email" placeholder="Alamat email Anda" required class="newsletter-input">
-                            <button type="submit" class="newsletter-btn">Berlangganan</button>
+                            <input type="email" placeholder="Your email address" required class="newsletter-input">
+                            <button type="submit" class="newsletter-btn">Subscribe</button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Ad Unit Sidebar -->
                 <div class="sidebar-widget widget-ad">
-                    <div class="ad-label">Iklan</div>
+                    <div class="ad-label">Advertisement</div>
                     <div class="ad-container ad-sidebar">
-                        <!-- Placeholder for Sidebar Ad (300x600) -->
                         <div class="ad-placeholder">
                             <p>Sidebar Ad (300x600)</p>
                         </div>
@@ -379,7 +351,7 @@
                 <!-- Categories Widget -->
                 <div class="sidebar-widget widget-categories">
                     <div class="widget-header">
-                        <h3 class="widget-title">📂 Kategori</h3>
+                        <h3 class="widget-title">📂 Categories</h3>
                     </div>
                     <div class="widget-content">
                         <ul class="category-list">
@@ -399,7 +371,7 @@
                 <!-- Popular Tags Widget -->
                 <div class="sidebar-widget widget-tags">
                     <div class="widget-header">
-                        <h3 class="widget-title">🏷️ Tag Populer</h3>
+                        <h3 class="widget-title">🏷️ Popular Tags</h3>
                     </div>
                     <div class="widget-content">
                         <div class="tags-cloud">
@@ -414,14 +386,14 @@
                 <!-- Recent Posts Widget -->
                 <div class="sidebar-widget widget-recent">
                     <div class="widget-header">
-                        <h3 class="widget-title">🕐 Terbaru</h3>
+                        <h3 class="widget-title">🕐 Latest</h3> <!-- Changed from "Terbaru" -->
                     </div>
                     <div class="widget-content">
                         <ul class="recent-posts-list">
                             {% for post in site.posts limit:5 %}
                             <li>
                                 <a href="{{ post.url }}" class="recent-post-title">{{ post.title }}</a>
-                                <span class="recent-post-date">{{ post.date | date: "%d %b" }}</span>
+                                <span class="recent-post-date">{{ post.date | date: "%d %b" }}</span> <!-- Format: 19 Dec -->
                             </li>
                             {% endfor %}
                         </ul>
@@ -433,9 +405,8 @@
 
     <!-- ADVERTISEMENT BOTTOM -->
     <div class="ad-section ad-bottom container">
-        <div class="ad-label">Iklan</div>
+        <div class="ad-label">Advertisement</div>
         <div class="ad-container">
-            <!-- Placeholder for Bottom Ad -->
             <div class="ad-placeholder">
                 <p>Bottom Ad (728x90 or 970x90)</p>
             </div>
@@ -455,7 +426,7 @@
                         <span class="footer-site-name">{{ site.title | default: "FortoolSEO" }}</span>
                     </div>
                     <p class="footer-about">
-                        {{ site.description | default: "Sumber terpercaya untuk tutorial SEO, review tools, dan tips digital marketing." }}
+                        {{ site.description | default: "Trusted source for SEO tutorials, tool reviews, and digital marketing tips." }}
                     </p>
                     <div class="footer-social">
                         {% if site.social.twitter %}
@@ -475,7 +446,7 @@
 
                 <!-- Quick Links -->
                 <div class="footer-column">
-                    <h4 class="footer-title">Tautan Cepat</h4>
+                    <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-links">
                         <li><a href="/">🏠 Home</a></li>
                         <li><a href="/categories/">📂 Categories</a></li>
@@ -487,7 +458,7 @@
 
                 <!-- Top Categories -->
                 <div class="footer-column">
-                    <h4 class="footer-title">Kategori Top</h4>
+                    <h4 class="footer-title">Top Categories</h4>
                     <ul class="footer-links">
                         {% assign top_cats = site.categories | sort | limit: 6 %}
                         {% for category in top_cats %}
@@ -503,15 +474,15 @@
 
                 <!-- Contact/Newsletter -->
                 <div class="footer-column">
-                    <h4 class="footer-title">Tetap Terhubung</h4>
-                    <p>Berlangganan untuk update mingguan.</p>
+                    <h4 class="footer-title">Stay Connected</h4>
+                    <p>Subscribe for weekly updates.</p>
                     <form class="footer-newsletter">
-                        <input type="email" placeholder="Email Anda" required class="footer-email-input">
+                        <input type="email" placeholder="Your Email" required class="footer-email-input">
                         <button type="submit" class="footer-email-btn">→</button>
                     </form>
                     <div class="footer-contact">
                         <p><strong>✉️ Email:</strong> <a href="mailto:hello@example.com">hello@example.com</a></p>
-                        <p class="footer-update"><strong>🔄 Update:</strong> {{ site.time | date: "%d %b %Y" }}</p>
+                        <p class="footer-update"><strong>🔄 Updated:</strong> {{ site.time | date: "%d %b %Y" }}</p>
                     </div>
                 </div>
             </div><!-- .footer-grid -->
@@ -522,9 +493,9 @@
                     &copy; {{ site.time | date: "%Y" }} {{ site.title | default: "FortoolSEO Blog" }}. All rights reserved.
                 </div>
                 <div class="footer-credits">
-                    Dibuat dengan ❤️ menggunakan <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a> & <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+                    Made with ❤️ using <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a> & <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
                     <span class="footer-stats">
-                        📊 {{ site.posts | size }} Artikel | 🏷️ {{ site.tags | size }} Tags
+                        📊 {{ site.posts | size }} Articles | 🏷️ {{ site.tags | size }} Tags
                     </span>
                 </div>
             </div>
@@ -572,24 +543,6 @@
                     searchOverlay.classList.remove('is-active');
                 }
             });
-            
-            // Estimate reading time for posts
-            function estimateReadingTime(text) {
-                const wordsPerMinute = 200;
-                const wordCount = text.trim().split(/\s+/).length;
-                return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
-            }
-            
-            // Apply reading time to single posts
-            const postContent = document.querySelector('.post-content');
-            if (postContent) {
-                const text = postContent.textContent || "";
-                const readingTime = estimateReadingTime(text);
-                const timeElement = document.querySelector('.reading-time');
-                if (timeElement) {
-                    timeElement.textContent = `${readingTime} min baca`;
-                }
-            }
         });
     </script>
 </body>
