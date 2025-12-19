@@ -28,3 +28,6 @@ plugins:
 # Atau jika menggunakan gems:
 gems:
   - jekyll-paginate
+paginate: 8
+paginate_path: "/blog/page:num/"
+include: ["_posts/*.html"]
