@@ -17,6 +17,7 @@ const AUTO_COMMIT = args.commit !== 'false';
 // API Keys (free tiers)
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''; // Get free at console.groq.com
 const PEXELS_API_KEY = process.env.PEXELS_API_KEY || ''; // Get free at pexels.com/api
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || ''; // Get free at openrouter.ai (alternative)
 
 // ==================== UTILITY FUNCTIONS ====================
 
@@ -69,13 +70,27 @@ function makeRequest(url, method = 'GET', headers = {}, body = null) {
 
 // ==================== AI CONTENT GENERATION ====================
 
-// Generate artikel dengan Groq API (free)
+// Generate artikel dengan Groq API (free) atau fallback
 async function generateArticleWithGroq(topic, category) {
-  if (!GROQ_API_KEY) {
-    console.log('⚠️  No GROQ_API_KEY found. Using template...');
-    return generateDefaultArticle(topic, category);
+  // Try OpenRouter first (more reliable)
+  if (OPENROUTER_API_KEY) {
+    const result = await tryOpenRouterAPI(topic, category);
+    if (result) return result;
   }
 
+  // Try Groq API
+  if (GROQ_API_KEY) {
+    const result = await tryGroqAPI(topic, category);
+    if (result) return result;
+  }
+
+  // Fallback to template
+  console.log('⚠️  No working AI API. Using template...');
+  return generateDefaultArticle(topic, category);
+}
+
+// Try OpenRouter API (free tier available)
+async function tryOpenRouterAPI(topic, category) {
   try {
     const prompt = `Buatkan artikel SEO blog yang berkualitas tinggi tentang: "${topic}"
     
@@ -91,38 +106,85 @@ Struktur yang diinginkan:
 5. Tips & Trik Praktis (h2 id="tips") - minimal 4 tips
 6. Kesimpulan (h2 id="kesimpulan")
 
-Pastikan:
-- Konten informatif dan SEO-friendly
-- Minimal 1500+ kata
-- Include internal linking suggestions
-- Gunakan emoji untuk visual appeal (📖 ✅ 🎯 🛠️ 💡 🎓)
-- Natural Indonesian, hindari bahasa formal yang kaku
-
+Pastikan: Konten informatif, 1500+ kata, natural Indonesian.
 Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
 
-    const response = await makeRequest('https://api.groq.com/openai/v1/chat/completions', 'POST', {
-      'Authorization': `Bearer ${GROQ_API_KEY}`,
-      'Content-Type': 'application/json'
+    const response = await makeRequest('https://openrouter.ai/api/v1/chat/completions', 'POST', {
+      'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://fortoolseo.github.io'
     }, {
-      model: 'mixtral-8x7b-32768',
+      model: 'meta-llama/llama-2-70b-chat',
       messages: [{
         role: 'user',
         content: prompt
       }],
-      max_tokens: 4000,
-      temperature: 0.7
+      max_tokens: 4000
     });
 
     if (response.status === 200 && response.data.choices) {
+      console.log('✅ Using OpenRouter API');
       return response.data.choices[0].message.content;
-    } else {
-      console.log('⚠️  Groq API error, using template...');
-      return generateDefaultArticle(topic, category);
     }
   } catch (error) {
-    console.log('⚠️  Groq connection error:', error.message);
-    return generateDefaultArticle(topic, category);
+    // Silent fail, try next
   }
+  return null;
+}
+
+// Try Groq API dengan model fallback
+async function tryGroqAPI(topic, category) {
+  try {
+    const prompt = `Buatkan artikel SEO blog yang berkualitas tinggi tentang: "${topic}"
+    
+Kategori: ${category}
+Bahasa: Indonesian
+Format: Gunakan struktur HTML dengan heading h2 yang jelas dan h3 untuk subseksi.
+
+Struktur yang diinginkan:
+1. Pengenalan (h2 id="pengenalan")
+2. Manfaat (h2 id="manfaat") - minimal 4 poin
+3. Langkah-langkah Implementasi (h2 id="langkah") - minimal 5 langkah dengan h3
+4. Tools Gratis Rekomendasi (h2 id="tools") - minimal 3 tools
+5. Tips & Trik Praktis (h2 id="tips") - minimal 4 tips
+6. Kesimpulan (h2 id="kesimpulan")
+
+Pastikan: Konten informatif, 1500+ kata, natural Indonesian.
+Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
+
+    const models = [
+      'mixtral-8x7b-32768',
+      'llama-3-70b-8192',
+      'llama-3-8b-8192'
+    ];
+
+    for (const model of models) {
+      try {
+        const response = await makeRequest('https://api.groq.com/openai/v1/chat/completions', 'POST', {
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        }, {
+          model: model,
+          messages: [{
+            role: 'user',
+            content: prompt
+          }],
+          max_tokens: 4000,
+          temperature: 0.7
+        });
+
+        if (response.status === 200 && response.data.choices) {
+          console.log(`✅ Using Groq API (model: ${model})`);
+          return response.data.choices[0].message.content;
+        }
+      } catch (e) {
+        // Try next model
+      }
+    }
+  } catch (error) {
+    // Silent fail
+  }
+  return null;
 }
 
 // Fallback: Generate default article dari template
