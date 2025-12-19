@@ -40,29 +40,46 @@
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- HEADER -->
-    <header class="site-header">
-        <div class="container header-container">
-            <div class="header-brand">
-                <div class="site-logo">
-                    <a href="/" class="logo-text">
-                        <span class="site-name">{{ site.title | default: "FortoolSEO" }}</span>
-                    </a>
-                </div>
-                <p class="site-tagline">{{ site.description | default: "Blog tentang SEO dan tools gratis" }}</p>
+ <!-- HEADER -->
+<header class="site-header">
+    <div class="container header-container">
+        <div class="header-brand">
+            <div class="site-logo">
+                <a href="/" class="logo-text">
+                    <span class="site-name">{{ site.title | default: "Blog Saya" }}</span>
+                </a>
             </div>
-
-            <!-- Desktop Navigation -->
-            <nav class="main-nav" aria-label="Main Navigation">
-                <ul class="nav-list">
-                    <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
-                    <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
-                    <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
-                    <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
-                </ul>
-            </nav>
+            <p class="site-tagline">{{ site.description | default: "Blog sederhana dengan CMS GitHub" }}</p>
         </div>
-    </header>
+
+        <!-- Desktop Navigation -->
+        <nav class="main-nav" aria-label="Main Navigation">
+            <ul class="nav-list">
+                <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
+                <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
+                <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
+                <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" aria-label="Mobile Navigation">
+        <ul class="mobile-nav-list">
+            <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>🏠 Home</a></li>
+            <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>📂 Categories</a></li>
+            <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>🏷️ Tags</a></li>
+            <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>📖 About</a></li>
+        </ul>
+    </nav>
+</header>
 
     <!-- MAIN CONTENT -->
     <main id="main-content" class="main-wrapper container">
