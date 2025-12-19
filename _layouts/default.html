@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {% if page.title %}
+        {% if page.url contains "/categories/" %}
+            Kategori: {{ page.title }} | {{ site.title }}
+        {% elsif page.url contains "/tags/" %}
+            Tag: {{ page.title }} | {{ site.title }}
+        {% elsif page.title %}
             {{ page.title }} | {{ site.title | default: "FortoolSEO Blog" }}
         {% else %}
             {{ site.title | default: "FortoolSEO Blog" }} | {{ site.description | default: "SEO Tools & Tutorials" }}
@@ -13,7 +17,7 @@
     <meta name="description" content="{{ page.description | default: site.description | default: 'Blog tentang SEO, Tools Gratis, dan tips digital marketing.' }}">
     
     <!-- SEO Meta Tags -->
-    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:title" content="{% if page.url contains '/categories/' %}Kategori: {{ page.title }}{% elsif page.url contains '/tags/' %}Tag: {{ page.title }}{% else %}{{ page.title | default: site.title }}{% endif %}">
     <meta property="og:description" content="{{ page.description | default: site.description }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
@@ -31,10 +35,6 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    
-    <!-- Konfigurasi Pagination di _config.yml -->
-    <!-- paginate: 8 -->
-    <!-- paginate_path: "/blog/page:num/" -->
 </head>
 <body>
     <!-- Skip Link -->
@@ -94,218 +94,92 @@
                     <div class="posts-grid">
                         {% if paginator %}
                             {% for post in paginator.posts %}
-                            <article class="post-card">
-                                <!-- Thumbnail: Otomatis dari gambar pertama -->
-                                <div class="post-card-image">
-                                    {% comment %}
-                                    Cari gambar pertama dari konten artikel
-                                    {% endcomment %}
-                                    {% assign first_image = "" %}
-                                    {% assign content_text = post.content %}
-                                    
-                                    {% comment %} Mencari tag img dalam konten {% endcomment %}
-                                    {% if content_text contains '<img' %}
-                                        {% assign img_start = content_text | split: '<img' %}
-                                        {% if img_start[1] %}
-                                            {% assign img_tag = img_start[1] | split: '>' | first %}
-                                            {% assign src_start = img_tag | split: 'src="' %}
-                                            {% if src_start[1] %}
-                                                {% assign first_image = src_start[1] | split: '"' | first %}
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endif %}
-                                    
-                                    {% if first_image != "" %}
-                                        <img src="{{ first_image }}" alt="{{ post.title }}" loading="lazy">
-                                    {% elsif post.image %}
-                                        <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy">
-                                    {% elsif post.thumbnail %}
-                                        <img src="{{ post.thumbnail }}" alt="{{ post.title }}" loading="lazy">
-                                    {% else %}
-                                        <div class="thumbnail-placeholder">
-                                            <span class="placeholder-icon">📝</span>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                
-                                <!-- Card Content -->
-                                <div class="post-card-content">
-                                    <div class="post-card-meta">
-                                        <time datetime="{{ post.date | date_to_xmlschema }}">
-                                            {{ post.date | date: "%d %b %Y" }}
-                                        </time>
-                                        {% if post.categories.first %}
-                                        <span class="meta-separator">•</span>
-                                        <span class="post-category">{{ post.categories.first }}</span>
-                                        {% endif %}
-                                    </div>
-                                    
-                                    <h3 class="post-card-title">
-                                        <a href="{{ post.url }}">{{ post.title }}</a>
-                                    </h3>
-                                    
-                                    <p class="post-card-excerpt">
-                                        {% if post.excerpt %}
-                                            {{ post.excerpt | strip_html | truncatewords: 20 }}
-                                        {% else %}
-                                            {% assign excerpt_content = post.content | strip_html %}
-                                            {{ excerpt_content | truncatewords: 20 }}
-                                        {% endif %}
-                                    </p>
-                                    
-                                    <div class="post-card-footer">
-                                        {% if post.categories.size > 0 %}
-                                        <div class="post-card-categories">
-                                            {% for category in post.categories limit:2 %}
-                                            <a href="/categories/{{ category | slugify }}/" class="category-tag">
-                                                {{ category }}
-                                            </a>
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
-                                        
-                                        <a href="{{ post.url }}" class="post-card-link">→</a>
-                                    </div>
-                                </div>
-                            </article>
+                            {% include post-card.html post=post %}
                             {% endfor %}
                         {% else %}
                             <!-- Fallback jika paginator tidak aktif -->
                             {% for post in site.posts limit:8 %}
-                            <article class="post-card">
-                                <!-- Thumbnail: Otomatis dari gambar pertama -->
-                                <div class="post-card-image">
-                                    {% assign first_image = "" %}
-                                    {% assign content_text = post.content %}
-                                    
-                                    {% if content_text contains '<img' %}
-                                        {% assign img_start = content_text | split: '<img' %}
-                                        {% if img_start[1] %}
-                                            {% assign img_tag = img_start[1] | split: '>' | first %}
-                                            {% assign src_start = img_tag | split: 'src="' %}
-                                            {% if src_start[1] %}
-                                                {% assign first_image = src_start[1] | split: '"' | first %}
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endif %}
-                                    
-                                    {% if first_image != "" %}
-                                        <img src="{{ first_image }}" alt="{{ post.title }}" loading="lazy">
-                                    {% elsif post.image %}
-                                        <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy">
-                                    {% elsif post.thumbnail %}
-                                        <img src="{{ post.thumbnail }}" alt="{{ post.title }}" loading="lazy">
-                                    {% else %}
-                                        <div class="thumbnail-placeholder">
-                                            <span class="placeholder-icon">📝</span>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                
-                                <div class="post-card-content">
-                                    <div class="post-card-meta">
-                                        <time datetime="{{ post.date | date_to_xmlschema }}">
-                                            {{ post.date | date: "%d %b %Y" }}
-                                        </time>
-                                        {% if post.categories.first %}
-                                        <span class="meta-separator">•</span>
-                                        <span class="post-category">{{ post.categories.first }}</span>
-                                        {% endif %}
-                                    </div>
-                                    
-                                    <h3 class="post-card-title">
-                                        <a href="{{ post.url }}">{{ post.title }}</a>
-                                    </h3>
-                                    
-                                    <p class="post-card-excerpt">
-                                        {% if post.excerpt %}
-                                            {{ post.excerpt | strip_html | truncatewords: 20 }}
-                                        {% else %}
-                                            {% assign excerpt_content = post.content | strip_html %}
-                                            {{ excerpt_content | truncatewords: 20 }}
-                                        {% endif %}
-                                    </p>
-                                    
-                                    <div class="post-card-footer">
-                                        {% if post.categories.size > 0 %}
-                                        <div class="post-card-categories">
-                                            {% for category in post.categories limit:2 %}
-                                            <a href="/categories/{{ category | slugify }}/" class="category-tag">
-                                                {{ category }}
-                                            </a>
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
-                                        
-                                        <a href="{{ post.url }}" class="post-card-link">→</a>
-                                    </div>
-                                </div>
-                            </article>
+                            {% include post-card.html post=post %}
                             {% endfor %}
                         {% endif %}
                     </div>
                     
                     <!-- PAGINATION NAVIGATION -->
                     {% if paginator and paginator.total_pages > 1 %}
-                    <nav class="pagination" aria-label="Navigasi Halaman">
-                        <!-- First Page -->
-                        {% if paginator.page > 2 %}
-                        <a href="{{ site.paginate_path | replace: ':num', 1 | replace: '/blog/', '/' }}" class="pagination-link first-page" aria-label="Halaman pertama">
-                            ««
-                        </a>
-                        {% endif %}
-                        
-                        <!-- Previous Page -->
-                        {% if paginator.previous_page %}
-                        <a href="{{ paginator.previous_page_path }}" class="pagination-link prev-page" aria-label="Halaman sebelumnya">
-                            «
-                        </a>
-                        {% endif %}
-                        
-                        <!-- Page Numbers -->
-                        {% assign start_page = paginator.page | minus: 2 %}
-                        {% assign end_page = paginator.page | plus: 2 %}
-                        
-                        {% if start_page < 1 %}
-                            {% assign start_page = 1 %}
-                        {% endif %}
-                        
-                        {% if end_page > paginator.total_pages %}
-                            {% assign end_page = paginator.total_pages %}
-                        {% endif %}
-                        
-                        {% for page_num in (start_page..end_page) %}
-                            {% if page_num == paginator.page %}
-                            <span class="pagination-link current-page" aria-current="page">
-                                {{ page_num }}
-                            </span>
-                            {% elsif page_num == 1 %}
-                            <a href="/" class="pagination-link">
-                                {{ page_num }}
-                            </a>
-                            {% else %}
-                            <a href="{{ site.paginate_path | replace: ':num', page_num | replace: '/blog/', '/' }}" class="pagination-link">
-                                {{ page_num }}
-                            </a>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        <!-- Next Page -->
-                        {% if paginator.next_page %}
-                        <a href="{{ paginator.next_page_path }}" class="pagination-link next-page" aria-label="Halaman berikutnya">
-                            »
-                        </a>
-                        {% endif %}
-                        
-                        <!-- Last Page -->
-                        {% if paginator.page < paginator.total_pages | minus: 1 %}
-                        <a href="{{ site.paginate_path | replace: ':num', paginator.total_pages | replace: '/blog/', '/' }}" class="pagination-link last-page" aria-label="Halaman terakhir">
-                            »»
-                        </a>
-                        {% endif %}
-                    </nav>
+                    {% include pagination.html %}
                     {% endif %}
                 </section>
+
+                {% elsif page.url contains "/categories/" or page.url contains "/tags/" %}
+                <!-- CATEGORY OR TAG PAGE -->
+                
+                {% if page.url contains "/categories/" %}
+                    <!-- Category Header -->
+                    {% assign category_name = page.title | default: page.name %}
+                    <section class="page-header">
+                        <div class="page-header-content">
+                            <h1 class="page-title">📂 Kategori: {{ category_name }}</h1>
+                            <p class="page-description">Artikel dalam kategori {{ category_name }}</p>
+                            
+                            {% comment %} Hitung total artikel dalam kategori {% endcomment %}
+                            {% assign category_posts = site.categories[category_name] %}
+                            <div class="page-stats">
+                                <span class="stat-item">📊 Total Artikel: {{ category_posts | size }}</span>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    {% assign filtered_posts = site.categories[category_name] %}
+                    
+                {% elsif page.url contains "/tags/" %}
+                    <!-- Tag Header -->
+                    {% assign tag_name = page.title | default: page.name %}
+                    <section class="page-header">
+                        <div class="page-header-content">
+                            <h1 class="page-title">🏷️ Tag: {{ tag_name }}</h1>
+                            <p class="page-description">Artikel dengan tag {{ tag_name }}</p>
+                            
+                            {% comment %} Hitung total artikel dengan tag {% endcomment %}
+                            {% assign tag_posts = site.tags[tag_name] %}
+                            <div class="page-stats">
+                                <span class="stat-item">📊 Total Artikel: {{ tag_posts | size }}</span>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    {% assign filtered_posts = site.tags[tag_name] %}
+                {% endif %}
+                
+                <!-- Articles Grid for Category/Tag -->
+                <section class="all-posts">
+                    {% if filtered_posts.size > 0 %}
+                    <div class="posts-grid">
+                        {% for post in filtered_posts %}
+                        {% include post-card.html post=post %}
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- No Pagination for Category/Tag (show all) -->
+                    {% else %}
+                    <div class="no-posts-message">
+                        <div class="empty-state">
+                            <span class="empty-icon">📭</span>
+                            <h3>Tidak ada artikel ditemukan</h3>
+                            <p>Belum ada artikel dalam {% if page.url contains "/categories/" %}kategori {{ category_name }}{% else %}tag {{ tag_name }}{% endif %}.</p>
+                            <a href="/" class="btn btn-primary">Kembali ke Beranda</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </section>
+                
+                <!-- Back to Categories/Tags -->
+                <div class="navigation-links">
+                    {% if page.url contains "/categories/" %}
+                    <a href="/categories/" class="nav-back">← Kembali ke Semua Kategori</a>
+                    {% elsif page.url contains "/tags/" %}
+                    <a href="/tags/" class="nav-back">← Kembali ke Semua Tags</a>
+                    {% endif %}
+                </div>
 
                 {% else %}
                 <!-- SINGLE ARTICLE PAGE -->
@@ -411,28 +285,10 @@
         </div>
     </footer>
 
-    <!-- JavaScript untuk pagination dan thumbnail -->
+    <!-- JavaScript -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Fungsi untuk mengekstrak gambar pertama dari artikel
-        function extractFirstImage(content) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(content, 'text/html');
-            const firstImg = doc.querySelector('img');
-            return firstImg ? firstImg.src : null;
-        }
-        
-        // Jika thumbnail tidak ada, coba ambil dari gambar pertama dalam konten
-        document.querySelectorAll('.post-card').forEach(card => {
-            const thumbnail = card.querySelector('.post-card-image img');
-            if (!thumbnail || thumbnail.getAttribute('src') === '') {
-                const content = card.querySelector('.post-card-excerpt').textContent;
-                // Di sini Anda bisa menambahkan logika untuk mengambil gambar pertama
-                // dari konten artikel asli jika diperlukan
-            }
-        });
-        
-        // Tambahkan styling untuk pagination aktif
+        // Tambahkan styling untuk halaman aktif
         const currentPage = document.querySelector('.pagination .current-page');
         if (currentPage) {
             currentPage.style.fontWeight = 'bold';
