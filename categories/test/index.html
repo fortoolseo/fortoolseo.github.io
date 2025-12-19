@@ -2,24 +2,154 @@
 layout: default
 title: "Test"
 permalink: /categories/test/
+pagination:
+  enabled: true
+  collection: all
+  category: Test
+  per_page: 8
+  sort_field: date
+  sort_reverse: true
 ---
 
-{% assign matched_posts = "" | split: "," %}
-
+{% comment %} Hitung total artikel dalam kategori {% endcomment %}
+{% assign total_posts = "" | split: "," %}
 {% for post in site.posts %}
   {% if post.categories %}
     {% assign cat_array = post.categories | join: "," | downcase %}
     {% if cat_array contains "test" %}
-      {% assign matched_posts = matched_posts | push: post %}
+      {% assign total_posts = total_posts | push: post %}
     {% endif %}
   {% endif %}
 {% endfor %}
 
-<h1>Kategori: Test ({{ matched_posts.size }} artikel)</h1>
+<section class="page-header">
+    <div class="page-header-content">
+        <h1 class="page-title">📂 Kategori: Test</h1>
+        <p class="page-description">Artikel dalam kategori Test</p>
+        <div class="page-stats">
+            <span class="stat-item">📊 Total Artikel: {{ total_posts | size }}</span>
+            <span class="stat-item">📄 Halaman {{ paginator.page }} dari {{ paginator.total_pages }}</span>
+        </div>
+    </div>
+</section>
 
-{% for post in matched_posts %}
-  <div style="border: 1px solid #ddd; padding: 15px; margin: 10px 0;">
-    <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-    <p>Kategori: {{ post.categories | join: ", " }}</p>
-  </div>
-{% endfor %}
+<section class="all-posts">
+    {% if total_posts.size > 0 %}
+    
+    {% comment %} Manual Pagination Logic {% endcomment %}
+    {% assign per_page = 8 %}
+    {% assign current_page = paginator.page | default: 1 %}
+    {% assign start_index = current_page | minus: 1 | times: per_page %}
+    {% assign end_index = start_index | plus: per_page | minus: 1 %}
+    {% assign total_pages = total_posts.size | divided_by: per_page | ceil %}
+    
+    {% assign paginated_posts = "" | split: "," %}
+    {% for i in (start_index..end_index) %}
+        {% if total_posts[i] %}
+            {% assign paginated_posts = paginated_posts | push: total_posts[i] %}
+        {% endif %}
+    {% endfor %}
+    
+    <div class="posts-grid">
+        {% for post in paginated_posts %}
+        <article class="post-card">
+            <div class="post-card-image">
+                {% comment %} Cari gambar pertama {% endcomment %}
+                {% assign first_image = "" %}
+                {% assign content_text = post.content %}
+                
+                {% if content_text contains '<img' %}
+                    {% assign img_start = content_text | split: '<img' %}
+                    {% if img_start[1] %}
+                        {% assign img_tag = img_start[1] | split: '>' | first %}
+                        {% assign src_start = img_tag | split: 'src="' %}
+                        {% if src_start[1] %}
+                            {% assign first_image = src_start[1] | split: '"' | first %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                
+                {% if first_image != "" %}
+                    <img src="{{ first_image }}" alt="{{ post.title }}" loading="lazy">
+                {% else %}
+                    <div class="thumbnail-placeholder">
+                        <span class="placeholder-icon">📝</span>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="post-card-content">
+                <div class="post-card-meta">
+                    <time datetime="{{ post.date | date_to_xmlschema }}">
+                        {{ post.date | date: "%d %b %Y" }}
+                    </time>
+                    {% if post.categories.first %}
+                    <span class="meta-separator">•</span>
+                    <span class="post-category">{{ post.categories.first }}</span>
+                    {% endif %}
+                </div>
+                
+                <h3 class="post-card-title">
+                    <a href="{{ post.url }}">{{ post.title }}</a>
+                </h3>
+                
+                <p class="post-card-excerpt">
+                    {{ post.content | strip_html | truncatewords: 20 }}
+                </p>
+                
+                <div class="post-card-footer">
+                    <a href="{{ post.url }}" class="post-card-link">→</a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    
+    <!-- PAGINATION -->
+    {% if total_pages > 1 %}
+    <nav class="pagination" aria-label="Navigasi Halaman">
+        {% if current_page > 1 %}
+        <a href="{% if current_page == 2 %}/categories/test/{% else %}/categories/test/page{{ current_page | minus: 1 }}/{% endif %}" 
+           class="pagination-link prev-page">
+            ← Sebelumnya
+        </a>
+        {% endif %}
+        
+        {% for page in (1..total_pages) %}
+            {% if page == 1 %}
+                <a href="/categories/test/" 
+                   class="pagination-link {% if page == current_page %}current-page{% endif %}">
+                    {{ page }}
+                </a>
+            {% else %}
+                <a href="/categories/test/page{{ page }}/" 
+                   class="pagination-link {% if page == current_page %}current-page{% endif %}">
+                    {{ page }}
+                </a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if current_page < total_pages %}
+        <a href="/categories/test/page{{ current_page | plus: 1 }}/" 
+           class="pagination-link next-page">
+            Selanjutnya →
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
+    
+    {% else %}
+    <div class="no-posts-message">
+        <div class="empty-state">
+            <span class="empty-icon">📭</span>
+            <h3>Tidak ada artikel ditemukan</h3>
+            <p>Belum ada artikel dalam kategori Test.</p>
+            <a href="/" class="btn btn-primary">Kembali ke Beranda</a>
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<div class="navigation-links">
+    <a href="/categories/" class="nav-back">← Kembali ke Semua Kategori</a>
+</div>
