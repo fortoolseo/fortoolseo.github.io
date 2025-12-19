@@ -1,0 +1,116 @@
+---
+layout: null
+sitemap:
+  exclude: 'yes'
+---
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    
+    <!-- HOMEPAGE -->
+    <url>
+        <loc>{{ site.url }}/</loc>
+        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- HALAMAN STATIS -->
+    <url>
+        <loc>{{ site.url }}/categories/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>{{ site.url }}/tags/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>{{ site.url }}/about/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- ARTIKEL (POSTS) -->
+    {% for post in site.posts %}
+    <url>
+        <loc>{{ site.url }}{{ post.url }}</loc>
+        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        
+        {% comment %} Jika ada gambar di artikel {% endcomment %}
+        {% if post.content contains '<img' %}
+            {% assign img_start = post.content | split: '<img' %}
+            {% if img_start[1] %}
+                {% assign img_tag = img_start[1] | split: '>' | first %}
+                {% assign src_start = img_tag | split: 'src="' %}
+                {% if src_start[1] %}
+                    {% assign image_url = src_start[1] | split: '"' | first %}
+                    {% if image_url contains 'http' %}
+                        <image:image>
+                            <image:loc>{{ image_url }}</image:loc>
+                            <image:title>{{ post.title | xml_escape }}</image:title>
+                        </image:image>
+                    {% else %}
+                        <image:image>
+                            <image:loc>{{ site.url }}{{ image_url }}</image:loc>
+                            <image:title>{{ post.title | xml_escape }}</image:title>
+                        </image:image>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </url>
+    {% endfor %}
+    
+    <!-- HALAMAN KATEGORI -->
+    {% for category in site.categories %}
+    {% assign category_name = category[0] %}
+    <url>
+        <loc>{{ site.url }}/categories/{{ category_name | slugify }}/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    {% comment %} Pagination untuk kategori jika banyak artikel {% endcomment %}
+    {% assign category_posts = site.categories[category_name] %}
+    {% assign total_pages = category_posts.size | divided_by: 8 | ceil %}
+    {% if total_pages > 1 %}
+        {% for page_num in (2..total_pages) %}
+        <url>
+            <loc>{{ site.url }}/categories/{{ category_name | slugify }}/page{{ page_num }}/</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.6</priority>
+        </url>
+        {% endfor %}
+    {% endif %}
+    {% endfor %}
+    
+    <!-- HALAMAN TAGS -->
+    {% for tag in site.tags %}
+    {% assign tag_name = tag[0] %}
+    <url>
+        <loc>{{ site.url }}/tags/{{ tag_name | slugify }}/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- HALAMAN PAGINATION BLOG -->
+    {% if paginator.total_pages > 1 %}
+        {% for page_num in (2..paginator.total_pages) %}
+        <url>
+            <loc>{{ site.url }}/blog/page{{ page_num }}/</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.6</priority>
+        </url>
+        {% endfor %}
+    {% endif %}
+</urlset>
