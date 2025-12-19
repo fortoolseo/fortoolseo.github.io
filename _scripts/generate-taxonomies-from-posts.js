@@ -41,7 +41,7 @@ function writeCategoryPage(name, outputDir) {
   const dir = path.join(outputDir, slug);
   ensureDir(dir);
   const file = path.join(dir, 'index.html');
-  const content = `---\nlayout: default\ntitle: "Category: ${name}"\n---\n\n<h1>Category: ${name}</h1>\n<p>Articles in this category:</p>\n<ul>\n  {% for post in site.categories['${name}'] %}\n  <li><a href="{{ post.url }}">{{ post.title }}</a></li>\n  {% endfor %}\n</ul>`;
+  const content = `---\nlayout: default\ntitle: "${name}"\n---\n\n<p>Articles in the ${name} category will appear below.</p>`;
   fs.writeFileSync(file, content, 'utf8');
   console.log('Wrote', file);
 }
@@ -51,7 +51,7 @@ function writeTagPage(name, outputDir) {
   const dir = path.join(outputDir, slug);
   ensureDir(dir);
   const file = path.join(dir, 'index.html');
-  const content = `---\nlayout: default\ntitle: "Tag: ${name}"\n---\n\n<h1>Tag: ${name}</h1>\n<p>Articles with this tag:</p>\n<ul>\n  {% for post in site.tags['${name}'] %}\n  <li><a href="{{ post.url }}">{{ post.title }}</a></li>\n  {% endfor %}\n</ul>`;
+  const content = `---\nlayout: default\ntitle: "${name}"\n---\n\n<p>Articles with the ${name} tag will appear below.</p>`;
   fs.writeFileSync(file, content, 'utf8');
   console.log('Wrote', file);
 }
