@@ -1,39 +1,112 @@
-name: AI Article Generator
+name: 🤖 AI Article Generator
 on:
+  workflow_dispatch:  # Bisa run manual
   schedule:
-    - cron: '0 8 * * *'      # Run setiap hari jam 8 pagi UTC
-  workflow_dispatch:          # Bisa run manual dari GitHub UI
+    - cron: '0 8 * * *'  # Auto tiap hari jam 8 UTC
 
 permissions:
-  contents: write            # Izinkan push ke repo
+  contents: write
 
 jobs:
-  generate-article:
+  generate:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v4
     
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
     
-    - name: Install Dependencies
-      run: |
-        pip install requests beautifulsoup4 markdown
+    - name: Install dependencies
+      run: pip install requests beautifulsoup4
     
-    - name: Run AI Generator (NO API)
+    - name: Generate Artikel AI
       run: |
-        python scripts/generator.py --auto
+        mkdir -p scripts
+        cat > scripts/generator.py << 'EOF'
+        #!/usr/bin/env python3
+        import os, json, random, datetime
+        
+        # Data template artikel Indonesia
+        TEMPLATES = {
+            "SEO": [
+                {"title": "5 Cara Optimasi SEO Website Tahun 2024", "template": 1},
+                {"title": "Rahasia Ranking #1 di Google Indonesia", "template": 2},
+                {"title": "Tools SEO Gratis yang Wajib Dicoba", "template": 3}
+            ],
+            "Digital Marketing": [
+                {"title": "Strategi Marketing di Instagram untuk UMKM", "template": 1},
+                {"title": "Cara Buat Konten Viral di TikTok 2024", "template": 2}
+            ]
+        }
+        
+        def generate_content(template_type):
+            contents = [
+                """## Pendahuluan
+Artikel ini akan membahas teknik terbaru yang bisa langsung Anda terapkan.
+                
+## Poin Penting
+1. **Lakukan riset keyword** dengan tools gratis
+2. **Optimasi kecepatan website** di PageSpeed Insights
+3. **Buat konten berkualitas** secara konsisten
+                
+## Kesimpulan
+Dengan strategi yang tepat, hasil akan terlihat dalam 3-6 bulan.""",
+                
+                """## Kenapa Penting?
+Di era digital, visibilitas online adalah kunci sukses.
+                
+## Langkah Praktis
+- Audit website Anda minggu ini
+- Buat content calendar bulanan
+- Monitor kompetitor secara rutin
+                
+## Tips Tambahan
+Gabung komunitas online untuk sharing knowledge."""
+            ]
+            return contents[template_type % 2]
+        
+        # Pilih kategori random
+        kategori = random.choice(list(TEMPLATES.keys()))
+        artikel = random.choice(TEMPLATES[kategori])
+        
+        # Buat konten
+        content = generate_content(artikel["template"])
+        
+        # Buat file markdown
+        tanggal = datetime.datetime.now().strftime("%Y-%m-%d")
+        slug = artikel["title"].lower().replace(" ", "-").replace(".", "")[:40]
+        filename = f"_posts/{tanggal}-{slug}.md"
+        
+        front_matter = f'''---
+layout: post
+title: "{artikel['title']}"
+date: {tanggal}
+categories: [{kategori}]
+tags: [{kategori.lower()}, indonesia, tutorial]
+image: https://picsum.photos/1200/630?random={random.randint(1,1000)}
+author: AI Generator
+description: "{artikel['title']}. Pelajari teknik terbaru tahun 2024."
+---
+        
+{content}
+        
+*Artikel dibuat otomatis oleh AI Generator*'''
+        
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(front_matter)
+        
+        print(f"✅ Artikel berhasil dibuat: {filename}")
+        EOF
+        
+        python scripts/generator.py
     
-    - name: Commit and Push Artikel
+    - name: Commit & Push
       run: |
-        git config --global user.name "GitHub Actions Bot"
+        git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
         git add .
         git commit -m "🤖 Auto: Artikel AI $(date '+%Y-%m-%d %H:%M')" || echo "No changes"
-        git push origin main
+        git push
