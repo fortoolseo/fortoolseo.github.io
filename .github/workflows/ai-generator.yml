@@ -1,70 +1,38 @@
-name: Generate AI Article
+name: 🤖 AI Article Generator
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:          # Run manual dari GitHub
+  schedule:
+    - cron: '0 8 * * *'      # Auto tiap hari jam 8 UTC (3 sore WIB)
+
+permissions:
+  contents: write
 
 jobs:
-  generate:
+  generate-article:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Create article
-      run: |
-        mkdir -p _posts
-        
-        # Variabel
-        DATE=$(date +%Y-%m-%d)
-        TITLE="Artikel AI Generator $(date +%d-%m-%Y)"
-        FILENAME="_posts/${DATE}-artikel-ai.md"
-        
-        # Mulai tulis file
-        echo "---" > "$FILENAME"
-        echo "layout: post" >> "$FILENAME"
-        echo "title: \"$TITLE\"" >> "$FILENAME"
-        echo "date: $DATE" >> "$FILENAME"
-        echo "categories: [SEO]" >> "$FILENAME"
-        echo "tags: [ai, generator, github, free]" >> "$FILENAME"
-        echo "author: AI Bot" >> "$FILENAME"
-        echo "image: https://picsum.photos/1200/630?random=$RANDOM" >> "$FILENAME"
-        echo "---" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "# Artikel Dibuat Otomatis oleh AI" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "Ini adalah artikel yang dibuat secara otomatis menggunakan GitHub Actions." >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "## Keuntungan AI Generator" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "1. **100% Gratis** - Tidak perlu bayar API" >> "$FILENAME"
-        echo "2. **Auto Publish** - Langsung ke GitHub Pages" >> "$FILENAME"
-        echo "3. **SEO Friendly** - Struktur artikel optimal" >> "$FILENAME"
-        echo "4. **Teratur** - Bisa dijadwalkan tiap hari" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "## Cara Kerja" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "1. GitHub Actions menjalankan script" >> "$FILENAME"
-        echo "2. Artikel dibuat dengan template" >> "$FILENAME"
-        echo "3. File disimpan di folder _posts" >> "$FILENAME"
-        echo "4. GitHub Pages otomatis rebuild" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "## Tips SEO" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "- Gunakan keyword yang relevan" >> "$FILENAME"
-        echo "- Optimasi kecepatan loading" >> "$FILENAME"
-        echo "- Buat konten berkualitas" >> "$FILENAME"
-        echo "- Update secara konsisten" >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "> **Kesimpulan**: AI Generator membantu membuat konten secara otomatis dan gratis." >> "$FILENAME"
-        echo "" >> "$FILENAME"
-        echo "---" >> "$FILENAME"
-        echo "*Dibuat otomatis pada: $(date)*" >> "$FILENAME"
-        
-        echo "✅ File created: $FILENAME"
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
     
-    - name: Commit
+    - name: Install dependencies
+      run: pip install requests beautifulsoup4
+    
+    - name: Run AI Generator
+      run: python scripts/ai_generator.py
+    
+    - name: Commit and Push
       run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
         git add .
-        git commit -m "Add AI article $(date +%Y-%m-%d)" || exit 0
+        git commit -m "🤖 Auto: Artikel AI $(date '+%Y-%m-%d %H:%M')" || echo "No changes"
         git push
