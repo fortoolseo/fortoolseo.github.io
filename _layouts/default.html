@@ -71,47 +71,41 @@
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
- <!-- HEADER -->
 <header class="site-header">
-    <div class="container header-container">
-        <div class="header-brand">
-          <div class="site-logo">
-    <a href="/" class="logo-link">
-        <img src="/assets/logo.png" alt="{{ site.title }}" class="logo-img">
-        <span class="site-name">{{ site.title | default: "FortoolSEO Blog" }}</span>
-    </a>
-</div>
+  <div class="container header-container">
 
-            <p class="site-tagline">{{ site.description }}</p>
-        </div>
+    <div class="header-brand">
+      <div class="site-logo">
+        <a href="/" class="logo-link">
+          <img
+            src="/assets/logo.png"
+            alt="{{ site.title | default: 'FortoolSEO Blog' }}"
+            class="logo-img">
+          <span class="site-name">{{ site.title | default: "FortoolSEO Blog" }}</span>
+        </a>
+      </div>
 
-        <!-- Desktop Navigation -->
-        <nav class="main-nav" aria-label="Main Navigation">
-            <ul class="nav-list">
-                <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
-                <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
-                <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
-                <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
-            </ul>
-        </nav>
-
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+      <p class="site-tagline">{{ site.description }}</p>
     </div>
 
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav" aria-label="Mobile Navigation">
-        <ul class="mobile-nav-list">
-            <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>🏠 Home</a></li>
-            <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>📂 Categories</a></li>
-            <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>🏷️ Tags</a></li>
-            <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>📖 About</a></li>
-        </ul>
+    <!-- Desktop Navigation -->
+    <nav class="main-nav" aria-label="Main Navigation">
+      <ul class="nav-list">
+        <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
+        <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
+        <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
+        <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
+      </ul>
     </nav>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
 </header>
 
     <!-- MAIN CONTENT -->
