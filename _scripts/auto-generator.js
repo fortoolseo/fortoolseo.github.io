@@ -179,22 +179,23 @@ Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
 // Try Groq API dengan model fallback
 async function tryGroqAPI(topic, category) {
   try {
-    const prompt = `Create a high-quality SEO blog article about: "${topic}".
+    const prompt = `Write a casual, modern blog post about: "${topic}".
 
 Requirements:
-- Language: English
-- Tone: Informative, original, human-like
-- Length: between 700 and 1500 words (choose a random length in this range)
-- SEO: include the main keyword in the first 100 words, use semantic headings, and natural keyword variations
-- Anti-duplicate: write unique content, avoid copying known sources
-- Anti-AI-detector: vary sentence length, use idiomatic phrases and human-like structure
-- Include sections in HTML with h2/h3 IDs: #introduction (#pengenalan), #benefits (#manfaat), #how-to (#langkah), #tools (#tools), #tips (#tips), #conclusion (#kesimpulan)
-- Add suggested categories/tags such as: tips, tricks, how-to, life-hack, online-business, airdrop, crypto, gaming, android, ios
-- Where relevant, include 1-2 external links (e.g., official app store links or reputable sources) and at least one link back to the blog homepage (https://fortoolseo.github.io)
-- For apps mention platform and provide Play Store or App Store link if available
-- Output: only the article HTML starting from the first h2 tag; do NOT include YAML frontmatter.
+- Language: Casual English (like talking to a friend, use contractions like "you're", "it's", "we're")
+- Tone: Friendly, conversational, authentic—NOT formal or robotic
+- Length: 800-1200 words
+- Structure: Simple and clean—use 2-4 main sections with brief subsections
+- SEO: Include the main keyword naturally in the first 100 words and throughout, use semantic headings
+- Anti-AI feel: Vary sentence length, use personal insights, ask rhetorical questions, include casual transitions like "Honestly," "Here's the thing," "The reality is..."
+- Sections: Use only these h2 headings: introduction, why it matters, how to do it, key takeaways, conclusion
+- Links: Include 1 external link to a relevant resource
+- Output: ONLY HTML from <h2> onward (no YAML frontmatter, no <h1>)
+- Never use emoji, bullet lists are OK but keep them short
+- Make it feel like a real person wrote it, not an AI
 
-Ensure the structure is clear and headings use ids exactly: pengenalan, manfaat, langkah, tools, tips, kesimpulan.`;
+Example tone: "So here's the deal with [topic]... Most people get it wrong because..."`;
+
 
     const models = [
       'llama-3.1-70b-versatile',
@@ -403,30 +404,40 @@ function generateDefaultArticle(topic, category) {
   return `${random} ${topic}`;
 }
 
-// Generate tags dari title/category
+// Generate tags dari title/category - simpler, more natural
 function generateTags(title, category) {
   const baseTags = [
     category.toLowerCase(),
-    'tutorial',
-    'gratis',
-    'panduan'
+    'tips',
+    'guide'
   ];
   
+  // Extract 1-2 key words from title
   const words = title
     .toLowerCase()
-    .split(' ')
-    .filter(w => w.length > 4)
-    .slice(0, 3);
+    .split(/\s+/)
+    .filter(w => w.length > 5 && !['article', 'guide', 'complete', 'ultimate'].includes(w))
+    .slice(0, 2);
   
   return [...baseTags, ...words];
 }
 
-// Main template untuk artikel lengkap
+// Main template untuk artikel lengkap - modern blog style
 async function generateArticleTemplate(config) {
   const { title, category, tags, date, author, imageUrl, content } = config;
   
-  // Add image ke content di awal
-  const imageHtml = imageUrl ? `<img src="${imageUrl}" alt="${title}" loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px;">` : '';
+  // Generate engaging excerpt from content (first 150 chars)
+  const excerpt = content
+    .replace(/<[^>]*>/g, '') // strip HTML
+    .substring(0, 150)
+    .trim() + '...';
+  
+  // Add image if available
+  const imageHtml = imageUrl ? `<img src="${imageUrl}" alt="${title}" loading="lazy" style="width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">` : '';
+  
+  // Format date nicely
+  const dateObj = new Date(date);
+  const dateFormatted = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   
   return `---
 layout: default
@@ -435,34 +446,32 @@ date: ${date}
 categories: ["${category}"]
 tags: ${JSON.stringify(tags)}
 author: "${author}"
-excerpt: "Pelajari tentang ${title}. Panduan lengkap dengan tips praktis dan tools gratis untuk implementasi ${category}."
-meta_description: "Tutorial ${title}. Dapatkan panduan komprehensif, tips, dan tools gratis untuk sukses di ${category}."
+excerpt: "${excerpt}"
+meta_description: "${title} - learn modern tips and insights."
 ---
 
-<h1>${title}</h1>
+<article class="blog-post">
+  <header class="post-header">
+    <h1>${title}</h1>
+    <div class="post-meta">
+      <span class="date">${dateFormatted}</span>
+      <span class="category"><a href="/categories/${category.toLowerCase()}/">${category}</a></span>
+      <span class="reading-time">5 min read</span>
+    </div>
+  </header>
 
-<div class="article-meta">
-  <span>📅 ${date}</span>
-  <span>📂 ${category}</span>
-  <span>👤 ${author}</span>
-  <span>🏷️ ${tags.slice(0, 3).join(', ')}</span>
-</div>
+  ${imageHtml}
 
-${imageHtml}
+  <div class="post-content">
+    ${content}
+  </div>
 
-<div class="toc">
-  <h3>📑 Daftar Isi</h3>
-  <ul>
-    <li><a href="#pengenalan">Pengenalan</a></li>
-    <li><a href="#manfaat">Manfaat</a></li>
-    <li><a href="#langkah">Implementasi</a></li>
-    <li><a href="#tools">Tools Gratis</a></li>
-    <li><a href="#tips">Tips & Trik</a></li>
-    <li><a href="#kesimpulan">Kesimpulan</a></li>
-  </ul>
-</div>
-
-${content}
+  <footer class="post-footer">
+    <div class="tags">
+      ${tags.map(tag => `<a href="/tags/${tag.toLowerCase()}/" class="tag">#${tag}</a>`).join(' ')}
+    </div>
+  </footer>
+</article>
 `;
 }
 
