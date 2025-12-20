@@ -1,63 +1,55 @@
+# FortoolSEO Jekyll Configuration
+# Language: English | SEO-Optimized
 
-# SEO Settings
+# Site Settings
 url: "https://fortoolseo.github.io"
 baseurl: ""
-title: "FortoolSEO Blog"
-description: "Blog tentang SEO, Tools Gratis, dan tips digital marketing"
+title: "FortoolSEO - SEO Tips, Tools & Digital Marketing Guide"
+description: "Master SEO, digital marketing, and free web tools. Expert guides, tutorials, and best practices for ranking higher on Google."
 author: "Admin FortoolSEO"
-language: "id"
-locale: "id_ID"
+language: "en"
+locale: "en_US"
+timezone: UTC
 
-# CMS Settings
+# Markdown & Output
 markdown: kramdown
-permalink: /:title/
-timezone: Asia/Jakarta
-
-# Auto proses file HTML
+permalink: /:categories/:title/
+timezone: UTC
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,html"
 
-# Collections
+# Collections & Defaults
 collections:
   posts:
     output: true
-    permalink: /:title/
+    permalink: /:categories/:title/
 
-# Pagination Configuration
-paginate: 8
-paginate_path: "/blog/page:num/"
-
-# Plugin untuk pagination
-plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-seo-tag
-
-# Atau jika menggunakan gems:
-gems:
-  - jekyll-paginate
-paginate: 8
-paginate_path: "/blog/page:num/"
-include: ["_posts/*.html"]
-
-# _config.yml
-include:
-  - "_posts/*.html"
-  - "_posts/*.md"
-  - "categories"           # INI PENTING!
-  - "_includes"
-
-# Permalink untuk posts
-permalink: /:categories/:title/
-
-# Default layout
 defaults:
   - scope:
       path: ""
       type: "posts"
     values:
       layout: "default"
+      lang: "en"
 
-# Sitemap settings
+# Includes
+include:
+  - "_posts/*.html"
+  - "_posts/*.md"
+  - "categories"
+  - "tags"
+  - "_includes"
+
+# Pagination
+paginate: 8
+paginate_path: "/blog/page:num/"
+
+# Plugins
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Sitemap & SEO
 sitemap:
   file: "/sitemap.xml"
   exclude:
@@ -67,3 +59,16 @@ sitemap:
   include_pages: true
   change_freq: "weekly"
   priority: 0.7
+
+# SEO Enhancement
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: all
+  profile: false
+
+# Google Analytics & SEO
+google_analytics: ""
+disqus:
+  shortname: ""
