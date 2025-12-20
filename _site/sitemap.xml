@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    
+    <!-- HOMEPAGE -->
+    <url>
+        <loc>https://fortoolseo.github.io/</loc>
+        <lastmod>2025-12-20T00:54:39+00:00</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- HALAMAN STATIS -->
+    <url>
+        <loc>https://fortoolseo.github.io/categories/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://fortoolseo.github.io/tags/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://fortoolseo.github.io/about/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- ARTIKEL (POSTS) -->
+    
+    <url>
+        <loc>https://fortoolseo.github.io/seo/the-complete-guide-to-best-ai-tools-for-small-businessestips/</loc>
+        <lastmod>2025-12-20T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        
+        
+        
+            
+            
+                
+                
+                
+                    
+                    
+                        <image:image>
+                            <image:loc>https://images.pexels.com/photos/17502664/pexels-photo-17502664.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=650&amp;w=940</image:loc>
+                            <image:title>The Complete Guide to Best AI Tools for Small Businesses,tips trick,ChatGPT Alternatives</image:title>
+                        </image:image>
+                    
+                
+            
+        
+    </url>
+    
+    
+    <!-- HALAMAN KATEGORI -->
+    
+    
+    <url>
+        <loc>https://fortoolseo.github.io/categories/seo/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    
+    
+    
+    
+    
+    
+    <!-- HALAMAN TAGS -->
+    
+    
+    <url>
+        <loc>https://fortoolseo.github.io/tags/seo/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    
+    <url>
+        <loc>https://fortoolseo.github.io/tags/tips/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    
+    <url>
+        <loc>https://fortoolseo.github.io/tags/guide/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    
+    <url>
+        <loc>https://fortoolseo.github.io/tags/businesses-tips/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    
+    <url>
+        <loc>https://fortoolseo.github.io/tags/trick-chatgpt/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    
+    <!-- HALAMAN PAGINATION BLOG -->
+    
+</urlset>

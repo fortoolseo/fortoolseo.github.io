@@ -1,0 +1,27 @@
+{
+    "SEO": {
+        "subcategories": ["Technical SEO", "On-Page SEO", "Off-Page SEO", "Local SEO"],
+        "keywords": ["optimasi website", "google ranking", "backlink", "keyword research"],
+        "audience": ["Pemula", "Advanced", "Agency", "E-commerce"]
+    },
+    "Digital Marketing": {
+        "subcategories": ["Social Media", "Email Marketing", "Content Marketing", "PPC"],
+        "keywords": ["media sosial", "iklan online", "content strategy", "conversion rate"],
+        "audience": ["UMKM", "Startup", "Corporate", "Freelancer"]
+    },
+    "Website Development": {
+        "subcategories": ["Frontend", "Backend", "WordPress", "E-commerce"],
+        "keywords": ["web development", "programming", "responsive design", "hosting"],
+        "audience": ["Developer", "Designer", "Business Owner", "Student"]
+    },
+    "Content Creation": {
+        "subcategories": ["Blog Writing", "Video Content", "Social Media Content", "Copywriting"],
+        "keywords": ["menulis artikel", "video marketing", "copywriting", "content planning"],
+        "audience": ["Writer", "Creator", "Marketer", "Business"]
+    },
+    "Analytics": {
+        "subcategories": ["Google Analytics", "Data Analysis", "Reporting", "KPI Tracking"],
+        "keywords": ["data analytics", "tracking", "reporting", "metrics"],
+        "audience": ["Analyst", "Marketer", "Manager", "Business Owner"]
+    }
+}
