@@ -190,20 +190,42 @@ async function tryGroqAPI(topic, category) {
   try {
     const prompt = `Write a casual, modern blog post about: "${topic}".
 
+CRITICAL: Output MUST be VALID HTML with proper tags.
+
 Requirements:
 - Language: Casual English (like talking to a friend, use contractions like "you're", "it's", "we're")
 - Tone: Friendly, conversational, authentic—NOT formal or robotic
 - Length: 800-1200 words
 - Structure: Simple and clean—use 2-4 main sections with brief subsections
-- SEO: Include the main keyword naturally in the first 100 words and throughout, use semantic headings
-- Anti-AI feel: Vary sentence length, use personal insights, ask rhetorical questions, include casual transitions like "Honestly," "Here's the thing," "The reality is..."
-- Sections: Use only these h2 headings: introduction, why it matters, how to do it, key takeaways, conclusion
-- Links: Include 1 external link to a relevant resource
-- Output: ONLY HTML from <h2> onward (no YAML frontmatter, no <h1>)
-- Never use emoji, bullet lists are OK but keep them short
+
+HTML FORMAT (MANDATORY):
+- Wrap ALL paragraphs in <p></p> tags
+- Use <h2>Section Title</h2> for main sections (NOT markdown ##)
+- Use <h3>Subsection Title</h3> for subsections (NOT markdown ###)
+- Use <ul><li>item</li></ul> for bullet lists
+- Separate paragraphs with newlines
+- NO markdown syntax (no ##, ###, **, -, etc) - ONLY HTML tags
+
+SEO Requirements:
+- Include main keyword naturally in first 100 words
+- Use semantic headings, vary sentence length
+- Personal insights, rhetorical questions
+- Casual transitions: "Honestly," "Here's the thing," "The reality is..."
+
+Sections Required:
+<h2>Introduction</h2> - hook readers immediately
+<h2>Why it Matters</h2> - explain importance
+<h2>How to Do it</h2> - practical steps with <h3> subsections
+<h2>Key Takeaways</h2> - summary points
+<h2>Conclusion</h2> - wrap up
+
+Additional:
+- Include 1 external link in relevant context
+- Bullet lists OK but wrap in proper HTML tags
+- Never use emoji
 - Make it feel like a real person wrote it, not an AI
 
-Example tone: "So here's the deal with [topic]... Most people get it wrong because..."`;
+Start directly with <h2>Introduction</h2>. Output ONLY HTML - NO YAML, NO <h1>.`;
 
 
     const models = [
@@ -436,12 +458,47 @@ function generateTags(title, category) {
   return [...new Set([...baseTags, ...words])].filter(t => t.length > 0);
 }
 
+// Clean and fix content formatting (convert markdown remnants to proper HTML)
+function cleanContentFormatting(content) {
+  // If content doesn't start with <h2>, it likely has markdown artifacts
+  if (!content.trim().startsWith('<h2')) {
+    // Remove markdown heading syntax and convert to HTML
+    content = content
+      .replace(/^## /gm, '<h2>')
+      .replace(/^### /gm, '<h3>')
+      .replace(/(?<!<h[23]>)[\*]{2}([^*]+)[\*]{2}/g, '<strong>$1</strong>') // bold
+      .replace(/(?<!<h[23]>)\_([^_]+)\_/g, '<em>$1</em>'); // italic
+  }
+  
+  // Ensure all text content is wrapped in <p> tags (but preserve existing HTML)
+  const lines = content.split('\n').map(line => {
+    const trimmed = line.trim();
+    // Skip if already HTML tag, empty, or bullet list
+    if (!trimmed || trimmed.startsWith('<') || trimmed.startsWith('*') || trimmed.startsWith('-')) {
+      return line;
+    }
+    // Check if line looks like plain text paragraph
+    if (!trimmed.startsWith('<h') && !trimmed.startsWith('</') && !trimmed.includes('</p>')) {
+      // Check if it's a continuation or new paragraph
+      if (trimmed.length > 20) { // Only wrap substantial text
+        return `<p>${trimmed}</p>`;
+      }
+    }
+    return line;
+  });
+  
+  return lines.join('\n');
+}
+
 // Main template untuk artikel lengkap - modern blog style
 async function generateArticleTemplate(config) {
   const { title, category, tags, date, author, imageUrl, content } = config;
   
+  // Clean and fix content formatting (convert markdown remnants to proper HTML)
+  const cleanedContent = cleanContentFormatting(content);
+  
   // Generate engaging excerpt from content (first 150 chars)
-  const excerpt = content
+  const excerpt = cleanedContent
     .replace(/<[^>]*>/g, '') // strip HTML
     .substring(0, 150)
     .trim() + '...';
@@ -477,7 +534,7 @@ meta_description: "${title} - learn modern tips and insights."
   ${imageHtml}
 
   <div class="post-content">
-    ${content}
+    ${cleanedContent}
   </div>
 
   <footer class="post-footer">
