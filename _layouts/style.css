@@ -494,3 +494,62 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #26d0ce 0%, #1a2980 100%);
 }
+/* ===== LOGO ===== */
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+.site-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #222;
+}
+/* ===== ARTICLE BOX ===== */
+.article-wrapper {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+/* isi artikel */
+.post-content {
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* judul dalam artikel */
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
+    font-weight: 700;
+}
+
+/* gambar artikel */
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* mobile aman */
+@media (max-width: 768px) {
+    .article-wrapper {
+        padding: 20px;
+    }
+}
