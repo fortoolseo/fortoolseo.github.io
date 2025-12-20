@@ -47,13 +47,19 @@ async function generateTitleFromTopic(topic, category, index = 0) {
     `Everything You Need to Know About ${trimmed}`,
     `Proven Methods for ${trimmed}`,
     `${trimmed} 101: Getting Started`,
-    `Professional Tips for ${trimmed}`
+    `Professional Tips for ${trimmed}`,
+    `Why ${trimmed} Matter in 2025`,
+    `${trimmed}: Insider Secrets Revealed`,
+    `The Ultimate ${trimmed} Handbook`,
+    `How to Get Started with ${trimmed}`,
+    `${trimmed} Success Stories & Tips`
   ];
 
-  // Vary by index to ensure different titles in batch generation
-  const idx = (index + Math.floor(Math.random() * 10)) % templates.length;
+  // Randomize based on index + timestamp to ensure variety even in rapid generation
+  const seed = index + Math.floor(Date.now() / 1000);
+  const idx = (seed * 7919) % templates.length; // Use prime multiplier for better distribution
   return templates[idx];
-}}
+}
 
 // Filename generation
 function generateFilename(title, date) {
@@ -428,7 +434,7 @@ function generateTags(title, category) {
   
   // Remove any empty or duplicate tags
   return [...new Set([...baseTags, ...words])].filter(t => t.length > 0);
-}}
+}
 
 // Main template untuk artikel lengkap - modern blog style
 async function generateArticleTemplate(config) {
