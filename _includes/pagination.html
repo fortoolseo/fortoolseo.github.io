@@ -1,57 +1,61 @@
+{% if paginator.total_pages > 1 %}
 <nav class="pagination" aria-label="Navigasi Halaman">
+
     <!-- First Page -->
-    {% if paginator.page > 2 %}
-    <a href="{{ site.paginate_path | replace: ':num', 1 | replace: '/blog/', '/' }}" class="pagination-link first-page" aria-label="Halaman pertama">
+    {% if paginator.page > 1 %}
+    <a href="/blog/" class="pagination-link first-page" aria-label="Halaman pertama">
         ««
     </a>
     {% endif %}
-    
+
     <!-- Previous Page -->
     {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path }}" class="pagination-link prev-page" aria-label="Halaman sebelumnya">
+    <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination-link prev-page" aria-label="Halaman sebelumnya">
         «
     </a>
     {% endif %}
-    
+
     <!-- Page Numbers -->
     {% assign start_page = paginator.page | minus: 2 %}
     {% assign end_page = paginator.page | plus: 2 %}
-    
+
     {% if start_page < 1 %}
         {% assign start_page = 1 %}
     {% endif %}
-    
+
     {% if end_page > paginator.total_pages %}
         {% assign end_page = paginator.total_pages %}
     {% endif %}
-    
+
     {% for page_num in (start_page..end_page) %}
         {% if page_num == paginator.page %}
-        <span class="pagination-link current-page" aria-current="page">
-            {{ page_num }}
-        </span>
+            <span class="pagination-link current-page" aria-current="page">
+                {{ page_num }}
+            </span>
         {% elsif page_num == 1 %}
-        <a href="/" class="pagination-link">
-            {{ page_num }}
-        </a>
+            <a href="/blog/" class="pagination-link">
+                {{ page_num }}
+            </a>
         {% else %}
-        <a href="{{ site.paginate_path | replace: ':num', page_num | replace: '/blog/', '/' }}" class="pagination-link">
-            {{ page_num }}
-        </a>
+            <a href="{{ site.paginate_path | replace: ':num', page_num | relative_url }}" class="pagination-link">
+                {{ page_num }}
+            </a>
         {% endif %}
     {% endfor %}
-    
+
     <!-- Next Page -->
     {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path }}" class="pagination-link next-page" aria-label="Halaman berikutnya">
+    <a href="{{ paginator.next_page_path | relative_url }}" class="pagination-link next-page" aria-label="Halaman berikutnya">
         »
     </a>
     {% endif %}
-    
+
     <!-- Last Page -->
-    {% if paginator.page < paginator.total_pages | minus: 1 %}
-    <a href="{{ site.paginate_path | replace: ':num', paginator.total_pages | replace: '/blog/', '/' }}" class="pagination-link last-page" aria-label="Halaman terakhir">
+    {% if paginator.page < paginator.total_pages %}
+    <a href="{{ site.paginate_path | replace: ':num', paginator.total_pages | relative_url }}" class="pagination-link last-page" aria-label="Halaman terakhir">
         »»
     </a>
     {% endif %}
+
 </nav>
+{% endif %}
