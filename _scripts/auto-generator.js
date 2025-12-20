@@ -31,6 +31,27 @@ function generateSlug(title) {
     .substring(0, 60);
 }
 
+// Simple fallback title generator (used when external title generator missing)
+async function generateTitleFromTopic(topic, category) {
+  // If topic already looks like a full title, return it with minor cleanup
+  const trimmed = (topic || '').trim();
+  if (!trimmed) return `${category} Guide`;
+
+  // Create a short SEO-friendly title variants
+  const templates = [
+    `${trimmed}: An Ultimate Guide`,
+    `Top Tips for ${trimmed}`,
+    `How to Improve ${trimmed} Performance`,
+    `The Complete Guide to ${trimmed}`
+  ];
+
+  // Pick one deterministically based on topic hash for reproducibility
+  let hash = 0;
+  for (let i = 0; i < trimmed.length; i++) hash = (hash << 5) - hash + trimmed.charCodeAt(i);
+  const idx = Math.abs(hash) % templates.length;
+  return templates[idx];
+}
+
 // Filename generation
 function generateFilename(title, date) {
   const slug = generateSlug(title);
@@ -71,7 +92,8 @@ function makeRequest(url, method = 'GET', headers = {}, body = null) {
 
 // ==================== AI CONTENT GENERATION ====================
 
-// Generate artikel dengan Groq API (free) atau fallback
+// Generate artikel dengan Groq API (free) atau fallback to HF/OpenRouter
+// Does NOT fallback to template (caller will skip article if null)
 async function generateArticleWithGroq(topic, category) {
   // Try Groq first
   if (GROQ_API_KEY) {
@@ -91,9 +113,24 @@ async function generateArticleWithGroq(topic, category) {
     if (result) return result;
   }
 
-  // Fallback to template
-  console.log('⚠️  No working AI API. Using template...');
-  return generateDefaultArticle(topic, category);
+  // No AI provider worked; return null (no template fallback)
+  console.log('⚠️  No working AI API - skipping article.');
+  return null;
+}
+
+// Unified AI generation wrapper used by main flow
+// Returns null if all AI providers fail (no template fallback)
+async function generateArticleWithAI(title, category, tags = []) {
+  // Try AI providers: Groq first, then HuggingFace, then OpenRouter
+  try {
+    const result = await generateArticleWithGroq(title, category);
+    if (result) return result;
+  } catch (e) {
+    // continue to next provider
+  }
+
+  // If all AI fails, return null (caller will skip article)
+  return null;
 }
 
 // Try OpenRouter API (free tier available)
@@ -160,9 +197,9 @@ Requirements:
 Ensure the structure is clear and headings use ids exactly: pengenalan, manfaat, langkah, tools, tips, kesimpulan.`;
 
     const models = [
-      'mixtral-8x7b-32768',
-      'llama-3-70b-8192',
-      'llama-3-8b-8192'
+      'llama-3.1-70b-versatile',
+      'llama-3.1-8b-instant',
+      'llama-2-70b-4096'
     ];
 
     for (const model of models) {
@@ -228,6 +265,31 @@ async function tryHuggingFaceAPI(topic, category) {
     // fail silently
   }
   return null;
+}
+
+// Try fetch image from Pexels (safe fallback)
+async function getImageFromPexels(query) {
+  try {
+    if (!PEXELS_API_KEY) return null;
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1`;
+    const response = await makeRequest(url, 'GET', {
+      'Authorization': PEXELS_API_KEY,
+      'Content-Type': 'application/json'
+    });
+
+    if (response && response.status === 200 && response.data && response.data.photos && response.data.photos.length > 0) {
+      const photo = response.data.photos[0];
+      // prefer large or original
+      return (photo.src && (photo.src.large || photo.src.original)) || null;
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+function getPlaceholderImage() {
+  return `https://picsum.photos/1200/630?random=${Math.floor(Math.random() * 1000)}`;
 }
 
 // Fallback: Generate default article dari template
@@ -471,10 +533,16 @@ async function main() {
       // Generate tags
       const tags = generateTags(title, CATEGORY);
       
-      // Generate content dengan AI
+      // Generate content dengan AI (NO FALLBACK: return null if all AI fails)
       const content = await generateArticleWithAI(title, CATEGORY, tags);
       
-      // Get image
+      // If AI generation failed, skip this article entirely
+      if (!content) {
+        console.log(`⏭️  Skipped: No AI content generated for "${title}"`);
+        continue;
+      }
+      
+      // Get image (only if AI succeeded)
       console.log('🖼️  Fetching image...');
       const imageUrl = await getImageFromPexels(TOPIC || title);
       
