@@ -328,99 +328,148 @@ function getPlaceholderImage() {
 function generateDefaultArticle(topic, category) {
 // Fallback: Generate default article in English
 function generateDefaultArticle(topic, category) {
-  return `<h2 id="pengenalan">📖 What is ${topic}?</h2>
-<p>${topic} is a crucial topic in the world of ${category}. Learn in-depth how implementing these strategies can improve your website performance and boost your online presence.</p>
+  return `<h2 id="introduction">📖 Understanding ${topic} in a Practical Way</h2>
+<p>
+In the world of <strong>${category}</strong>, ${topic} is not just a theory.
+It plays an important role in improving website quality, user experience,
+and long-term online visibility.
+</p>
+<p>
+If you are new to this topic, you may want to explore our beginner-friendly guide here:
+<a href="{{internal_link_1}}">recommended related article</a>.
+</p>
 
-<h2 id="manfaat">🎯 Benefits and Advantages</h2>
+<h2 id="why-important">🎯 Why ${topic} Matters</h2>
 <ul>
-  <li><strong>Improved Performance:</strong> Proper optimization delivers significant results and measurable improvements.</li>
-  <li><strong>Better User Experience:</strong> Visitors receive genuine value and stay longer on your site.</li>
-  <li><strong>Higher Conversion Rates:</strong> Efficient marketing strategies lead to more conversions and sales.</li>
-  <li><strong>Authority Building:</strong> Your brand becomes more trusted and recognized in the industry.</li>
+  <li><strong>Better Website Structure:</strong> Helps organize content and technical elements properly.</li>
+  <li><strong>Improved User Experience:</strong> Visitors find relevant information faster and stay longer.</li>
+  <li><strong>More Meaningful Traffic:</strong> Focuses on quality users, not just numbers.</li>
+  <li><strong>Long-Term Growth:</strong> Supports sustainable performance instead of short-term tricks.</li>
 </ul>
 
-<h2 id="langkah">🛠️ Implementation Steps</h2>
-<h3>1. Initial Analysis and Audit</h3>
-<p>Start with a deep understanding of your current situation and identify areas that need improvement.</p>
+<h2 id="implementation">🛠️ How to Implement ${topic} Step by Step</h2>
 
-<h3>2. Strategic Planning</h3>
-<p>Create a long-term roadmap with measurable KPIs and realistic goals.</p>
+<h3>1. Analyze Your Current Website</h3>
+<p>
+Start by reviewing your website performance, content quality, and technical setup.
+This step helps you identify real problems instead of guessing.
+</p>
 
-<h3>3. Phased Implementation</h3>
-<p>Execute changes systematically, test thoroughly, and monitor results consistently.</p>
+<h3>2. Define Clear Priorities</h3>
+<p>
+Avoid changing everything at once.
+Focus on areas that have the biggest impact based on your analysis.
+</p>
 
-<h3>4. Continuous Optimization</h3>
-<p>Make refinements based on data insights and feedback from your audience.</p>
+<h3>3. Apply Changes Gradually</h3>
+<p>
+Implement improvements step by step and monitor the results carefully.
+This approach makes it easier to evaluate what works.
+</p>
 
-<h3>5. Documentation and Knowledge Sharing</h3>
-<p>Record your learnings for future reference and share best practices with your team.</p>
+<h3>4. Monitor and Optimize</h3>
+<p>
+Use data and feedback to refine your strategy.
+Small improvements over time often lead to better long-term results.
+</p>
 
-<h2 id="tools">🔧 Recommended Free Tools</h2>
+<h3>5. Maintain Consistency</h3>
+<p>
+Document your progress and stay consistent.
+Successful websites are built through continuous improvement, not instant results.
+</p>
+
+<h2 id="tools">🔧 Free Tools You Can Use</h2>
 <div class="tools-grid">
   <div class="tool-card">
     <h4>Google Analytics 4</h4>
-    <p>Track visitor traffic and behavior in real-time with comprehensive analytics.</p>
+    <p>Analyze visitor behavior and understand how users interact with your pages.</p>
   </div>
   <div class="tool-card">
     <h4>Google Search Console</h4>
-    <p>Monitor your search performance and identify issues affecting your rankings.</p>
+    <p>Track search performance and detect indexing or visibility issues.</p>
   </div>
   <div class="tool-card">
-    <h4>Google PageSpeed Insights</h4>
-    <p>Audit your website performance and receive actionable improvement recommendations.</p>
+    <h4>PageSpeed Insights</h4>
+    <p>Evaluate page speed and get practical performance recommendations.</p>
   </div>
 </div>
 
-<h2 id="tips">💡 Practical Tips and Tricks</h2>
+<h2 id="practical-tips">💡 Practical Tips for Better Results</h2>
 <div class="tips-container">
   <div class="tip">
     <span class="tip-icon">✅</span>
     <div>
-      <h4>Focus on Value</h4>
-      <p>Provide high-quality content that genuinely helps your audience solve real problems.</p>
+      <h4>Focus on Real Value</h4>
+      <p>Create content that genuinely helps users, not just search engines.</p>
     </div>
   </div>
   <div class="tip">
     <span class="tip-icon">✅</span>
     <div>
-      <h4>Consistency is Key</h4>
-      <p>The best results come from consistent effort over a long period of time.</p>
+      <h4>Avoid Shortcuts</h4>
+      <p>Sustainable growth comes from ethical and transparent practices.</p>
     </div>
   </div>
   <div class="tip">
     <span class="tip-icon">✅</span>
     <div>
-      <h4>Data-Driven Decisions</h4>
-      <p>Use analytics and data to make informed decisions and avoid guesswork.</p>
+      <h4>Use Data Wisely</h4>
+      <p>Base decisions on analytics instead of assumptions.</p>
     </div>
   </div>
   <div class="tip">
     <span class="tip-icon">✅</span>
     <div>
-      <h4>Stay Updated</h4>
-      <p>Follow industry trends and updates to remain competitive and relevant.</p>
+      <h4>Stay Informed</h4>
+      <p>Industry updates can affect strategies, so keep learning regularly.</p>
     </div>
   </div>
 </div>
 
-<h2 id="kesimpulan">🎓 Conclusion</h2>
-<p>${topic} requires thorough understanding and proper execution. Start today with the first step, and continuously learn from your experiences to achieve maximum results. Visit our blog at <a href="https://fortoolseo.github.io">FortoolSEO</a> for more insights.</p>
+<h2 id="conclusion">🎓 Conclusion</h2>
+<p>
+${topic} requires patience, consistency, and a clear strategy.
+When applied correctly, it can significantly improve your website over time.
+You can find more related insights on
+<a href="{{internal_link_2}}">our main blog section</a>.
+</p>
+<p>
+For official guidelines and best practices, refer to
+<a href="https://developers.google.com/search/docs"
+   target="_blank"
+   rel="nofollow noopener">
+Google Search Central documentation
+</a>.
+</p>
 
 <h2>❓ Frequently Asked Questions</h2>
 <div class="faq-container">
   <div class="faq-item">
-    <h3>1. How long until I see results?</h3>
-    <p>Results vary based on competition and strategy, but most see initial improvements within 1-3 months of consistent implementation.</p>
+    <h3>1. How long does it take to see results?</h3>
+    <p>
+    Results vary depending on competition and consistency,
+    but initial improvements often appear within 1–3 months.
+    </p>
   </div>
   <div class="faq-item">
-    <h3>2. Do I need a large budget?</h3>
-    <p>No, many excellent free tools are available to get started without significant investment.</p>
+    <h3>2. Do I need paid tools?</h3>
+    <p>
+    Not necessarily. Many free tools are sufficient for beginners and small websites.
+    </p>
   </div>
   <div class="faq-item">
-    <h3>3. How do I begin?</h3>
-    <p>Start with a basic audit, identify your opportunities, and implement your strategy step by step.</p>
+    <h3>3. What is the safest way to start?</h3>
+    <p>
+    Begin with a basic audit, then apply improvements gradually.
+    </p>
   </div>
-</div>`;
+</div>
+
+<p>
+You may also find this related guide useful:
+<a href="{{internal_link_3}}">additional recommended reading</a>.
+</p>`;
 } // Fallback: Generate dari topic
   const subtopics = [
     'Panduan Lengkap',
@@ -514,7 +563,8 @@ async function generateArticleTemplate(config) {
 layout: default
 title: "${title}"
 date: ${date}
-categories: ["${category}"]
+categories:
+  - ${category}
 tags: ${JSON.stringify(tags)}
 author: "${author}"
 excerpt: "${excerpt}"
