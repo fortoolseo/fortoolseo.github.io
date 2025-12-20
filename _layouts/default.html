@@ -75,11 +75,13 @@
 <header class="site-header">
     <div class="container header-container">
         <div class="header-brand">
-            <div class="site-logo">
-                <a href="/" class="logo-text">
-                    <span class="site-name">{{ site.title | default: "Blog Saya" }}</span>
-                </a>
-            </div>
+          <div class="site-logo">
+    <a href="/" class="logo-link">
+        <img src="/assets/logo.png" alt="{{ site.title }}" class="logo-img">
+        <span class="site-name">{{ site.title | default: "FortoolSEO Blog" }}</span>
+    </a>
+</div>
+
             <p class="site-tagline">{{ site.description }}</p>
         </div>
 
