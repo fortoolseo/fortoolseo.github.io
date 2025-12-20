@@ -31,26 +31,29 @@ function generateSlug(title) {
     .substring(0, 60);
 }
 
-// Simple fallback title generator (used when external title generator missing)
-async function generateTitleFromTopic(topic, category) {
-  // If topic already looks like a full title, return it with minor cleanup
+// Simple fallback title generator with randomization for uniqueness in batch generation
+async function generateTitleFromTopic(topic, category, index = 0) {
   const trimmed = (topic || '').trim();
-  if (!trimmed) return `${category} Guide`;
+  if (!trimmed) return `${category} Guide #${index}`;
 
-  // Create a short SEO-friendly title variants
+  // Create multiple SEO-friendly title variants
   const templates = [
-    `${trimmed}: An Ultimate Guide`,
+    `${trimmed}: A Complete Guide`,
     `Top Tips for ${trimmed}`,
-    `How to Improve ${trimmed} Performance`,
-    `The Complete Guide to ${trimmed}`
+    `How to Master ${trimmed}`,
+    `The Beginner's Guide to ${trimmed}`,
+    `${trimmed}: Best Practices & Tips`,
+    `Advanced Strategies for ${trimmed}`,
+    `Everything You Need to Know About ${trimmed}`,
+    `Proven Methods for ${trimmed}`,
+    `${trimmed} 101: Getting Started`,
+    `Professional Tips for ${trimmed}`
   ];
 
-  // Pick one deterministically based on topic hash for reproducibility
-  let hash = 0;
-  for (let i = 0; i < trimmed.length; i++) hash = (hash << 5) - hash + trimmed.charCodeAt(i);
-  const idx = Math.abs(hash) % templates.length;
+  // Vary by index to ensure different titles in batch generation
+  const idx = (index + Math.floor(Math.random() * 10)) % templates.length;
   return templates[idx];
-}
+}}
 
 // Filename generation
 function generateFilename(title, date) {
@@ -404,23 +407,28 @@ function generateDefaultArticle(topic, category) {
   return `${random} ${topic}`;
 }
 
-// Generate tags dari title/category - simpler, more natural
+// Generate tags dari title/category - simpler, more natural, without special chars
 function generateTags(title, category) {
+  const stopwords = ['article', 'guide', 'complete', 'ultimate', 'beginner', 'advanced', 'everything', 'professional', 'proven', 'methods', 'strategies', 'getting', 'started', 'tips', 'best', 'practices', 'know', 'about', 'for'];
+  
   const baseTags = [
-    category.toLowerCase(),
+    category.toLowerCase().replace(/[^a-z0-9-]/g, ''),
     'tips',
     'guide'
   ];
   
-  // Extract 1-2 key words from title
+  // Extract 1-2 key words from title - clean special chars
   const words = title
     .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ') // remove special chars (colons, commas, etc)
     .split(/\s+/)
-    .filter(w => w.length > 5 && !['article', 'guide', 'complete', 'ultimate'].includes(w))
-    .slice(0, 2);
+    .filter(w => w.length > 4 && !stopwords.includes(w))
+    .slice(0, 2)
+    .map(w => w.replace(/[^a-z0-9-]/g, '')); // final cleanup
   
-  return [...baseTags, ...words];
-}
+  // Remove any empty or duplicate tags
+  return [...new Set([...baseTags, ...words])].filter(t => t.length > 0);
+}}
 
 // Main template untuk artikel lengkap - modern blog style
 async function generateArticleTemplate(config) {
@@ -535,8 +543,8 @@ async function main() {
     try {
       console.log(`\n━━━ Artikel ${i + 1}/${COUNT} ━━━`);
       
-      // Generate title
-      const title = TOPIC ? await generateTitleFromTopic(TOPIC, CATEGORY) : `Artikel ${CATEGORY} #${i + 1}`;
+      // Generate title - pass index to ensure variety in batch mode
+      const title = TOPIC ? await generateTitleFromTopic(TOPIC, CATEGORY, i) : `Artikel ${CATEGORY} #${i + 1}`;
       console.log(`📌 Title: ${title}`);
       
       // Generate tags
