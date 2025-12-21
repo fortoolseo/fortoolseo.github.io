@@ -27,36 +27,37 @@
     {% endif %}
 
     <!-- SEO Tags -->
-{% seo title=false %}
+    {% seo title=false %}
 
-<!-- Canonical URL -->
-<link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
 
-<!-- RSS Feed -->
-<link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS Feed" href="{{ '/feed.xml' | relative_url }}">
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS Feed" href="{{ '/feed.xml' | relative_url }}">
 
-<!-- JSON-LD Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "{{ site.title }}",
-  "description": "{{ site.description }}",
-  "url": "{{ site.url }}",
-  "publisher": {
-    "@type": "Organization",
-    "name": "FortoolSEO",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ site.url }}/assets/logo.png"
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "{{ site.title }}",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "FortoolSEO",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ site.url }}/assets/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ site.url }}"
+      }
     }
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ site.url }}"
-  }
-}
-</script>
+    </script>
+    
     <!-- CSS EKSTERNAL -->
     <link rel="stylesheet" href="/assets/css/style.css">
     
@@ -65,49 +66,350 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    
+    <style>
+    /* Mobile Menu Styles */
+    .mobile-nav {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 280px;
+        background: #fff;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 1000;
+        padding: 80px 20px 20px;
+        overflow-y: auto;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .mobile-nav.is-active {
+        display: block;
+        transform: translateX(0);
+    }
+    
+    .mobile-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .mobile-nav-list li {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 15px;
+    }
+    
+    .mobile-nav-list li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    
+    .mobile-nav-list a {
+        display: block;
+        color: #333;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        padding: 10px 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .mobile-nav-list a:hover,
+    .mobile-nav-list a.active {
+        background: #f8f9fa;
+        color: #4285f4;
+    }
+    
+    .mobile-menu-toggle {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 1001;
+    }
+    
+    .mobile-menu-toggle span {
+        display: block;
+        height: 3px;
+        width: 100%;
+        background: #333;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Modern Footer Styles */
+    .site-footer {
+        background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+        color: #fff;
+        padding: 60px 0 20px;
+        margin-top: 80px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05, #ea4335);
+    }
+    
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .footer-top {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+    
+    .footer-widget h3 {
+        color: #fff;
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(255,255,255,0.1);
+        position: relative;
+    }
+    
+    .footer-widget h3::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 50px;
+        height: 2px;
+        background: #4285f4;
+    }
+    
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-links a {
+        color: #b3b3ff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .footer-links a:hover {
+        color: #fff;
+        transform: translateX(5px);
+    }
+    
+    .footer-links i {
+        font-size: 0.9rem;
+        width: 20px;
+    }
+    
+    .footer-about {
+        color: #b3b3ff;
+        line-height: 1.6;
+    }
+    
+    .footer-about p {
+        margin-bottom: 20px;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        background: #4285f4;
+        transform: translateY(-3px);
+    }
+    
+    .footer-middle {
+        padding: 30px 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin: 30px 0;
+        text-align: center;
+    }
+    
+    .adsense-container {
+        max-width: 728px;
+        margin: 0 auto;
+        background: rgba(255,255,255,0.05);
+        border-radius: 10px;
+        padding: 20px;
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .adsense-placeholder {
+        color: rgba(255,255,255,0.5);
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    
+    .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .footer-copyright {
+        color: #b3b3ff;
+        font-size: 0.9rem;
+    }
+    
+    .footer-legal {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .footer-legal a {
+        color: #b3b3ff;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-legal a:hover {
+        color: #fff;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .mobile-menu-toggle {
+            display: flex;
+        }
+        
+        .main-nav {
+            display: none;
+        }
+        
+        .footer-top {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-legal {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .adsense-container {
+            min-height: 100px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .mobile-nav {
+            width: 250px;
+        }
+        
+        .footer-middle {
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+    }
+    </style>
 </head>
 <body>
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-<header class="site-header">
-  <div class="container header-container">
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="header-brand">
+                <div class="site-logo">
+                    <a href="/" class="logo-link">
+                        <img
+                            src="/assets/logo.png"
+                            alt="{{ site.title | default: 'FortoolSEO Blog' }}"
+                            class="logo-img">
+                        <span class="site-name">{{ site.title | default: "FortoolSEO Blog" }}</span>
+                    </a>
+                </div>
+                <p class="site-tagline">{{ site.description }}</p>
+            </div>
 
-    <div class="header-brand">
-      <div class="site-logo">
-        <a href="/" class="logo-link">
-          <img
-            src="/assets/logo.png"
-            alt="{{ site.title | default: 'FortoolSEO Blog' }}"
-            class="logo-img">
-          <span class="site-name">{{ site.title | default: "FortoolSEO Blog" }}</span>
-        </a>
-      </div>
-  <p class="site-tagline">{{ site.description }}</p>
-    
-    </div>
+            <!-- Desktop Navigation -->
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul class="nav-list">
+                    <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
+                    <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
+                    <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
+                    <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
+                </ul>
+            </nav>
 
-    <!-- Desktop Navigation -->
-    <nav class="main-nav" aria-label="Main Navigation">
-      <ul class="nav-list">
-        <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
-        <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}>Categories</a></li>
-        <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}>Tags</a></li>
-        <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}>About</a></li>
-      </ul>
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" aria-label="Mobile Navigation">
+        <ul class="mobile-nav-list">
+            <li><a href="/" {% if page.url == "/" %}class="active"{% endif %}><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/categories/" {% if page.url contains "/categories" %}class="active"{% endif %}><i class="fas fa-folder"></i> Categories</a></li>
+            <li><a href="/tags/" {% if page.url contains "/tags" %}class="active"{% endif %}><i class="fas fa-tag"></i> Tags</a></li>
+            <li><a href="/about/" {% if page.url contains "/about" %}class="active"{% endif %}><i class="fas fa-info-circle"></i> About</a></li>
+        </ul>
     </nav>
-
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-  </div>
-</header>
 
     <!-- MAIN CONTENT -->
     <main id="main-content" class="main-wrapper container">
@@ -228,10 +530,7 @@
 
                 {% else %}
                 <!-- SINGLE ARTICLE PAGE -->
-                <!-- Note: Article content already includes h1 in article.blog-post header -->
-                <!-- Layout only provides metadata wrapper, not duplicate title -->
                 <div class="article-wrapper">
-
                     <div class="post-content">
                         {{ content }}
                     </div>
@@ -252,44 +551,43 @@
 
             <!-- SIDEBAR -->
             <aside class="sidebar">
-                    <!-- About Widget -->
-                    <div class="sidebar-widget">
-                        <div class="widget-header">
-                            <h3 class="widget-title">👋 About This Blog</h3>
-                        </div>
-                        <div class="widget-content">
-                            <p>Comprehensive guide to free SEO tools, tutorials, and strategies to improve your website performance. Created to help beginners and professionals.</p>
-                        </div>
+                <!-- About Widget -->
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title">👋 About This Blog</h3>
                     </div>
+                    <div class="widget-content">
+                        <p>Comprehensive guide to free SEO tools, tutorials, and strategies to improve your website performance. Created to help beginners and professionals.</p>
+                    </div>
+                </div>
 
-                    <!-- Categories Widget (Dynamic) -->
-                    <div class="sidebar-widget">
-                        <div class="widget-header">
-                            <h3 class="widget-title">📂 Categories</h3>
-                        </div>
-                        <div class="widget-content">
-                            <ul class="category-list">
-                                {% comment %} Use site.categories map which is available in Jekyll/GitHub Pages {% endcomment %}
-                                {% assign categories_array = site.categories | sort %}
-                                {% if categories_array and categories_array.size > 0 %}
-                                    {% for cat_pair in categories_array %}
-                                        {% assign cat_name = cat_pair[0] %}
-                                        {% assign cat_posts = cat_pair[1] %}
-                                        <li>
-                                            <a href="/categories/{{ cat_name | slugify }}/">
-                                                {{ cat_name }}
-                                                <span class="category-count">({{ cat_posts | size }})</span>
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                {% else %}
-                                    <p style="color: #666; font-size: 0.9rem; text-align: center;">
-                                        No categories yet. Make sure articles have categories in their Front Matter.
-                                    </p>
-                                {% endif %}
-                            </ul>
-                        </div>
+                <!-- Categories Widget (Dynamic) -->
+                <div class="sidebar-widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title">📂 Categories</h3>
                     </div>
+                    <div class="widget-content">
+                        <ul class="category-list">
+                            {% assign categories_array = site.categories | sort %}
+                            {% if categories_array and categories_array.size > 0 %}
+                                {% for cat_pair in categories_array %}
+                                    {% assign cat_name = cat_pair[0] %}
+                                    {% assign cat_posts = cat_pair[1] %}
+                                    <li>
+                                        <a href="/categories/{{ cat_name | slugify }}/">
+                                            {{ cat_name }}
+                                            <span class="category-count">({{ cat_posts | size }})</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <p style="color: #666; font-size: 0.9rem; text-align: center;">
+                                    No categories yet.
+                                </p>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
 
                 <!-- Recent Posts Widget -->
                 <div class="sidebar-widget">
@@ -311,15 +609,88 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
+    <!-- MODERN FOOTER FOR ADSENSE -->
     <footer class="site-footer">
-        <div class="footer-container container">
+        <div class="footer-container">
+            <div class="footer-top">
+                <!-- About Column -->
+                <div class="footer-widget">
+                    <h3>About FortoolSEO</h3>
+                    <div class="footer-about">
+                        <p>Your comprehensive guide to SEO tools, tutorials, and strategies to improve website performance and rankings.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                            <a href="#" aria-label="RSS"><i class="fas fa-rss"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-widget">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="/categories/"><i class="fas fa-chevron-right"></i> Categories</a></li>
+                        <li><a href="/tags/"><i class="fas fa-chevron-right"></i> Tags</a></li>
+                        <li><a href="/about/"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="/privacy/"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Popular Categories -->
+                <div class="footer-widget">
+                    <h3>Popular Categories</h3>
+                    <ul class="footer-links">
+                        {% assign popular_categories = site.categories | sort | slice: 0, 5 %}
+                        {% for cat_pair in popular_categories %}
+                            {% assign cat_name = cat_pair[0] %}
+                            <li>
+                                <a href="/categories/{{ cat_name | slugify }}/">
+                                    <i class="fas fa-folder"></i> {{ cat_name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="footer-widget">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> SEO Tools</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Tutorials</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Guides</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- AdSense Section -->
+            <div class="footer-middle">
+                <div class="adsense-container">
+                    <!-- Place your AdSense code here -->
+                    <div class="adsense-placeholder">
+                        <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                        <p>728x90 AdSense Banner<br>Place your code here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <div class="footer-copyright">
                     &copy; {{ site.time | date: "%Y" }} {{ site.title | default: "FortoolSEO Blog" }}. All rights reserved.
                 </div>
-                <div class="footer-credits">
-                    Built with ❤️ using <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a> & <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                    <a href="/disclaimer/">Disclaimer</a>
+                    <a href="/sitemap/">Sitemap</a>
+                    <a href="/contact/">Contact</a>
                 </div>
             </div>
         </div>
@@ -328,53 +699,92 @@
     <!-- JavaScript -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Tambahkan styling untuk halaman aktif
+        // Mobile Menu Toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const body = document.body;
+        
+        if (mobileToggle && mobileNav) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                mobileNav.classList.toggle('is-active');
+                
+                // Animate hamburger to X
+                const spans = this.querySelectorAll('span');
+                if (!isExpanded) {
+                    spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (mobileNav.classList.contains('is-active') && 
+                    !mobileNav.contains(event.target) && 
+                    !mobileToggle.contains(event.target)) {
+                    mobileNav.classList.remove('is-active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && mobileNav.classList.contains('is-active')) {
+                    mobileNav.classList.remove('is-active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+        }
+        
+        // Highlight current page in pagination
         const currentPage = document.querySelector('.pagination .current-page');
         if (currentPage) {
             currentPage.style.fontWeight = 'bold';
             currentPage.style.color = '#fff';
             currentPage.style.backgroundColor = '#4285f4';
         }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
     });
     </script>
-    <script>
-// Mobile Menu Toggle
-document.addEventListener('DOMContentLoaded', function() {
-    const mobileToggle = document.querySelector('.mobile-menu-toggle');
-    const mobileNav = document.querySelector('.mobile-nav');
-    
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', function() {
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !isExpanded);
-            mobileNav.classList.toggle('is-active');
-            
-            // Animate hamburger to X
-            const spans = this.querySelectorAll('span');
-            if (!isExpanded) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!mobileNav.contains(event.target) && !mobileToggle.contains(event.target)) {
-                mobileNav.classList.remove('is-active');
-                mobileToggle.setAttribute('aria-expanded', 'false');
-                const spans = mobileToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
-    }
-});
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B2QG2Y6YR0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B2QG2Y6YR0');
 </script>
 </body>
 </html>
