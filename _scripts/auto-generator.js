@@ -105,6 +105,152 @@ function makeRequest(url, method = 'GET', headers = {}, body = null) {
   });
 }
 
+// ==================== DYNAMIC CATEGORY FUNCTIONS ====================
+
+// Fungsi untuk menentukan kategori dinamis berdasarkan topik/judul
+function getDynamicCategoryFromTopic(topic) {
+  if (!topic) return 'SEO & Marketing'; // Default
+  
+  const topicLower = topic.toLowerCase();
+  
+  // Mapping keywords to categories
+  const categoryMap = {
+    // AI & Machine Learning
+    'ai': 'AI & Machine Learning',
+    'chatgpt': 'AI & Machine Learning',
+    'gemini': 'AI & Machine Learning',
+    'gpt': 'AI & Machine Learning',
+    'artificial intelligence': 'AI & Machine Learning',
+    'machine learning': 'AI & Machine Learning',
+    'openai': 'AI & Machine Learning',
+    'veo': 'AI & Machine Learning',
+    
+    // SEO & Marketing
+    'seo': 'SEO & Marketing',
+    'search': 'SEO & Marketing',
+    'google': 'SEO & Marketing',
+    'keyword': 'SEO & Marketing',
+    'ranking': 'SEO & Marketing',
+    'traffic': 'SEO & Marketing',
+    'backlink': 'SEO & Marketing',
+    'on-page': 'SEO & Marketing',
+    'off-page': 'SEO & Marketing',
+    'marketing': 'SEO & Marketing',
+    'digital marketing': 'SEO & Marketing',
+    
+    // Content & Writing
+    'content': 'Content & Writing',
+    'writing': 'Content & Writing',
+    'blog': 'Content & Writing',
+    'article': 'Content & Writing',
+    'copywriting': 'Content & Writing',
+    'editorial': 'Content & Writing',
+    
+    // Tools & Software
+    'tool': 'Tools & Software',
+    'software': 'Tools & Software',
+    'app': 'Tools & Software',
+    'application': 'Tools & Software',
+    'platform': 'Tools & Software',
+    'system': 'Tools & Software',
+    
+    // Finance & Business
+    'finance': 'Finance & Business',
+    'money': 'Finance & Business',
+    'investment': 'Finance & Business',
+    'business': 'Finance & Business',
+    'startup': 'Finance & Business',
+    'entrepreneur': 'Finance & Business',
+    'income': 'Finance & Business',
+    'revenue': 'Finance & Business',
+    
+    // Productivity
+    'productivity': 'Productivity',
+    'efficiency': 'Productivity',
+    'time management': 'Productivity',
+    'workflow': 'Productivity',
+    'automation': 'Productivity',
+    'hack': 'Productivity',
+    'tip': 'Productivity',
+    'trick': 'Productivity',
+    
+    // Technology
+    'tech': 'Technology',
+    'technology': 'Technology',
+    'digital': 'Technology',
+    'web': 'Technology',
+    'website': 'Technology',
+    'online': 'Technology',
+    'internet': 'Technology',
+    
+    // Data & Analytics
+    'data': 'Data & Analytics',
+    'analytics': 'Data & Analytics',
+    'metric': 'Data & Analytics',
+    'statistic': 'Data & Analytics',
+    'analysis': 'Data & Analytics',
+    'report': 'Data & Analytics'
+  };
+  
+  // Cari kategori berdasarkan keyword
+  for (const [keyword, category] of Object.entries(categoryMap)) {
+    if (topicLower.includes(keyword)) {
+      return category;
+    }
+  }
+  
+  // Jika tidak ditemukan, pilih kategori secara random
+  const defaultCategories = [
+    'SEO & Marketing',
+    'AI & Machine Learning', 
+    'Content & Writing',
+    'Tools & Software',
+    'Finance & Business',
+    'Productivity',
+    'Technology',
+    'Data & Analytics'
+  ];
+  
+  // Gunakan hash dari topic untuk konsistensi (jika topic sama, category sama)
+  let hash = 0;
+  for (let i = 0; i < topicLower.length; i++) {
+    hash = ((hash << 5) - hash) + topicLower.charCodeAt(i);
+    hash = hash & hash;
+  }
+  const idx = Math.abs(hash) % defaultCategories.length;
+  
+  return defaultCategories[idx];
+}
+
+// Fungsi untuk menambahkan kategori ke tags jika belum ada
+function enrichTagsWithCategory(tags, category) {
+  const categorySlug = category.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+  
+  // Hapus kata umum dari kategori untuk dijadikan tag
+  const categoryWords = category.split(/[&\s]+/).filter(word => 
+    word.length > 3 && 
+    !['and', 'the', 'for', 'with', 'from', 'that', 'this'].includes(word.toLowerCase())
+  );
+  
+  const categoryTags = categoryWords.map(word => word.toLowerCase());
+  
+  // Gabungkan tags, tambahkan kategori jika belum ada
+  const allTags = [...tags];
+  categoryTags.forEach(tag => {
+    if (!allTags.includes(tag)) {
+      allTags.push(tag);
+    }
+  });
+  
+  // Tambahkan kategori utama sebagai tag
+  if (!allTags.includes(categorySlug)) {
+    allTags.push(categorySlug);
+  }
+  
+  // Batasi maksimal 8 tags
+  return allTags.slice(0, 8);
+}
+
 // ==================== AI CONTENT GENERATION ====================
 
 // Generate artikel dengan Groq API (free) atau fallback to HF/OpenRouter
@@ -154,18 +300,10 @@ async function tryOpenRouterAPI(topic, category) {
     const prompt = `Buatkan artikel SEO blog yang berkualitas tinggi tentang: "${topic}"
     
 Kategori: ${category}
-Bahasa: Indonesian
+Bahasa: english
 Format: Gunakan struktur HTML dengan heading h2 yang jelas dan h3 untuk subseksi.
 
-Struktur yang diinginkan:
-1. Pengenalan (h2 id="pengenalan")
-2. Manfaat (h2 id="manfaat") - minimal 4 poin
-3. Langkah-langkah Implementasi (h2 id="langkah") - minimal 5 langkah dengan h3
-4. Tools Gratis Rekomendasi (h2 id="tools") - minimal 3 tools
-5. Tips & Trik Praktis (h2 id="tips") - minimal 4 tips
-6. Kesimpulan (h2 id="kesimpulan")
-
-Pastikan: Konten informatif, 1500+ kata, natural Indonesian.
+Pastikan: Konten informatif, 1500+ kata, natural english.
 Output hanya HTML content (tanpa YAML frontmatter), mulai dari h2 pertama.`;
 
     const response = await makeRequest('https://openrouter.ai/api/v1/chat/completions', 'POST', {
@@ -480,22 +618,27 @@ function generateTags(title, category) {
   const stopwords = ['article', 'guide', 'complete', 'ultimate', 'beginner', 'advanced', 'everything', 'professional', 'proven', 'methods', 'strategies', 'getting', 'started', 'tips', 'best', 'practices', 'know', 'about', 'for'];
   
   const baseTags = [
-    category.toLowerCase().replace(/[^a-z0-9-]/g, ''),
     'tips',
-    'guide'
+    'guide',
+    '2025'
   ];
   
-  // Extract 1-2 key words from title - clean special chars
+  // Extract 2-3 key words from title
   const words = title
     .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ') // remove special chars (colons, commas, etc)
+    .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
-    .filter(w => w.length > 4 && !stopwords.includes(w))
-    .slice(0, 2)
-    .map(w => w.replace(/[^a-z0-9-]/g, '')); // final cleanup
+    .filter(w => w.length > 3 && !stopwords.includes(w))
+    .slice(0, 3)
+    .map(w => w.replace(/[^a-z0-9-]/g, ''));
   
-  // Remove any empty or duplicate tags
-  return [...new Set([...baseTags, ...words])].filter(t => t.length > 0);
+  // Gabungkan semua tags
+  let allTags = [...new Set([...baseTags, ...words])].filter(t => t.length > 0);
+  
+  // Enrich dengan kategori
+  allTags = enrichTagsWithCategory(allTags, category);
+  
+  return allTags;
 }
 
 // Clean and fix content formatting (convert markdown remnants to proper HTML)
@@ -550,6 +693,9 @@ async function generateArticleTemplate(config) {
   const dateObj = new Date(date);
   const dateFormatted = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   
+  // Slugify category untuk URL
+  const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+  
   return `---
 layout: default
 title: "${title}"
@@ -567,7 +713,7 @@ meta_description: "${title} - learn modern tips and insights."
     <h1>${title}</h1>
     <div class="post-meta">
       <span class="date">${dateFormatted}</span>
-      <span class="category"><a href="/categories/${category.toLowerCase()}/">${category}</a></span>
+      <span class="category"><a href="/categories/${categorySlug}/">${category}</a></span>
       <span class="reading-time">5 min read</span>
     </div>
   </header>
@@ -709,11 +855,104 @@ function generateTaxonomyPages() {
   console.log(`✅ Generated ${categoriesSet.size} category pages and ${tagsSet.size} tag pages.`);
 }
 
+// ==================== UPDATE EXISTING ARTICLES ====================
+
+// Fungsi baru: Update kategori artikel yang sudah ada
+function updateExistingArticlesCategories() {
+  console.log('🔄 Updating categories for existing articles...\n');
+  
+  const postsDir = path.join(process.cwd(), '_posts');
+  if (!fs.existsSync(postsDir)) {
+    console.log('❌ _posts directory not found');
+    return;
+  }
+  
+  const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.html'));
+  let updatedCount = 0;
+  
+  files.forEach((file, index) => {
+    try {
+      const filePath = path.join(postsDir, file);
+      let content = fs.readFileSync(filePath, 'utf8');
+      
+      // Extract title
+      const titleMatch = content.match(/title:\s*"([^"]+)"/);
+      if (!titleMatch) return;
+      
+      const title = titleMatch[1];
+      const dynamicCategory = getDynamicCategoryFromTopic(title);
+      
+      // Update kategori di frontmatter
+      const oldCategoryMatch = content.match(/categories:\s*\n\s*-\s*([^\n]+)/);
+      if (oldCategoryMatch) {
+        const oldCategory = oldCategoryMatch[1].trim();
+        
+        // Only update if category is different
+        if (oldCategory !== dynamicCategory && !dynamicCategory.includes(oldCategory)) {
+          content = content.replace(
+            /categories:\s*\n\s*-\s*[^\n]+/g,
+            `categories:\n  - ${dynamicCategory}`
+          );
+          
+          // Update tags untuk include new category
+          const tagsMatch = content.match(/tags:\s*(\[[^\]]+\])/);
+          if (tagsMatch) {
+            try {
+              const tags = JSON.parse(tagsMatch[1].replace(/'/g, '"'));
+              const newTags = enrichTagsWithCategory(tags, dynamicCategory);
+              content = content.replace(
+                tagsMatch[0],
+                `tags: ${JSON.stringify(newTags)}`
+              );
+            } catch (e) {
+              // Skip tag update if parsing fails
+            }
+          }
+          
+          fs.writeFileSync(filePath, content, 'utf8');
+          updatedCount++;
+          console.log(`✅ Updated ${file}: ${oldCategory} → ${dynamicCategory}`);
+        }
+      }
+      
+    } catch (error) {
+      console.error(`⚠️  Error updating ${file}:`, error.message);
+    }
+  });
+  
+  console.log(`\n🎯 Updated ${updatedCount} articles`);
+  
+  // Regenerate taxonomy pages setelah update
+  if (updatedCount > 0) {
+    console.log('\n🔄 Regenerating taxonomy pages...');
+    generateTaxonomyPages();
+    
+    // Commit perubahan
+    try {
+      execSync('git add _posts/ categories/ tags/', { 
+        stdio: 'pipe',
+        cwd: '/workspaces/fortoolseo.github.io'
+      });
+      execSync('git commit -m "🔄 Update article categories with dynamic classification"', { 
+        stdio: 'pipe',
+        cwd: '/workspaces/fortoolseo.github.io'
+      });
+      execSync('git push origin master', { 
+        stdio: 'pipe',
+        cwd: '/workspaces/fortoolseo.github.io'
+      });
+      console.log('✅ Changes committed and pushed to GitHub');
+    } catch (error) {
+      console.log('⚠️  Git push failed (manual push needed)');
+    }
+  }
+}
+
 // ==================== MAIN PROCESS ====================
 
 async function main() {
   console.log('🚀 FortoolSEO AI Article Generator\n');
-  console.log(`📚 Category: ${CATEGORY}`);
+  console.log(`📚 Default Category: ${CATEGORY}`);
   console.log(`📝 Count: ${COUNT}`);
   console.log(`🔑 Topic/Keyword: ${TOPIC || '(auto-generated)'}`);
   console.log(`⏱️  Delay between articles: ${DELAY_BETWEEN_ARTICLES / 1000} seconds\n`);
@@ -730,15 +969,20 @@ async function main() {
     try {
       console.log(`\n━━━ Artikel ${i + 1}/${COUNT} ━━━`);
       
-      // Generate title - pass index to ensure variety in batch mode
+      // Generate title
       const title = TOPIC ? await generateTitleFromTopic(TOPIC, CATEGORY, i) : `Artikel ${CATEGORY} #${i + 1}`;
       console.log(`📌 Title: ${title}`);
       
-      // Generate tags
-      const tags = generateTags(title, CATEGORY);
+      // Tentukan kategori dinamis berdasarkan topik/judul
+      const dynamicCategory = getDynamicCategoryFromTopic(TOPIC || title);
+      console.log(`📂 Category: ${dynamicCategory}`);
       
-      // Generate content dengan AI (NO FALLBACK: return null if all AI fails)
-      const content = await generateArticleWithAI(title, CATEGORY, tags);
+      // Generate tags dengan kategori yang dynamic
+      const tags = generateTags(title, dynamicCategory);
+      console.log(`🏷️  Tags: ${tags.slice(0, 5).join(', ')}${tags.length > 5 ? '...' : ''}`);
+      
+      // Generate content dengan AI menggunakan kategori dinamis
+      const content = await generateArticleWithAI(title, dynamicCategory, tags);
       
       // If AI generation failed, skip this article entirely
       if (!content) {
@@ -755,10 +999,10 @@ async function main() {
       date.setDate(date.getDate() + i);
       const dateStr = date.toISOString().split('T')[0];
       
-      // Create article
+      // Create article dengan kategori dinamis
       const articleContent = await generateArticleTemplate({
         title,
-        category: CATEGORY,
+        category: dynamicCategory, // Gunakan kategori dinamis
         tags,
         date: dateStr,
         author: AUTHOR,
@@ -819,6 +1063,14 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('❌ Error:', reason);
   process.exit(1);
 });
+
+// ==================== CLI COMMAND HANDLER ====================
+
+// Handle command line arguments untuk update categories
+if (args.update || args['update-categories']) {
+  updateExistingArticlesCategories();
+  process.exit(0);
+}
 
 // Run
 main();

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "SEO"
+title: "business"
 ---
 
-<section class="category-page">
-  <h1>Category: SEO</h1>
+<section class="tag-page">
+  <h1>Tag: business</h1>
   <div class="posts-grid">
-    {% raw %}{% assign posts = site.categories['SEO'] %}{% endraw %}
+    {% raw %}{% assign posts = site.tags['business'] %}{% endraw %}
     {% raw %}{% if posts %}{% endraw %}
     {% raw %}{% for post in posts %}{% endraw %}
       <article class="post-card">
@@ -15,7 +15,7 @@ title: "SEO"
       </article>
     {% raw %}{% endfor %}{% endraw %}
     {% raw %}{% else %}{% endraw %}
-    <p>No articles in this category yet.</p>
+    <p>No articles with this tag yet.</p>
     {% raw %}{% endif %}{% endraw %}
   </div>
 </section>
