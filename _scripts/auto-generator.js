@@ -190,6 +190,185 @@ function getDynamicCategoryFromTopic(topic) {
     'statistic': 'Data & Analytics',
     'analysis': 'Data & Analytics',
     'report': 'Data & Analytics'
+
+    // Health & Wellness
+'health': 'Health & Wellness',
+'healthy': 'Health & Wellness',
+'wellness': 'Health & Wellness',
+'fitness': 'Health & Wellness',
+'nutrition': 'Health & Wellness',
+'diet': 'Health & Wellness',
+'exercise': 'Health & Wellness',
+'mental health': 'Health & Wellness',
+'workout': 'Health & Wellness',
+'medical': 'Health & Wellness',
+'dokter': 'Health & Wellness',
+'kesehatan': 'Health & Wellness',
+
+// Parenting & Baby
+'parenting': 'Parenting & Baby',
+'baby': 'Parenting & Baby',
+'infant': 'Parenting & Baby',
+'toddler': 'Parenting & Baby',
+'children': 'Parenting & Baby',
+'kids': 'Parenting & Baby',
+'mother': 'Parenting & Baby',
+'father': 'Parenting & Baby',
+'pregnancy': 'Parenting & Baby',
+'breastfeeding': 'Parenting & Baby',
+'parent': 'Parenting & Baby',
+'keluarga': 'Parenting & Baby',
+'anak': 'Parenting & Baby',
+
+// Tutorial & How-To Guides
+'how to': 'Tutorial & Guides',
+'tutorial': 'Tutorial & Guides',
+'guide': 'Tutorial & Guides',
+'step by step': 'Tutorial & Guides',
+'panduan': 'Tutorial & Guides',
+'cara': 'Tutorial & Guides',
+'langkah': 'Tutorial & Guides',
+'instruction': 'Tutorial & Guides',
+
+// Tips & Tricks
+'tips': 'Tips & Tricks',
+'tricks': 'Tips & Tricks',
+'trik': 'Tips & Tricks',
+'life hack': 'Tips & Tricks',
+'shortcut': 'Tips & Tricks',
+'advice': 'Tips & Tricks',
+'recommendation': 'Tips & Tricks',
+'saran': 'Tips & Tricks',
+
+// Lifestyle & Daily Life
+'lifestyle': 'Lifestyle',
+'daily': 'Lifestyle',
+'life': 'Lifestyle',
+'hobby': 'Lifestyle',
+'interest': 'Lifestyle',
+'personal': 'Lifestyle',
+'gaya hidup': 'Lifestyle',
+
+// Beauty & Fashion
+'beauty': 'Beauty & Fashion',
+'fashion': 'Beauty & Fashion',
+'skincare': 'Beauty & Fashion',
+'makeup': 'Beauty & Fashion',
+'cosmetic': 'Beauty & Fashion',
+'style': 'Beauty & Fashion',
+'clothing': 'Beauty & Fashion',
+'kecantikan': 'Beauty & Fashion',
+
+// Food & Cooking
+'food': 'Food & Cooking',
+'cooking': 'Food & Cooking',
+'recipe': 'Food & Cooking',
+'culinary': 'Food & Cooking',
+'makanan': 'Food & Cooking',
+'masak': 'Food & Cooking',
+'resep': 'Food & Cooking',
+'kitchen': 'Food & Cooking',
+
+// Education & Learning
+'education': 'Education',
+'learning': 'Education',
+'study': 'Education',
+'course': 'Education',
+'lesson': 'Education',
+'training': 'Education',
+'pembelajaran': 'Education',
+'belajar': 'Education',
+
+// Travel & Adventure
+'travel': 'Travel & Adventure',
+'tourism': 'Travel & Adventure',
+'vacation': 'Travel & Adventure',
+'holiday': 'Travel & Adventure',
+'adventure': 'Travel & Adventure',
+'journey': 'Travel & Adventure',
+'wisata': 'Travel & Adventure',
+'liburan': 'Travel & Adventure',
+
+// Home & Garden
+'home': 'Home & Garden',
+'house': 'Home & Garden',
+'garden': 'Home & Garden',
+'interior': 'Home & Garden',
+'decoration': 'Home & Garden',
+'furniture': 'Home & Garden',
+'rumah': 'Home & Garden',
+'taman': 'Home & Garden',
+
+// Automotive
+'car': 'Automotive',
+'automotive': 'Automotive',
+'vehicle': 'Automotive',
+'motor': 'Automotive',
+'mobil': 'Automotive',
+'motorcycle': 'Automotive',
+
+// Sports & Recreation
+'sports': 'Sports & Recreation',
+'recreation': 'Sports & Recreation',
+'game': 'Sports & Recreation',
+'olahrga': 'Sports & Recreation',
+'competition': 'Sports & Recreation',
+
+// Entertainment
+'entertainment': 'Entertainment',
+'movie': 'Entertainment',
+'music': 'Entertainment',
+'film': 'Entertainment',
+'celebrity': 'Entertainment',
+'hiburan': 'Entertainment',
+
+// Pets & Animals
+'pets': 'Pets & Animals',
+'animals': 'Pets & Animals',
+'pet': 'Pets & Animals',
+'dog': 'Pets & Animals',
+'cat': 'Pets & Animals',
+'hewan': 'Pets & Animals',
+'peliharaan': 'Pets & Animals',
+
+// DIY & Crafts
+'diy': 'DIY & Crafts',
+'craft': 'DIY & Crafts',
+'handmade': 'DIY & Crafts',
+'creative': 'DIY & Crafts',
+'kerajinan': 'DIY & Crafts',
+
+// Relationships
+'relationship': 'Relationships',
+'love': 'Relationships',
+'dating': 'Relationships',
+'marriage': 'Relationships',
+'family': 'Relationships',
+'romance': 'Relationships',
+'relationship': 'Relationships',
+
+// Career & Jobs
+'career': 'Career & Jobs',
+'job': 'Career & Jobs',
+'profession': 'Career & Jobs',
+'work': 'Career & Jobs',
+'karir': 'Career & Jobs',
+'pekerjaan': 'Career & Jobs',
+
+// Shopping & Reviews
+'shopping': 'Shopping & Reviews',
+'review': 'Shopping & Reviews',
+'product review': 'Shopping & Reviews',
+'belanja': 'Shopping & Reviews',
+'ulasan': 'Shopping & Reviews',
+
+// Environment & Nature
+'environment': 'Environment & Nature',
+'nature': 'Environment & Nature',
+'eco': 'Environment & Nature',
+'green': 'Environment & Nature',
+'lingkungan': 'Environment & Nature',
+'alam': 'Environment & Nature'
   };
   
   // Cari kategori berdasarkan keyword
