@@ -13,6 +13,7 @@ const COUNT = parseInt(args.count || 1);
 const TOPIC = args.topic || process.env.TOPIC || '';
 const AUTHOR = process.env.AUTHOR || 'Admin FortoolSEO';
 const AUTO_COMMIT = args.commit !== 'false';
+const DELAY_BETWEEN_ARTICLES = 15000; // 15 detik jeda antara artikel
 
 // API Keys (free tiers)
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''; // Get free at console.groq.com
@@ -21,6 +22,11 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || ''; // optional
 const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY || ''; // optional fallback
 
 // ==================== UTILITY FUNCTIONS ====================
+
+// Fungsi delay/pause
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // Slug generation
 function generateSlug(title) {
@@ -227,7 +233,6 @@ Additional:
 
 Start directly with <h2>Introduction</h2>. Output ONLY HTML - NO YAML, NO <h1>.`;
 
-
     const models = [
       'llama-3.1-70b-versatile',
       'llama-3.1-8b-instant',
@@ -324,8 +329,6 @@ function getPlaceholderImage() {
   return `https://picsum.photos/1200/630?random=${Math.floor(Math.random() * 1000)}`;
 }
 
-// Fallback: Generate default article dari template
-function generateDefaultArticle(topic, category) {
 // Fallback: Generate default article in English
 function generateDefaultArticle(topic, category) {
   return `<h2 id="introduction">📖 Understanding ${topic} in a Practical Way</h2>
@@ -470,18 +473,6 @@ Google Search Central documentation
 You may also find this related guide useful:
 <a href="{{internal_link_3}}">additional recommended reading</a>.
 </p>`;
-} // Fallback: Generate dari topic
-  const subtopics = [
-    'Panduan Lengkap',
-    'Cara Optimasi',
-    'Tips & Trik',
-    'Tutorial Untuk Pemula',
-    'Strategi Terbaik',
-    'Best Practices'
-  ];
-  
-  const random = subtopics[Math.floor(Math.random() * subtopics.length)];
-  return `${random} ${topic}`;
 }
 
 // Generate tags dari title/category - simpler, more natural, without special chars
@@ -636,112 +627,7 @@ function commitAndPush(filenames) {
   }
 }
 
-// ==================== MAIN PROCESS ====================
-
-async function main() {
-  console.log('🚀 FortoolSEO AI Article Generator\n');
-  console.log(`📚 Category: ${CATEGORY}`);
-  console.log(`📝 Count: ${COUNT}`);
-  console.log(`🔑 Topic/Keyword: ${TOPIC || '(auto-generated)'}\n`);
-  
-  // Validasi
-  if (!TOPIC && COUNT > 1) {
-    console.log('⚠️  Untuk batch generate, gunakan --topic "keyword"');
-    process.exit(1);
-  }
-
-  const createdFiles = [];
-
-  for (let i = 0; i < COUNT; i++) {
-    try {
-      console.log(`\n━━━ Artikel ${i + 1}/${COUNT} ━━━`);
-      
-      // Generate title - pass index to ensure variety in batch mode
-      const title = TOPIC ? await generateTitleFromTopic(TOPIC, CATEGORY, i) : `Artikel ${CATEGORY} #${i + 1}`;
-      console.log(`📌 Title: ${title}`);
-      
-      // Generate tags
-      const tags = generateTags(title, CATEGORY);
-      
-      // Generate content dengan AI (NO FALLBACK: return null if all AI fails)
-      const content = await generateArticleWithAI(title, CATEGORY, tags);
-      
-      // If AI generation failed, skip this article entirely
-      if (!content) {
-        console.log(`⏭️  Skipped: No AI content generated for "${title}"`);
-        continue;
-      }
-      
-      // Get image (only if AI succeeded)
-      console.log('🖼️  Fetching image...');
-      const imageUrl = await getImageFromPexels(TOPIC || title);
-      
-      // Generate date (increment untuk multiple articles)
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      const dateStr = date.toISOString().split('T')[0];
-      
-      // Create article
-      const articleContent = await generateArticleTemplate({
-        title,
-        category: CATEGORY,
-        tags,
-        date: dateStr,
-        author: AUTHOR,
-        imageUrl: imageUrl || getPlaceholderImage(),
-        content
-      });
-      
-      // Write file
-      const filename = generateFilename(title, dateStr);
-      const filepath = path.join('/workspaces/fortoolseo.github.io/_posts', filename);
-      
-      if (!fs.existsSync(path.dirname(filepath))) {
-        fs.mkdirSync(path.dirname(filepath), { recursive: true });
-      }
-      
-      fs.writeFileSync(filepath, articleContent, 'utf8');
-      console.log(`✅ Created: ${filename}`);
-      
-      createdFiles.push(filename);
-      
-    } catch (error) {
-      console.error(`❌ Error generating article ${i + 1}:`, error.message);
-    }
-  }
-
-  // Summary
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━');
-  console.log(`✨ Generated ${createdFiles.length} artikel\n`);
-  
-  createdFiles.forEach(f => {
-    console.log(`  📄 ${f}`);
-  });
-
-  // Auto commit & push
-  if (createdFiles.length > 0) {
-    console.log('\n' + '━'.repeat(30));
-    // Generate category & tag pages so /categories/{slug}/ and /tags/{slug}/ exist
-    try {
-      generateTaxonomyPages();
-    } catch (e) {
-      console.log('⚠️  Failed to generate taxonomy pages:', e.message);
-    }
-
-    commitAndPush(createdFiles);
-  }
-
-  console.log('\n✅ Done! Artikel siap di publish.');
-}
-
-// Error handling
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Error:', reason);
-  process.exit(1);
-});
-
-// Run
-// ================= TAXONOMY PAGES GENERATOR =================
+// ==================== TAXONOMY PAGES GENERATOR ====================
 
 function slugify(text) {
   return text.toString().toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
@@ -823,6 +709,116 @@ function generateTaxonomyPages() {
   console.log(`✅ Generated ${categoriesSet.size} category pages and ${tagsSet.size} tag pages.`);
 }
 
+// ==================== MAIN PROCESS ====================
+
+async function main() {
+  console.log('🚀 FortoolSEO AI Article Generator\n');
+  console.log(`📚 Category: ${CATEGORY}`);
+  console.log(`📝 Count: ${COUNT}`);
+  console.log(`🔑 Topic/Keyword: ${TOPIC || '(auto-generated)'}`);
+  console.log(`⏱️  Delay between articles: ${DELAY_BETWEEN_ARTICLES / 1000} seconds\n`);
+  
+  // Validasi
+  if (!TOPIC && COUNT > 1) {
+    console.log('⚠️  Untuk batch generate, gunakan --topic "keyword"');
+    process.exit(1);
+  }
+
+  const createdFiles = [];
+
+  for (let i = 0; i < COUNT; i++) {
+    try {
+      console.log(`\n━━━ Artikel ${i + 1}/${COUNT} ━━━`);
+      
+      // Generate title - pass index to ensure variety in batch mode
+      const title = TOPIC ? await generateTitleFromTopic(TOPIC, CATEGORY, i) : `Artikel ${CATEGORY} #${i + 1}`;
+      console.log(`📌 Title: ${title}`);
+      
+      // Generate tags
+      const tags = generateTags(title, CATEGORY);
+      
+      // Generate content dengan AI (NO FALLBACK: return null if all AI fails)
+      const content = await generateArticleWithAI(title, CATEGORY, tags);
+      
+      // If AI generation failed, skip this article entirely
+      if (!content) {
+        console.log(`⏭️  Skipped: No AI content generated for "${title}"`);
+        continue;
+      }
+      
+      // Get image (only if AI succeeded)
+      console.log('🖼️  Fetching image...');
+      const imageUrl = await getImageFromPexels(TOPIC || title);
+      
+      // Generate date (increment untuk multiple articles)
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+      
+      // Create article
+      const articleContent = await generateArticleTemplate({
+        title,
+        category: CATEGORY,
+        tags,
+        date: dateStr,
+        author: AUTHOR,
+        imageUrl: imageUrl || getPlaceholderImage(),
+        content
+      });
+      
+      // Write file
+      const filename = generateFilename(title, dateStr);
+      const filepath = path.join('/workspaces/fortoolseo.github.io/_posts', filename);
+      
+      if (!fs.existsSync(path.dirname(filepath))) {
+        fs.mkdirSync(path.dirname(filepath), { recursive: true });
+      }
+      
+      fs.writeFileSync(filepath, articleContent, 'utf8');
+      console.log(`✅ Created: ${filename}`);
+      
+      createdFiles.push(filename);
+      
+      // Timer jeda 15 detik sebelum membuat artikel berikutnya
+      if (i < COUNT - 1) {
+        console.log(`⏳ Waiting ${DELAY_BETWEEN_ARTICLES / 1000} seconds before next article...`);
+        await sleep(DELAY_BETWEEN_ARTICLES);
+      }
+      
+    } catch (error) {
+      console.error(`❌ Error generating article ${i + 1}:`, error.message);
+    }
+  }
+
+  // Summary
+  console.log('\n━━━━━━━━━━━━━━━━━━━━━');
+  console.log(`✨ Generated ${createdFiles.length} artikel\n`);
+  
+  createdFiles.forEach(f => {
+    console.log(`  📄 ${f}`);
+  });
+
+  // Auto commit & push
+  if (createdFiles.length > 0) {
+    console.log('\n' + '━'.repeat(30));
+    // Generate category & tag pages so /categories/{slug}/ and /tags/{slug}/ exist
+    try {
+      generateTaxonomyPages();
+    } catch (e) {
+      console.log('⚠️  Failed to generate taxonomy pages:', e.message);
+    }
+
+    commitAndPush(createdFiles);
+  }
+
+  console.log('\n✅ Done! Artikel siap di publish.');
+}
+
+// Error handling
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Error:', reason);
+  process.exit(1);
+});
+
 // Run
 main();
-
