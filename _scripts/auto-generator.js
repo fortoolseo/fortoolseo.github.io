@@ -189,8 +189,7 @@ function getDynamicCategoryFromTopic(topic) {
     'metric': 'Data & Analytics',
     'statistic': 'Data & Analytics',
     'analysis': 'Data & Analytics',
-    'report': 'Data & Analytics'
-
+    'report': 'Data & Analytics',
     // Health & Wellness
 'health': 'Health & Wellness',
 'healthy': 'Health & Wellness',
